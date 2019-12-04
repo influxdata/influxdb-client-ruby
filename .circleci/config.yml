@@ -46,9 +46,9 @@ commands:
             - &cache-key gem-cache-<< parameters.ruby-container >>-{{ checksum "influxdb_client.gemspec" }}
             - gem-cache-<< parameters.ruby-container >>-
       - run:
-          name: Set ruby version << parameters.ruby-container >>
+          name: Set ruby version to << parameters.ruby-container >>
           command: |
-            circleci-install ruby
+            circleci-install ruby << parameters.ruby-container >>
 #            command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 #            rvm get stable
 #            rvm install << parameters.ruby-container >>
