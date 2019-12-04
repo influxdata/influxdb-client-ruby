@@ -51,9 +51,11 @@ commands:
             echo rvm_autoupdate_flag=0 >> ~/.rvmrc
             rvm install << parameters.ruby-container >>
             echo . $(rvm << parameters.ruby-container >> do rvm env --path) >> $BASH_ENV
+            ruby --version
       - run:
           name: Install dependencies
           command: |
+            gem install bundler
             bundle install --jobs=4 --retry=3 --path vendor/bundle
       - run:
           name: Static code analyze
