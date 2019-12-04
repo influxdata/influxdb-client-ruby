@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class InfluxDBClientTest < Minitest::Test
   def test_defined_version_number
