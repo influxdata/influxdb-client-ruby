@@ -50,10 +50,10 @@ commands:
           command: |
             echo rvm_autoupdate_flag=0 >> ~/.rvmrc
             rvm install << parameters.ruby-container >>
-            echo . $(rvm << parameters.ruby-container >> do rvm env --path) >> $BASH_ENV
+            echo $(rvm << parameters.ruby-container >> do rvm env --path) >> $BASH_ENV
             echo "Finished install"
             echo $BASH_ENV
-            cat $BASH_ENV
+            ls -la $BASH_ENV
             ruby --version
       - run:
           name: Install dependencies
@@ -137,8 +137,6 @@ commands:
 jobs:
   tests-ruby-2-6:
     machine: true
-      ruby:
-        version: 2.6.0
     steps:
       - prepare
       - client-test:
@@ -151,8 +149,6 @@ jobs:
 
   tests-ruby-2-5:
     machine: true
-      ruby:
-        version: 2.5.0
     steps:
       - prepare
       - client-test:
