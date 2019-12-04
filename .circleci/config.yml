@@ -48,6 +48,7 @@ commands:
       - run:
           name: Set ruby version
           command: |
+            rvm get stable
             rvm install << parameters.ruby-container >>
             echo $(rvm << parameters.ruby-container >> do rvm env --path) >> $BASH_ENV
             echo "Finished install"
