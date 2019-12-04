@@ -51,6 +51,7 @@ commands:
             echo rvm_autoupdate_flag=0 >> ~/.rvmrc
             rvm install << parameters.ruby-container >>
             echo . $(rvm << parameters.ruby-container >> do rvm env --path) >> $BASH_ENV
+            rvm use ruby-<< parameters.ruby-container >> || true
             ruby --version
       - run:
           name: Install dependencies
