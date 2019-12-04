@@ -48,14 +48,15 @@ commands:
       - run:
           name: Set ruby version
           command: |
+            circleci-install ruby
 #            command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 #            rvm get stable
 #            rvm install << parameters.ruby-container >>
-            circleci-install ruby << parameters.ruby-container >>
+#            circleci-install ruby << parameters.ruby-container >>
 #            echo $(rvm << parameters.ruby-container >> do rvm env --path) >> $BASH_ENV
 #            echo "Finished install"
-#            echo $BASH_ENV
-#            ls -la $BASH_ENV
+            echo $BASH_ENV
+            ls -la $BASH_ENV
             ruby --version
       - run:
           name: Install dependencies
