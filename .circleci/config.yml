@@ -51,7 +51,8 @@ commands:
             echo rvm_autoupdate_flag=0 >> ~/.rvmrc
             rvm install << parameters.ruby-container >>
             echo . $(rvm << parameters.ruby-container >> do rvm env --path) >> $BASH_ENV
-            \curl -sSL https://get.rvm.io | bash -s -- --version << parameters.ruby-container >> || true
+            echo "Finished install"
+            echo $BASH_ENV
             ruby --version
       - run:
           name: Install dependencies
