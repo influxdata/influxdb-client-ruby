@@ -55,9 +55,9 @@ commands:
 #            circleci-install ruby << parameters.ruby-container >>
 #            echo $(rvm << parameters.ruby-container >> do rvm env --path) >> $BASH_ENV
 #            echo "Finished install"
-            echo $BASH_ENV
-            ls -la $BASH_ENV
-            ruby --version
+#            echo $BASH_ENV
+#            ls -la $BASH_ENV
+#            ruby --version
       - run:
           name: Install dependencies
           command: |
