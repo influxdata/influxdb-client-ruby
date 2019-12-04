@@ -48,6 +48,7 @@ commands:
       - run:
           name: Set ruby version to << parameters.ruby-container >>
           command: |
+            circleci-install base_requirements && circleci-install circleci_specific
             circleci-install ruby << parameters.ruby-container >>
 #            command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 #            rvm get stable
