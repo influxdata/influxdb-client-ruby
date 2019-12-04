@@ -38,7 +38,7 @@ commands:
     parameters:
       ruby-container:
         type: string
-        default: &default-ruby-container "2.6"
+        default: &default-ruby-container "2.6.5"
     steps:
       - restore_cache:
           name: Restoring Gem Cache
@@ -48,6 +48,7 @@ commands:
       - run:
           name: Set ruby version
           command: |
+            echo rvm_autoupdate_flag=0 >> ~/.rvmrc
             rvm install << parameters.ruby-container >>
             echo . $(rvm << parameters.ruby-container >> do rvm env --path) >> $BASH_ENV
       - run:
@@ -142,7 +143,7 @@ jobs:
     steps:
       - prepare
       - client-test:
-          ruby-container: "2.5"
+          ruby-container: "2.5.7"
 #      - storing-test-results
 #      - storing-artifacts
 
