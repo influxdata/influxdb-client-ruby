@@ -34,17 +34,12 @@ commands:
       - checkout
       # - influxdb-restart
   client-test:
-    description: "Run tests"
-    parameters:
-      ruby-container:
-        type: string
-        default: &default-ruby-container "2.6.5"
     steps:
       - restore_cache:
           name: Restoring Gem Cache
           keys:
-            - &cache-key gem-cache-<< parameters.ruby-container >>-{{ checksum "influxdb_client.gemspec" }}
-            - gem-cache-<< parameters.ruby-container >>-
+            - &cache-key gem-cache-{{ checksum "influxdb_client.gemspec" }}
+            - gem-cache-
 #      - run:
 #          name: Set ruby version to << parameters.ruby-container >>
 #          command: |
@@ -68,6 +63,11 @@ commands:
           name: Static code analyze
           command: |
             bundle exec rake rubocop
+      - run:
+          name: Run tests
+          command: |
+            export MINITEST_REPORTER=JUnitReporter
+            bundle exec rake test
 #      - run:
 #          name: "Install dependencies"
 #          command: |
@@ -98,29 +98,8 @@ commands:
 #          when: always
   storing-test-results:
     steps:
-      - run:
-          name: "Copying test results"
-          when: always
-          command: |
-            mkdir test-results
-            mkdir test-results/client-core
-            cp -r client-core/target/*/TEST-*.xml test-results/client-core || true
-            mkdir test-results/client
-            cp -r client/target/*/TEST-*.xml test-results/client || true
-            mkdir test-results/client-legacy
-            cp -r client-legacy/target/*/TEST-*.xml test-results/client-legacy || true
-            mkdir test-results/client-reactive
-            cp -r client-reactive/target/*/TEST-*.xml test-results/client-reactive || true
-            mkdir test-results/client-kotlin
-            cp -r client-kotlin/target/*/TEST-*.xml test-results/client-kotlin || true
-            mkdir test-results/client-scala
-            cp -r client-scala/target/*/TEST-*.xml test-results/client-scala || true
-            mkdir test-results/spring
-            cp -r spring/target/*/TEST-*.xml test-results/spring || true
-            mkdir test-results/flux-dsl
-            cp -r flux-dsl/target/*/TEST-*.xml test-results/flux-dsl || true
       - store_test_results:
-          path: test-results
+          path: test/reports
   storing-artifacts:
     steps:
       - run:
@@ -143,9 +122,8 @@ jobs:
     machine: true
     steps:
       - prepare
-      - client-test:
-          ruby-container: *default-ruby-container
-#      - storing-test-results
+      - client-test
+      - storing-test-results
 #      - storing-artifacts
 #      - run:
 #          name: "Collecting coverage reports"
@@ -155,9 +133,8 @@ jobs:
     machine: true
     steps:
       - prepare
-      - client-test:
-          ruby-container: "2.5.7"
-#      - storing-test-results
+      - client-test
+      - storing-test-results
 #      - storing-artifacts
 
 #  deploy-snapshot:
