@@ -137,6 +137,8 @@ commands:
 jobs:
   tests-ruby-2-6:
     machine: true
+      ruby:
+        version: 2.6.0
     steps:
       - prepare
       - client-test:
@@ -149,6 +151,8 @@ jobs:
 
   tests-ruby-2-5:
     machine: true
+      ruby:
+        version: 2.5.0
     steps:
       - prepare
       - client-test:
