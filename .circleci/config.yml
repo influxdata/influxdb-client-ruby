@@ -45,20 +45,20 @@ commands:
           keys:
             - &cache-key gem-cache-<< parameters.ruby-container >>-{{ checksum "influxdb_client.gemspec" }}
             - gem-cache-<< parameters.ruby-container >>-
-      - run:
-          name: Set ruby version to << parameters.ruby-container >>
-          command: |
-            circleci-install base_requirements && circleci-install circleci_specific
-            circleci-install ruby << parameters.ruby-container >>
-#            command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-#            rvm get stable
-#            rvm install << parameters.ruby-container >>
+#      - run:
+#          name: Set ruby version to << parameters.ruby-container >>
+#          command: |
+#            circleci-install base_requirements && circleci-install circleci_specific
 #            circleci-install ruby << parameters.ruby-container >>
-#            echo $(rvm << parameters.ruby-container >> do rvm env --path) >> $BASH_ENV
-#            echo "Finished install"
-#            echo $BASH_ENV
-#            ls -la $BASH_ENV
-#            ruby --version
+##            command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+##            rvm get stable
+##            rvm install << parameters.ruby-container >>
+##            circleci-install ruby << parameters.ruby-container >>
+##            echo $(rvm << parameters.ruby-container >> do rvm env --path) >> $BASH_ENV
+##            echo "Finished install"
+##            echo $BASH_ENV
+##            ls -la $BASH_ENV
+##            ruby --version
       - run:
           name: Install dependencies
           command: |
@@ -216,7 +216,7 @@ workflows:
   build:
     jobs:
       - tests-ruby-2-6
-      - tests-ruby-2-5
+#      - tests-ruby-2-5
 #      - deploy-snapshot:
 #          requires:
 #            - tests-jdk-8
@@ -235,4 +235,4 @@ workflows:
                 - master
     jobs:
       - tests-ruby-2-6
-      - tests-ruby-2-5
+#      - tests-ruby-2-5
