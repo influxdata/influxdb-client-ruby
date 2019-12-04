@@ -26,13 +26,13 @@ commands:
   influxdb-restart:
     steps:
       - run:
-          name: "Start InfluxDB service"
+          name: "Start InfluxDB 2"
           command: ./bin/influxdb-restart.sh
   prepare:
     description: "Prepare environment to tests"
     steps:
       - checkout
-      - influxdb-restart
+      # - influxdb-restart
   client-test:
     description: "Run tests"
     parameters:
@@ -52,9 +52,13 @@ commands:
             rvm install << parameters.ruby-container >>
             echo . $(rvm << parameters.ruby-container >> do rvm env --path) >> $BASH_ENV
       - run:
+          name: Install dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - run:
           name: Static code analyze
           command: |
-            bundle --version || true
+            bundle exec rake rubocop
 #      - run:
 #          name: "Install dependencies"
 #          command: |
