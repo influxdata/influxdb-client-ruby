@@ -1,5 +1,6 @@
 require "bundler/gem_tasks"
 require "rake/testtask"
+require 'rubocop/rake_task'
 
 Rake::TestTask.new(:test) do |t|
   t.libs << "test"
@@ -8,3 +9,9 @@ Rake::TestTask.new(:test) do |t|
 end
 
 task :default => :test
+
+# Rubocop
+desc 'Run Rubocop lint checks'
+task :rubocop do
+  RuboCop::RakeTask.new
+end

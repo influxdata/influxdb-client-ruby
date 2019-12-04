@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.license       = "MIT"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "git@github.com:bonitoo-io/influxdb-client-ruby.git"
+  spec.metadata["source_code_uri"] = "https://github.com/bonitoo-io/influxdb-client-ruby"
   spec.metadata["changelog_uri"] = "https://raw.githubusercontent.com/bonitoo-io/influxdb-client-ruby/master/CHANGELOG.md"
 
   spec.files         = `git ls-files`.split($/)
@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler", "~> 2.0"
-  spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "minitest", "~> 5.0"
+  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency 'rubocop', '~> 0.66.0'
 end
