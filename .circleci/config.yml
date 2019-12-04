@@ -33,27 +33,13 @@ commands:
     steps:
       - checkout
       # - influxdb-restart
-  client-test:
+  test:
     steps:
       - restore_cache:
           name: Restoring Gem Cache
           keys:
             - &cache-key gem-cache-{{ checksum "influxdb_client.gemspec" }}
             - gem-cache-
-#      - run:
-#          name: Set ruby version to << parameters.ruby-container >>
-#          command: |
-#            circleci-install base_requirements && circleci-install circleci_specific
-#            circleci-install ruby << parameters.ruby-container >>
-##            command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-##            rvm get stable
-##            rvm install << parameters.ruby-container >>
-##            circleci-install ruby << parameters.ruby-container >>
-##            echo $(rvm << parameters.ruby-container >> do rvm env --path) >> $BASH_ENV
-##            echo "Finished install"
-##            echo $BASH_ENV
-##            ls -la $BASH_ENV
-##            ruby --version
       - run:
           name: Install dependencies
           command: |
@@ -68,139 +54,57 @@ commands:
           command: |
             export MINITEST_REPORTER=JUnitReporter
             bundle exec rake test
-#      - run:
-#          name: "Install dependencies"
-#          command: |
-#            docker run -it --rm \
-#                   --volume ${PWD}:/usr/src/ruby \
-#                   --workdir /usr/src/ruby \
-#                   --network influx_network \
-#                   --env INFLUXDB_2_IP=192.168.0.2 \
-#                   circleci/ruby:2.6 bundle install --jobs=4 --retry=3 --path /usr/src/ruby/vendor/bundle
-#      - run:
-#          name: "Running tests"
-#          command: |
-#            docker run -it --rm \
-#                   --volume ${PWD}:/usr/src/mymaven \
-#                   --volume ~/.m2:/root/.m2 \
-#                   --workdir /usr/src/mymaven \
-#                   --network influx_network \
-#                   --env INFLUXDB_IP=192.168.0.2 \
-#                   --env INFLUXDB_2_IP=192.168.0.3 \
-#                   --env INFLUXDB_2_ONBOARDING_IP=192.168.0.4 \
-#                   --env INFLUXDB_2_ONBOARDING_PORT=9999 \
-#                   maven:<< parameters.maven-container >> mvn -B -U clean install -Dmaven.javadoc.skip=true -Dmaven.dokka.skip=true -Dbuild.env=CI
-#      - save_cache:
-#          name: Saving Maven Cache
-#          key: *cache-key
-#          paths:
-#            - ~/.m2
-#          when: always
+      - save_cache:
+          name: Saving Gem Cache
+          key: *cache-key
+          paths:
+            - ./vendor/bundle
+          when: always
   storing-test-results:
     steps:
       - store_test_results:
           path: test/reports
-  storing-artifacts:
-    steps:
-      - run:
-          name: "Copying artifacts"
-          command: |
-            mkdir artifacts
-            cp -r client-core/target/*.jar artifacts/
-            cp -r client/target/*.jar artifacts/
-            cp -r client-legacy/target/*.jar artifacts/
-            cp -r client-reactive/target/*.jar artifacts/
-            cp -r client-kotlin/target/*.jar artifacts/
-            cp -r client-scala/target/*.jar artifacts/
-            cp -r spring/target/*.jar artifacts/
-            cp -r flux-dsl/target/*.jar artifacts/
-      - store_artifacts:
-          path: artifacts
 
 jobs:
-  tests-ruby-2-6:
+  tests-ruby:
     machine: true
     steps:
       - prepare
-      - client-test
+      - test
       - storing-test-results
-#      - storing-artifacts
 #      - run:
 #          name: "Collecting coverage reports"
 #          command: bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
 
-  tests-ruby-2-5:
+
+
+  deploy-preview:
     machine: true
     steps:
-      - prepare
-      - client-test
-      - storing-test-results
-#      - storing-artifacts
-
-#  deploy-snapshot:
-#    machine: true
-#    steps:
-#      - run:
-#          name: Early return if this build is from a forked repository
-#          command: |
-#            if [[ $CIRCLE_PROJECT_USERNAME != "influxdata" ]]; then
-#              echo "Nothing to do for forked repositories, so marking this step successful"
-#              circleci step halt
-#            fi
-#      - checkout
-#      - run:
-#          name: Early return if this build is not a Snapshot version
-#          command: |
-#            sudo apt-get update
-#            sudo apt-get install libxml2-utils
-#            export PROJECT_VERSION=$(xmllint --xpath "//*[local-name()='project']/*[local-name()='version']/text()" pom.xml)
-#            echo "Project version: $PROJECT_VERSION"
-#            if [[ $PROJECT_VERSION != *SNAPSHOT ]]; then
-#              echo "Nothing to do for this build, so marking this step successful"
-#              circleci step halt
-#            fi
-#      - influxdb-restart
-#      - restore_cache:
-#          name: Restoring Maven Cache
-#          keys:
-#            - &cache-key-deploy maven-cache-deploy-3-jdk-8-slim-{{ checksum "pom.xml" }}-{{ checksum "client-core/pom.xml" }}-{{ checksum "client/pom.xml" }}-{{ checksum "client-kotlin/pom.xml" }}-{{ checksum "client-legacy/pom.xml" }}-{{ checksum "client-reactive/pom.xml" }}-{{ checksum "client-scala/pom.xml" }}-{{ checksum "client-test/pom.xml" }}-{{ checksum "spring/pom.xml" }}-{{ checksum "flux-dsl/pom.xml" }}
-#            - maven-cache-deploy-3-jdk-8-slim-
-#            - maven-cache-3-jdk-8-slim-
-#      - run:
-#          name: Deploying Snapshot
-#          command: |
-#            docker run -it --rm \
-#                   --volume ${PWD}:/usr/src/mymaven \
-#                   --volume ~/.m2:/root/.m2 \
-#                   --workdir /usr/src/mymaven \
-#                   --network influx_network \
-#                   --env INFLUXDB_IP=192.168.0.2 \
-#                   --env INFLUXDB_2_IP=192.168.0.3 \
-#                   --env INFLUXDB_2_ONBOARDING_IP=192.168.0.4 \
-#                   --env INFLUXDB_2_ONBOARDING_PORT=9999 \
-#                   --env SONATYPE_USERNAME=${SONATYPE_USERNAME} \
-#                   --env SONATYPE_PASSWORD=${SONATYPE_PASSWORD} \
-#                   maven:3-jdk-8-slim mvn -s scripts/deploy-settings.xml -DskipTests=true clean package deploy
-#      - save_cache:
-#          name: Saving Maven Cache
-#          key: *cache-key-deploy
-#          paths:
-#            - ~/.m2
-#          when: always
+      - run:
+          name: Early return if this build is from a forked repository
+          command: |
+            if [[ $CIRCLE_PROJECT_USERNAME != "influxdata" ]]; then
+              echo "Nothing to do for forked repositories, so marking this step successful"
+              circleci step halt
+            fi
+      - checkout
+      - run:
+          name: Deploy preview version into https://rubygems.org
+          command: |
+            echo "TODO"
 
 workflows:
   version: 2
   build:
     jobs:
-      - tests-ruby-2-6
-#      - tests-ruby-2-5
-#      - deploy-snapshot:
-#          requires:
-#            - tests-jdk-8
-#            - tests-jdk-11
-#          filters:
-#            branches:
-#              only: master
+      - tests-ruby
+      - deploy-preview:
+          requires:
+            - tests-ruby
+          filters:
+            branches:
+              only: master
 
   nightly:
     triggers:
@@ -211,5 +115,4 @@ workflows:
               only:
                 - master
     jobs:
-      - tests-ruby-2-6
-#      - tests-ruby-2-5
+      - tests-ruby
