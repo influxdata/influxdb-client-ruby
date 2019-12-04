@@ -48,6 +48,7 @@ commands:
       - run:
           name: Set ruby version
           command: |
+            command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
             rvm get stable
             rvm install << parameters.ruby-container >>
             echo $(rvm << parameters.ruby-container >> do rvm env --path) >> $BASH_ENV
