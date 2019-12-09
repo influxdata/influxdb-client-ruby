@@ -13,23 +13,27 @@ This repository contains the reference Ruby client for the InfluxDB 2.0.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+The InfluxDB 2 client is bundled as a gem and is hosted on [Rubygems](https://rubygems.org/gems/mongo).
 
-```ruby
-gem 'influxdb_client'
+### Install the Gem
+
+The client can be installed manually or with bundler.
+
+To install the client gem manually:
+
 ```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install influxdb_client
+gem install influxdb_client -v 1.0.0.alpha
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+### Creating a client
+
+Use **InfluxDB::Client** to create a client connected to a running InfluxDB 2 instance.
+
+```ruby
+client = InfluxDB::Client.new(url: 'http://localhost:9999', token: 'my-token')
+```
 
 ## Contributing
 
