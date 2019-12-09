@@ -18,20 +18,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-require 'bundler/gem_tasks'
-require 'rake/testtask'
-require 'rubocop/rake_task'
-
-Rake::TestTask.new(:test) do |t|
-  t.libs << 'test'
-  t.libs << 'lib'
-  t.test_files = FileList['test/**/*_test.rb']
-end
-
-task default: :test
-
-# Rubocop
-desc 'Run Rubocop lint checks'
-task :rubocop do
-  RuboCop::RakeTask.new
+module InfluxDBClient
+  # Write time series data into InfluxDB.
+  #
+  class WriteApi
+  end
 end
