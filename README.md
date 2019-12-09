@@ -32,7 +32,22 @@ gem install influxdb_client -v 1.0.0.alpha
 Use **InfluxDB::Client** to create a client connected to a running InfluxDB 2 instance.
 
 ```ruby
-client = InfluxDB::Client.new(url: 'http://localhost:9999', token: 'my-token')
+client = InfluxDB::Client.new('http://localhost:9999', 'my-token')
+```
+
+#### Client Options
+
+| Option | Description | Type | Default |
+|---|---|---|---|
+| bucket | Specifies the default destination bucket for writes | String | none |
+| org | Specifies the default organization bucket for writes | String | none |
+| precision | Specifies the default precision for the unix timestamps within the body line-protocol | String | none |
+
+```ruby
+client = InfluxDB::Client.new('http://localhost:9999', 'my-token', 
+  bucket: 'my-bucket', 
+  org: 'my-org', 
+  precision: InfluxDB::WritePrecision::NANOSECOND)
 ```
 
 ## Contributing

@@ -30,9 +30,15 @@ module InfluxDB
     # @example Instantiate a client.
     #   InfluxDBClient::Client.new(url: 'http://localhost:9999', token: 'my-token')
     #
+    # @param [Hash] options The options to be used by the client.
     # @param [String] url InfluxDB server API url (ex. http://localhost:9999).
     # @param [String] token authentication token
-    def initialize(options = nil, url:, token:)
+    #
+    # @option options [String] :bucket the default destination bucket for writes
+    # @option options [String] :org the default organization bucket for writes
+    # @option options [WritePrecision] :precision the default precision for the unix timestamps within
+    #   the body line-protocol
+    def initialize(url, token, options = nil)
       @options = options ? options.dup : {}
       @options[:url] = url if url.is_a? String
       @options[:token] = token if token.is_a? String
@@ -45,7 +51,7 @@ module InfluxDB
     #
     # @return [WriteApi] New instance of WriteApi.
     def create_write_api
-      WriteApi.new
+      WriteApi.new(options: @options)
     end
 
     # Close all connections into InfluxDB 2.
