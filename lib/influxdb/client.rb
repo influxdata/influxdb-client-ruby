@@ -18,6 +18,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-require 'influxdb_client/version'
-require 'influxdb_client/client'
-require 'influxdb_client/write_api'
+require 'influxdb/client/version'
+require 'influxdb/client/client'
+require 'influxdb/client/write_api'

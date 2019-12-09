@@ -18,7 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-module InfluxDBClient
+module InfluxDB
   # The client is the entry point to HTTP API defined
   # in https://github.com/influxdata/influxdb/blob/master/http/swagger.yml.
   class Client

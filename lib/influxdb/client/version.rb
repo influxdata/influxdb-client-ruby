@@ -18,9 +18,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-module InfluxDBClient
-  # Write time series data into InfluxDB.
-  #
-  class WriteApi
-  end
+module InfluxDB
+  VERSION = '1.0.0.alpha'.freeze
 end

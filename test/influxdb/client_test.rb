@@ -20,51 +20,51 @@
 
 require 'test_helper'
 
-class InfluxDBClientTest < Minitest::Test
+class ClientTest < Minitest::Test
   def test_defined_version_number
-    refute_nil ::InfluxDBClient::VERSION
+    refute_nil ::InfluxDB::VERSION
   end
 
   def test_client_new
-    refute_nil InfluxDBClient::Client.new(url: 'http://localhost:9999', token: 'my-token')
+    refute_nil InfluxDB::Client.new(url: 'http://localhost:9999', token: 'my-token')
   end
 
   def test_client_hash
-    client1 = InfluxDBClient::Client.new(url: 'http://localhost:9999', token: 'my-token')
-    client2 = InfluxDBClient::Client.new(url: 'http://localhost:9999', token: 'my-token-diff')
+    client1 = InfluxDB::Client.new(url: 'http://localhost:9999', token: 'my-token')
+    client2 = InfluxDB::Client.new(url: 'http://localhost:9999', token: 'my-token-diff')
 
     refute_equal client1.hash, client2.hash
     assert_equal client1.hash, client1.hash
   end
 
   def test_client_eq
-    client1 = InfluxDBClient::Client.new(url: 'http://localhost:9999', token: 'my-token')
-    client2 = InfluxDBClient::Client.new(url: 'http://localhost:9999', token: 'my-token-diff')
+    client1 = InfluxDB::Client.new(url: 'http://localhost:9999', token: 'my-token')
+    client2 = InfluxDB::Client.new(url: 'http://localhost:9999', token: 'my-token-diff')
 
     refute_equal client1, client2
     assert_equal client1, client1
   end
 
   def test_client_options
-    client = InfluxDBClient::Client.new(url: 'http://localhost:9999', token: 'my-token')
+    client = InfluxDB::Client.new(url: 'http://localhost:9999', token: 'my-token')
 
     assert_equal 'http://localhost:9999', client.options[:url]
     assert_equal 'my-token', client.options[:token]
   end
 
   def test_close
-    client = InfluxDBClient::Client.new(url: 'http://localhost:9999', token: 'my-token')
+    client = InfluxDB::Client.new(url: 'http://localhost:9999', token: 'my-token')
 
     assert_equal true, client.close
     assert_equal true, client.close
   end
 
   def test_get_write_api
-    client = InfluxDBClient::Client.new(url: 'http://localhost:9999', token: 'my-token')
+    client = InfluxDB::Client.new(url: 'http://localhost:9999', token: 'my-token')
 
     write_api = client.create_write_api
 
     refute_nil write_api
-    assert_instance_of InfluxDBClient::WriteApi, write_api
+    assert_instance_of InfluxDB::WriteApi, write_api
   end
 end

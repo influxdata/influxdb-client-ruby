@@ -38,7 +38,7 @@ commands:
       - restore_cache:
           name: Restoring Gem Cache
           keys:
-            - &cache-key gem-cache-{{ checksum "influxdb_client.gemspec" }}
+            - &cache-key gem-cache-{{ checksum "influxdb.gemspec" }}
             - gem-cache-
       - run:
           name: Install dependencies
