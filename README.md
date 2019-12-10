@@ -61,7 +61,8 @@ client = InfluxDB::Client.new('http://localhost:9999', 'my-token',
                               org: 'my-org',
                               precision: InfluxDB::WritePrecision::NANOSECOND)
 
-client.create_write_api.write(data: 'h2o,location=west value=33i 15')
+write_api = client.create_write_api
+write_api.write(data: 'h2o,location=west value=33i 15')
 ```
 
 #### Time precision
@@ -80,7 +81,8 @@ client = InfluxDB::Client.new('http://localhost:9999', 'my-token',
                                   bucket: 'my-bucket',
                                   org: 'my-org')
 
-client.create_write_api.write(data: 'h2o,location=west value=33i 15', precision: InfluxDB::WritePrecision::SECOND)
+write_api = client.create_write_api
+write_api.write(data: 'h2o,location=west value=33i 15', precision: InfluxDB::WritePrecision::SECOND)
 ```
 
 Allowed values for precision are:
@@ -103,7 +105,8 @@ but there is also possibility to override configuration per write:
 ```ruby
 client = InfluxDB::Client.new('http://localhost:9999', 'my-token')
 
-client.create_write_api.write(data: 'h2o,location=west value=33i 15', bucket: 'production-data', org: 'customer-1')
+write_api = client.create_write_api
+write_api.write(data: 'h2o,location=west value=33i 15', bucket: 'production-data', org: 'customer-1')
 ```
 
 #### Data format
@@ -129,7 +132,8 @@ hash = { name: 'h2o',
          tags: { host: 'aws', region: 'us' },
          fields: { level: 5, saturation: '99%' }, time: 123 }
 
-client.create_write_api.write(data: ['h2o,location=west value=33i 15', point, hash])
+write_api = client.create_write_api
+write_api.write(data: ['h2o,location=west value=33i 15', point, hash])
 ```
 
 ## Contributing
