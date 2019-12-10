@@ -172,4 +172,21 @@ class WriteApiTest < MiniTest::Test
 
     assert_requested(:post, 'http://localhost:9999', times: 2, body: 'h2o,location=west value=33i 15')
   end
+
+  def test_follow_redirect_max
+    stub_request(:any, 'http://localhost:9999')
+      .to_return(status: 307, headers: { 'location' => 'http://localhost:9999' })
+
+    client = InfluxDB::Client.new('http://localhost:9999', 'my-token',
+                                  bucket: 'my-bucket',
+                                  org: 'my-org',
+                                  precision: InfluxDB::WritePrecision::NANOSECOND,
+                                  max_redirect_count: 5)
+
+    error = assert_raises InfluxDB::InfluxError do
+      client.create_write_api.write(data: 'h2o,location=west value=33i 15')
+    end
+
+    assert_equal 'Too many HTTP redirects. Exceeded limit: 5', error.message
+  end
 end

@@ -30,10 +30,12 @@ module InfluxDB
   #
   class WriteApi
     DEFAULT_TIMEOUT = 10
+    DEFAULT_REDIRECT_COUNT = 10
 
     # @param [Hash] options The options to be used by the client.
     def initialize(options:)
       @options = options
+      @max_redirect_count = @options[:max_redirect_count] || DEFAULT_REDIRECT_COUNT
     end
 
     # Write data into specified Bucket.
@@ -84,7 +86,9 @@ module InfluxDB
 
     private
 
-    def _post(payload, uri)
+    def _post(payload, uri, limit = @max_redirect_count)
+      raise InfluxError.from_message("Too many HTTP redirects. Exceeded limit: #{@max_redirect_count}") if limit.zero?
+
       http = Net::HTTP.new(uri.host, uri.port)
       http.open_timeout = @options[:open_timeout] || DEFAULT_TIMEOUT
       http.write_timeout = @options[:write_timeout] || DEFAULT_TIMEOUT if Net::HTTP.method_defined? :write_timeout
@@ -101,7 +105,7 @@ module InfluxDB
           response
         when Net::HTTPRedirection then
           location = response['location']
-          _post(payload, URI.parse(location))
+          _post(payload, URI.parse(location), limit - 1)
         else
           raise InfluxError.from_response(response)
         end

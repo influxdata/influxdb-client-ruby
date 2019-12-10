@@ -45,6 +45,7 @@ client = InfluxDB::Client.new('http://localhost:9999', 'my-token')
 | open_timeout | Number of seconds to wait for the connection to open | Integer | 10 |
 | write_timeout | Number of seconds to wait for one block of data to be written | Integer | 10 |
 | read_timeout | Number of seconds to wait for one block of data to be read | Integer | 10 |
+| max_redirect_count | Maximal number of followed HTTP redirects | Integer | 10 |
 
 ```ruby
 client = InfluxDB::Client.new('http://localhost:9999', 'my-token', 

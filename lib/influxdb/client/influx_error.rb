@@ -18,5 +18,10 @@ module InfluxDB
       obj = new(message: json['message'] || '', code: response.code, reference: json['code'] || '')
       obj
     end
+
+    def self.from_message(message)
+      obj = new(message: message, code: '', reference: '')
+      obj
+    end
   end
 end

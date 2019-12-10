@@ -40,6 +40,7 @@ module InfluxDB
     # @option options [Integer] :open_timeout Number of seconds to wait for the connection to open
     # @option options [Integer] :write_timeout Number of seconds to wait for one block of data to be written
     # @option options [Integer] :read_timeout Number of seconds to wait for one block of data to be read
+    # @option options [Integer] :max_redirect_count Maximal number of followed HTTP redirects
     #   the body line-protocol
     def initialize(url, token, options = nil)
       @options = options ? options.dup : {}
