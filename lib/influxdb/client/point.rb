@@ -112,7 +112,7 @@ module InfluxDB
     # @return a string representation of the point
     def to_line_protocol
       line_protocol = ''
-      measurement = _escape_key(@name)
+      measurement = _escape_key(@name || '')
 
       line_protocol << measurement
 

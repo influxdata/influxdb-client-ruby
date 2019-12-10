@@ -37,6 +37,9 @@ module InfluxDB
     # @option options [String] :bucket the default destination bucket for writes
     # @option options [String] :org the default organization bucket for writes
     # @option options [WritePrecision] :precision the default precision for the unix timestamps within
+    # @option options [Integer] :open_timeout Number of seconds to wait for the connection to open
+    # @option options [Integer] :write_timeout Number of seconds to wait for one block of data to be written
+    # @option options [Integer] :read_timeout Number of seconds to wait for one block of data to be read
     #   the body line-protocol
     def initialize(url, token, options = nil)
       @options = options ? options.dup : {}
