@@ -79,8 +79,12 @@ module InfluxDB
       payload = _generate_payload(data)
       return nil if payload.nil?
 
-      uri = URI.parse(@options[:url])
+      _post(payload, URI.parse(@options[:url]))
+    end
 
+    private
+
+    def _post(payload, uri)
       http = Net::HTTP.new(uri.host, uri.port)
       http.open_timeout = @options[:open_timeout] || DEFAULT_TIMEOUT
       http.write_timeout = @options[:write_timeout] || DEFAULT_TIMEOUT if Net::HTTP.method_defined? :write_timeout
@@ -96,8 +100,8 @@ module InfluxDB
         when Net::HTTPSuccess then
           response
         when Net::HTTPRedirection then
-          # TODO
-          response
+          location = response['location']
+          _post(payload, URI.parse(location))
         else
           raise InfluxError.from_response(response)
         end
@@ -105,8 +109,6 @@ module InfluxDB
         http.finish if http.started?
       end
     end
-
-    private
 
     def _check(key, value)
       raise ArgumentError, "The '#{key}' should be defined as argument or default option: #{@options}" if value.nil?

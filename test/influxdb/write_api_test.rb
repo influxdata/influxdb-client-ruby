@@ -157,4 +157,19 @@ class WriteApiTest < MiniTest::Test
     assert_equal 'invalid', error.reference
     assert_equal "unable to parse 'h2o_feet, location=coyote_creek water_level=1.0 1': missing tag key", error.message
   end
+
+  def test_follow_redirect
+    stub_request(:any, 'http://localhost:9999')
+      .to_return(status: 307, headers: { 'location' => 'http://localhost:9999' })
+      .then.to_return(status: 204)
+
+    client = InfluxDB::Client.new('http://localhost:9999', 'my-token',
+                                  bucket: 'my-bucket',
+                                  org: 'my-org',
+                                  precision: InfluxDB::WritePrecision::NANOSECOND)
+
+    client.create_write_api.write(data: 'h2o,location=west value=33i 15')
+
+    assert_requested(:post, 'http://localhost:9999', times: 2, body: 'h2o,location=west value=33i 15')
+  end
 end
