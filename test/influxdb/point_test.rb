@@ -111,52 +111,52 @@ class PointTest < MiniTest::Test
   end
 
   def test_time_formatting
-    time = Time.new(2015, 10, 15, 8, 20, 15)
+    time = Time.utc(2015, 10, 15, 8, 20, 15)
 
     point = InfluxDB::Point.new(name: 'h2o')
                            .add_tag('location', 'europe')
                            .add_field('level', 2)
                            .time(time, InfluxDB::WritePrecision::MILLISECOND)
 
-    assert_equal 'h2o,location=europe level=2i 1444890015000', point.to_line_protocol
+    assert_equal 'h2o,location=europe level=2i 1444897215000', point.to_line_protocol
 
     point = InfluxDB::Point.new(name: 'h2o')
                            .add_tag('location', 'europe')
                            .add_field('level', 2)
                            .time(time, InfluxDB::WritePrecision::SECOND)
 
-    assert_equal 'h2o,location=europe level=2i 1444890015', point.to_line_protocol
+    assert_equal 'h2o,location=europe level=2i 1444897215', point.to_line_protocol
 
     point = InfluxDB::Point.new(name: 'h2o')
                            .add_tag('location', 'europe')
                            .add_field('level', 2)
                            .time(time, InfluxDB::WritePrecision::MICROSECOND)
 
-    assert_equal 'h2o,location=europe level=2i 1444890015000000', point.to_line_protocol
+    assert_equal 'h2o,location=europe level=2i 1444897215000000', point.to_line_protocol
 
     point = InfluxDB::Point.new(name: 'h2o')
                            .add_tag('location', 'europe')
                            .add_field('level', 2)
                            .time(time, InfluxDB::WritePrecision::NANOSECOND)
 
-    assert_equal 'h2o,location=europe level=2i 1444890015000000000', point.to_line_protocol
+    assert_equal 'h2o,location=europe level=2i 1444897215000000000', point.to_line_protocol
   end
 
   def test_time_formatting_default
-    time = Time.new(2015, 10, 15, 8, 20, 15)
+    time = Time.utc(2015, 10, 15, 8, 20, 15)
 
     point = InfluxDB::Point.new(name: 'h2o', time: time)
                            .add_tag('location', 'europe')
                            .add_field('level', 2)
 
-    assert_equal 'h2o,location=europe level=2i 1444890015000000000', point.to_line_protocol
+    assert_equal 'h2o,location=europe level=2i 1444897215000000000', point.to_line_protocol
 
     point = InfluxDB::Point.new(name: 'h2o')
                            .add_tag('location', 'europe')
                            .add_field('level', 2)
                            .time(time, nil)
 
-    assert_equal 'h2o,location=europe level=2i 1444890015000000000', point.to_line_protocol
+    assert_equal 'h2o,location=europe level=2i 1444897215000000000', point.to_line_protocol
   end
 
   def test_utf_8
