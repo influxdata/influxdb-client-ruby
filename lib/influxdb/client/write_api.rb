@@ -19,8 +19,119 @@
 # THE SOFTWARE.
 
 module InfluxDB
+  class WritePrecision
+    SECOND = 's'.freeze
+    MILLISECOND = 'ms'.freeze
+    MICROSECOND = 'us'.freeze
+    NANOSECOND = 'ns'.freeze
+  end
+
   # Write time series data into InfluxDB.
   #
   class WriteApi
+    DEFAULT_TIMEOUT = 10
+
+    # @param [Hash] options The options to be used by the client.
+    def initialize(options:)
+      @options = options
+    end
+
+    # Write data into specified Bucket.
+    #
+    # @example write(data:
+    #   [
+    #     {
+    #       name: 'cpu',
+    #       tags: { host: 'server_nl', region: 'us' },
+    #       fields: {internal: 5, external: 6},
+    #       time: 1422568543702900257
+    #     },
+    #     {name: 'gpu', fields: {value: 0.9999}}
+    #   ],
+    #   precision: InfluxDB::WritePrecision::NANOSECOND,
+    #   bucket: 'my-bucket',
+    #   org: 'my-org'
+    # )
+    #
+    # @example write(data: 'h2o,location=west value=33i 15')
+    #
+    # @example point = InfluxDB::Point.new(name: 'h2o')
+    #   .add_tag('location', 'europe')
+    #   .add_field('level', 2)
+    #
+    # hash = { name: 'h2o', tags: { host: 'aws', region: 'us' }, fields: { level: 5, saturation: '99%' }, time: 123 }
+    #
+    # write(data: ['h2o,location=west value=33i 15', point, hash])
+    #
+    # @param [Object] data DataPoints to write into InfluxDB. The data could be represent by [Hash], [Point], [String]
+    #   or by collection of these types
+    # @param [WritePrecision] precision The precision for the unix timestamps within the body line-protocol
+    # @param [String] bucket specifies the destination bucket for writes
+    # @param [String] org specifies the destination organization for writes
+    def write(data:, precision: nil, bucket: nil, org: nil)
+      precision_param = precision || @options[:precision]
+      bucket_param = bucket || @options[:bucket]
+      org_param = org || @options[:org]
+      _check('precision', precision_param)
+      _check('bucket', bucket_param)
+      _check('org', org_param)
+
+      payload = _generate_payload(data)
+      return nil if payload.nil?
+
+      _post(payload, URI.parse(@options[:url]))
+    end
+
+    private
+
+    def _post(payload, uri)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.open_timeout = @options[:open_timeout] || DEFAULT_TIMEOUT
+      http.write_timeout = @options[:write_timeout] || DEFAULT_TIMEOUT if Net::HTTP.method_defined? :write_timeout
+      http.read_timeout = @options[:read_timeout] || DEFAULT_TIMEOUT
+
+      request = Net::HTTP::Post.new(uri.request_uri)
+      request['Authorization'] = "Token #{@options[:token]}"
+      request.body = payload
+
+      begin
+        response = http.request(request)
+        case response
+        when Net::HTTPSuccess then
+          response
+        when Net::HTTPRedirection then
+          location = response['location']
+          _post(payload, URI.parse(location))
+        else
+          raise InfluxError.from_response(response)
+        end
+      ensure
+        http.finish if http.started?
+      end
+    end
+
+    def _check(key, value)
+      raise ArgumentError, "The '#{key}' should be defined as argument or default option: #{@options}" if value.nil?
+    end
+
+    def _generate_payload(data)
+      if data.nil?
+        nil
+      elsif data.is_a?(Point)
+        data.to_line_protocol
+      elsif data.is_a?(String)
+        if data.empty?
+          nil
+        else
+          data
+        end
+      elsif data.is_a?(Hash)
+        _generate_payload(Point.from_hash(data))
+      elsif data.respond_to? :map
+        data.map do |item|
+          _generate_payload(item)
+        end.reject(&:nil?).join('\n'.freeze)
+      end
+    end
   end
 end

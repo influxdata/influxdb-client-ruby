@@ -20,4 +20,6 @@
 
 require 'influxdb/client/version'
 require 'influxdb/client/client'
+require 'influxdb/client/influx_error'
 require 'influxdb/client/write_api'
+require 'influxdb/client/point'
