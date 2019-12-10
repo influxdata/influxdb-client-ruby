@@ -21,3 +21,4 @@
 require 'influxdb/client/version'
 require 'influxdb/client/client'
 require 'influxdb/client/write_api'
+require 'influxdb/client/point'

@@ -148,7 +148,7 @@ class PointTest < MiniTest::Test
     point = InfluxDB::Point.new(name: 'h2o', time: time)
                            .add_tag('location', 'europe')
                            .add_field('level', 2)
-    
+
     assert_equal 'h2o,location=europe level=2i 1444890015000000000', point.to_line_protocol
 
     point = InfluxDB::Point.new(name: 'h2o')
