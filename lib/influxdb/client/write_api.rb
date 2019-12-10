@@ -20,8 +20,8 @@
 
 module InfluxDB
   class WritePrecision
-    MILLISECOND = 'ms'.freeze
     SECOND = 's'.freeze
+    MILLISECOND = 'ms'.freeze
     MICROSECOND = 'us'.freeze
     NANOSECOND = 'ns'.freeze
   end
@@ -83,7 +83,7 @@ module InfluxDB
 
       http = Net::HTTP.new(uri.host, uri.port)
       http.open_timeout = @options[:open_timeout] || DEFAULT_TIMEOUT
-      http.write_timeout = @options[:write_timeout] || DEFAULT_TIMEOUT
+      http.write_timeout = @options[:write_timeout] || DEFAULT_TIMEOUT if Net::HTTP.method_defined? :write_timeout
       http.read_timeout = @options[:read_timeout] || DEFAULT_TIMEOUT
 
       request = Net::HTTP::Post.new(uri.request_uri)
