@@ -159,6 +159,14 @@ class PointTest < MiniTest::Test
     assert_equal 'h2o,location=europe level=2i 1444897215000000000', point.to_line_protocol
   end
 
+  def test_time_string
+    point_args = InfluxDB::Point.new(name: 'h2o',
+                                     tags: { host: 'aws', region: 'us' },
+                                     fields: { level: 5 }, time: '123')
+
+    assert_equal 'h2o,host=aws,region=us level=5i 123', point_args.to_line_protocol
+  end
+
   def test_utf_8
     point = InfluxDB::Point.new(name: 'h2o')
                            .add_tag('location', 'Přerov')
