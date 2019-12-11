@@ -34,11 +34,15 @@ commands:
       - checkout
       - influxdb-onboarding
   test:
+    parameters:
+      ruby-image:
+        type: string
     steps:
       - restore_cache:
           name: Restoring Gem Cache
           keys:
-            - &cache-key gem-cache-{{ checksum "influxdb-client.gemspec" }}
+            - &cache-key gem-cache-{{ checksum "influxdb-client.gemspec" }}-<< parameters.ruby-image >>
+            - gem-cache-{{ checksum "influxdb-client.gemspec" }}
             - gem-cache-
       - run:
           name: Install dependencies
@@ -76,7 +80,8 @@ jobs:
       - image: &influx-image quay.io/influxdb/influx:nightly
     steps:
       - prepare
-      - test
+      - test:
+          ruby-image: << parameters.ruby-image >>
       - storing-test-results
 
   deploy-preview:
