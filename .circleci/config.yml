@@ -53,6 +53,7 @@ commands:
           name: Run tests
           command: |
             export MINITEST_REPORTER=JUnitReporter
+            wget -S --spider --tries=5 --retry-connrefused --waitretry=5 http://localhost:9999/metrics
 #            bundle exec rake test
       - save_cache:
           name: Saving Gem Cache
@@ -73,6 +74,7 @@ jobs:
         default: &default-ruby-image "circleci/ruby:2.5.7-stretch"
     docker:
       - image: << parameters.ruby-image >>
+      - image: &influx-image quay.io/influxdb/influx:nightly
     steps:
       - prepare
       - test
@@ -81,6 +83,7 @@ jobs:
   deploy-preview:
     docker:
       - image: *default-ruby-image
+      - image: *influx-image
     steps:
       - run:
           name: Early return if this build is from a forked repository
