@@ -81,7 +81,10 @@ module InfluxDB
       payload = _generate_payload(data)
       return nil if payload.nil?
 
-      _post(payload, URI.parse(@options[:url]))
+      uri = URI.parse(File.join(@options[:url], '/api/v2/write'))
+      uri.query = URI.encode_www_form(bucket: bucket_param, org: org_param, precision: precision_param.to_s)
+
+      _post(payload, uri)
     end
 
     private
