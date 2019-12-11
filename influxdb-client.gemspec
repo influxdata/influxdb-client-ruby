@@ -24,7 +24,7 @@ require 'influxdb/client/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'influxdb-client'
-  spec.version       = InfluxDB::VERSION
+  spec.version       = ENV['CIRCLE_BUILD_NUM'] ? "#{InfluxDB::VERSION}-#{ENV['CIRCLE_BUILD_NUM']}" : InfluxDB::VERSION
   spec.authors       = ['Jakub Bednar']
   spec.email         = ['jakub.bednar@gmail.com']
 

@@ -85,10 +85,16 @@ jobs:
             fi
       - checkout
       - run:
-          name: Deploy preview version into https://rubygems.org
+          name: Setup Rubygems
+          command: bash .circleci/setup-rubygems.sh
+      - run:
+          name: Build a Gem bundle
           command: |
-            echo "TODO"
-
+            gem build influxdb-client.gemspec
+      - run:
+          name: Deploy pre-release into https://rubygems.org
+          command: |
+            gem push influxdb-client-*.pre.$CIRCLE_BUILD_NUM.gem
 workflows:
   version: 2
   build:
