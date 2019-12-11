@@ -72,7 +72,7 @@ jobs:
         type: string
         default: &default-ruby-image "circleci/ruby:2.5.7-stretch"
     docker:
-      - image: ruby-image
+      - image: << parameters.ruby-image >>
     steps:
       - prepare
       - test
