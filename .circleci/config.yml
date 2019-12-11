@@ -26,8 +26,8 @@ commands:
   influxdb-onboarding:
     steps:
       - run:
-          name: "Start InfluxDB 2"
-          command: wget -S --spider --tries=5 --retry-connrefused --waitretry=5 http://localhost:9999/metrics
+          name: "Post onBoarding request to InfluxDB 2"
+          command: ./bin/influxdb-onboarding.sh
   prepare:
     description: "Prepare environment to tests"
     steps:
