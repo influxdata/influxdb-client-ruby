@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/bonitoo-io/influxdb-client-ruby.svg?style=svg)](https://circleci.com/gh/bonitoo-io/influxdb-client-ruby)
 [![codecov](https://codecov.io/gh/bonitoo-io/influxdb-client-ruby/branch/master/graph/badge.svg)](https://codecov.io/gh/bonitoo-io/influxdb-client-ruby)
-[![Gem Version](https://badge.fury.io/rb/influxdb_client.svg)](https://badge.fury.io/rb/influxdb_client)
+[![Gem Version](https://badge.fury.io/rb/influxdb-client.svg)](https://badge.fury.io/rb/influxdb-client)
 [![License](https://img.shields.io/github/license/bonitoo-io/influxdb-client-ruby.svg)](https://github.com/bonitoo-io/influxdb-client-ruby/blob/master/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues-raw/bonitoo-io/influxdb-client-ruby.svg)](https://github.com/bonitoo-io/influxdb-client-ruby/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/bonitoo-io/influxdb-client-ruby.svg)](https://github.com/bonitoo-io/influxdb-client-ruby/pulls)
