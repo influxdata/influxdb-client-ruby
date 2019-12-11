@@ -70,7 +70,7 @@ jobs:
     parameters:
       ruby-image:
         type: string
-        default: &default-ruby-image "circleci/ruby:2.4.2-jessie-node"
+        default: &default-ruby-image "circleci/ruby:2.5.7-stretch"
     docker:
       - image: ruby-image
     steps:
