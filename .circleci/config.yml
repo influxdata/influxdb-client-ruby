@@ -23,16 +23,16 @@
 version: 2.1
 
 commands:
-  influxdb-restart:
+  influxdb-onboarding:
     steps:
       - run:
           name: "Start InfluxDB 2"
-          command: ./bin/influxdb-restart.sh
+          command: wget -S --spider --tries=5 --retry-connrefused --waitretry=5 http://localhost:9999/metrics
   prepare:
     description: "Prepare environment to tests"
     steps:
       - checkout
-#      - influxdb-restart
+      - influxdb-onboarding
   test:
     steps:
       - restore_cache:
@@ -53,8 +53,7 @@ commands:
           name: Run tests
           command: |
             export MINITEST_REPORTER=JUnitReporter
-            wget -S --spider --tries=5 --retry-connrefused --waitretry=5 http://localhost:9999/metrics
-#            bundle exec rake test
+            bundle exec rake test
       - save_cache:
           name: Saving Gem Cache
           key: *cache-key
