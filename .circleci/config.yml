@@ -70,7 +70,7 @@ jobs:
     parameters:
       ruby-image:
         type: string
-        default: &default-ruby-image "circleci/ruby:2.5.7-stretch"
+        default: &default-ruby-image "circleci/ruby:2.6.5-stretch"
     docker:
       - image: << parameters.ruby-image >>
       - image: &influx-image quay.io/influxdb/influx:nightly
@@ -108,14 +108,18 @@ workflows:
   build:
     jobs:
       - tests-ruby:
-          name: ruby-2.5.7
-      - tests-ruby:
           name: ruby-2.6.5
-          ruby-image: "circleci/ruby:2.6.5-stretch"
+      - tests-ruby:
+          name: ruby-2.5.7
+          ruby-image: "circleci/ruby:2.5.7-stretch"
+      - tests-ruby:
+          name: ruby-2.4.9
+          ruby-image: "circleci/ruby:2.4.9-stretch"
       - deploy-preview:
           requires:
-            - ruby-2.5.7
             - ruby-2.6.5
+            - ruby-2.5.7
+            - ruby-2.4.9
           filters:
             branches:
               only: master
