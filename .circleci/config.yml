@@ -107,10 +107,15 @@ workflows:
   version: 2
   build:
     jobs:
-      - tests-ruby
+      - tests-ruby:
+          name: ruby-2.5.7
+      - tests-ruby:
+          name: ruby-2.6.5
+          ruby-image: "circleci/ruby:2.6.5-stretch"
       - deploy-preview:
           requires:
-            - tests-ruby
+            - ruby-2.5.7
+            - ruby-2.6.5
           filters:
             branches:
               only: master
