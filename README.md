@@ -13,7 +13,7 @@ This repository contains the reference Ruby client for the InfluxDB 2.0.
 
 ## Installation
 
-The InfluxDB 2 client is bundled as a gem and is hosted on [Rubygems](https://rubygems.org/gems/mongo).
+The InfluxDB 2 client is bundled as a gem and is hosted on [Rubygems](https://rubygems.org/gems/influxdb-client).
 
 ### Install the Gem
 
