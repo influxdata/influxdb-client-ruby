@@ -30,7 +30,8 @@ class WriteApiIntegrationTest < MiniTest::Test
     client = InfluxDB::Client.new('http://localhost:9999', 'my-token',
                                   bucket: 'my-bucket',
                                   org: 'my-org',
-                                  precision: InfluxDB::WritePrecision::NANOSECOND)
+                                  precision: InfluxDB::WritePrecision::NANOSECOND,
+                                  use_ssl: false)
 
     now = Time.now.utc
 

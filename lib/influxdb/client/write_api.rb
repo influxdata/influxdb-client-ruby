@@ -19,11 +19,20 @@
 # THE SOFTWARE.
 
 module InfluxDB
+  # Precision constants.
+  #
   class WritePrecision
     SECOND = 's'.freeze
     MILLISECOND = 'ms'.freeze
     MICROSECOND = 'us'.freeze
     NANOSECOND = 'ns'.freeze
+
+    def get_from_value(value)
+      constants = WritePrecision.constants.select { |c| WritePrecision.const_get(c) == value }
+      raise "The time precision #{value} is not supported." if constants.empty?
+
+      value
+    end
   end
 
   # Write time series data into InfluxDB.
@@ -96,7 +105,11 @@ module InfluxDB
       http.open_timeout = @options[:open_timeout] || DEFAULT_TIMEOUT
       http.write_timeout = @options[:write_timeout] || DEFAULT_TIMEOUT if Net::HTTP.method_defined? :write_timeout
       http.read_timeout = @options[:read_timeout] || DEFAULT_TIMEOUT
+<<<<<<< HEAD
       http.use_ssl = @options[:use_ssl] || false
+=======
+      http.use_ssl = @options[:use_ssl].nil? ? true : @options[:use_ssl]
+>>>>>>> 53888b8fd6c401618cf8ff50ca46e299c4debf00
 
       request = Net::HTTP::Post.new(uri.request_uri)
       request['Authorization'] = "Token #{@options[:token]}"

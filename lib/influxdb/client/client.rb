@@ -28,11 +28,11 @@ module InfluxDB
     # Instantiate a new InfluxDB client.
     #
     # @example Instantiate a client.
-    #   InfluxDBClient::Client.new(url: 'http://localhost:9999', token: 'my-token')
+    #   InfluxDBClient::Client.new(url: 'https://localhost:9999', token: 'my-token')
     #
     # @param [Hash] options The options to be used by the client.
-    # @param [String] url InfluxDB server API url (ex. http://localhost:9999).
-    # @param [String] token authentication token
+    # @param [String] url InfluxDB URL to connect to (ex. https://localhost:9999).
+    # @param [String] token Access Token used for authenticating/authorizing the InfluxDB request sent by client.
     #
     # @option options [String] :bucket the default destination bucket for writes
     # @option options [String] :org the default organization bucket for writes
@@ -41,6 +41,7 @@ module InfluxDB
     # @option options [Integer] :write_timeout Number of seconds to wait for one block of data to be written
     # @option options [Integer] :read_timeout Number of seconds to wait for one block of data to be read
     # @option options [Integer] :max_redirect_count Maximal number of followed HTTP redirects
+    # @option options [bool] :use_ssl Turn on/off SSL for HTTP communication
     #   the body line-protocol
     def initialize(url, token, options = nil)
       @options = options ? options.dup : {}
@@ -48,7 +49,7 @@ module InfluxDB
       @options[:token] = token if token.is_a? String
       @closed = false
 
-      at_exit { close }
+      at_exit { close! }
     end
 
     # Write time series data into InfluxDB thought WriteApi.
@@ -61,7 +62,7 @@ module InfluxDB
     # Close all connections into InfluxDB 2.
     #
     # @return [ true ] Always true.
-    def close
+    def close!
       @closed = true
       true
     end
