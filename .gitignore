@@ -11,3 +11,4 @@
 /test/reports/
 .rakeTasks
 /influxdb-client-*.gem
+/TAGS
