@@ -219,4 +219,17 @@ class WriteApiTest < MiniTest::Test
 
     assert_equal 'Too many HTTP redirects. Exceeded limit: 5', error.message
   end
+
+  def test_write_precision_constant
+    assert_equal InfluxDB::WritePrecision::SECOND, InfluxDB::WritePrecision.new.get_from_value('s')
+    assert_equal InfluxDB::WritePrecision::MILLISECOND, InfluxDB::WritePrecision.new.get_from_value('ms')
+    assert_equal InfluxDB::WritePrecision::MICROSECOND, InfluxDB::WritePrecision.new.get_from_value('us')
+    assert_equal InfluxDB::WritePrecision::NANOSECOND, InfluxDB::WritePrecision.new.get_from_value('ns')
+
+    error = assert_raises RuntimeError do
+      InfluxDB::WritePrecision.new.get_from_value('not_supported')
+    end
+
+    assert_equal 'The time precision not_supported is not supported.', error.message
+  end
 end

@@ -19,11 +19,20 @@
 # THE SOFTWARE.
 
 module InfluxDB
+  # Precision constants.
+  #
   class WritePrecision
     SECOND = 's'.freeze
     MILLISECOND = 'ms'.freeze
     MICROSECOND = 'us'.freeze
     NANOSECOND = 'ns'.freeze
+
+    def get_from_value(value)
+      constants = WritePrecision.constants.select { |c| WritePrecision.const_get(c) == value }
+      raise "The time precision #{value} is not supported." if constants.empty?
+
+      value
+    end
   end
 
   # Write time series data into InfluxDB.
