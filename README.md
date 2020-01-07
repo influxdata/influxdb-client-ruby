@@ -49,15 +49,9 @@ client = InfluxDB::Client.new('https://localhost:9999', 'my-token')
 | use_ssl | Turn on/off SSL for HTTP communication | bool | true |
 
 ```ruby
-<<<<<<< HEAD
-client = InfluxDB::Client.new('http://localhost:9999', 'my-token',
+client = InfluxDB::Client.new('https://localhost:9999', 'my-token',
   bucket: 'my-bucket',
   org: 'my-org',
-=======
-client = InfluxDB::Client.new('https://localhost:9999', 'my-token', 
-  bucket: 'my-bucket', 
-  org: 'my-org', 
->>>>>>> 53888b8fd6c401618cf8ff50ca46e299c4debf00
   precision: InfluxDB::WritePrecision::NANOSECOND)
 ```
 

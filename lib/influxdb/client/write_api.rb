@@ -105,11 +105,7 @@ module InfluxDB
       http.open_timeout = @options[:open_timeout] || DEFAULT_TIMEOUT
       http.write_timeout = @options[:write_timeout] || DEFAULT_TIMEOUT if Net::HTTP.method_defined? :write_timeout
       http.read_timeout = @options[:read_timeout] || DEFAULT_TIMEOUT
-<<<<<<< HEAD
-      http.use_ssl = @options[:use_ssl] || false
-=======
       http.use_ssl = @options[:use_ssl].nil? ? true : @options[:use_ssl]
->>>>>>> 53888b8fd6c401618cf8ff50ca46e299c4debf00
 
       request = Net::HTTP::Post.new(uri.request_uri)
       request['Authorization'] = "Token #{@options[:token]}"
