@@ -191,6 +191,8 @@ module InfluxDB
         nil
       elsif @time.is_a?(Integer)
         @time.to_s
+      elsif @time.is_a?(Float)
+        @time.round.to_s
       elsif @time.is_a?(Time)
         nano_seconds = @time.to_i * 1e9
         nano_seconds += @time.tv_nsec
