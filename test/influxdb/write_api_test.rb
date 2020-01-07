@@ -60,7 +60,8 @@ class WriteApiTest < MiniTest::Test
     client = InfluxDB::Client.new('http://localhost:9999', 'my-token',
                                   bucket: 'my-bucket',
                                   org: 'my-org',
-                                  precision: InfluxDB::WritePrecision::NANOSECOND)
+                                  precision: InfluxDB::WritePrecision::NANOSECOND,
+                                  use_ssl: false)
 
     client.create_write_api.write(data: 'h2o,location=west value=33i 15')
 
@@ -74,7 +75,8 @@ class WriteApiTest < MiniTest::Test
     client = InfluxDB::Client.new('http://localhost:9999', 'my-token',
                                   bucket: 'my-bucket',
                                   org: 'my-org',
-                                  precision: InfluxDB::WritePrecision::NANOSECOND)
+                                  precision: InfluxDB::WritePrecision::NANOSECOND,
+                                  use_ssl: false)
 
     client.create_write_api.write(data: InfluxDB::Point.new(name: 'h2o')
                                             .add_tag('location', 'europe')
@@ -90,7 +92,8 @@ class WriteApiTest < MiniTest::Test
     client = InfluxDB::Client.new('http://localhost:9999', 'my-token',
                                   bucket: 'my-bucket',
                                   org: 'my-org',
-                                  precision: InfluxDB::WritePrecision::NANOSECOND)
+                                  precision: InfluxDB::WritePrecision::NANOSECOND,
+                                  use_ssl: false)
 
     client.create_write_api.write(data: { name: 'h2o',
                                           tags: { host: 'aws', region: 'us' },
@@ -107,7 +110,8 @@ class WriteApiTest < MiniTest::Test
     client = InfluxDB::Client.new('http://localhost:9999', 'my-token',
                                   bucket: 'my-bucket',
                                   org: 'my-org',
-                                  precision: InfluxDB::WritePrecision::NANOSECOND)
+                                  precision: InfluxDB::WritePrecision::NANOSECOND,
+                                  use_ssl: false)
 
     point = InfluxDB::Point.new(name: 'h2o')
                            .add_tag('location', 'europe')
@@ -131,7 +135,8 @@ class WriteApiTest < MiniTest::Test
     client = InfluxDB::Client.new('http://localhost:9999', 'my-token',
                                   bucket: 'my-bucket',
                                   org: 'my-org',
-                                  precision: InfluxDB::WritePrecision::NANOSECOND)
+                                  precision: InfluxDB::WritePrecision::NANOSECOND,
+                                  use_ssl: false)
 
     client.create_write_api.write(data: 'h2o,location=west value=33i 15')
 
@@ -162,7 +167,8 @@ class WriteApiTest < MiniTest::Test
     client = InfluxDB::Client.new('http://localhost:9999', 'my-token',
                                   bucket: 'my-bucket',
                                   org: 'my-org',
-                                  precision: InfluxDB::WritePrecision::NANOSECOND)
+                                  precision: InfluxDB::WritePrecision::NANOSECOND,
+                                  use_ssl: false)
 
     error = assert_raises InfluxDB::InfluxError do
       client.create_write_api.write(data: 'h2o,location=west value=33i 15')
@@ -184,7 +190,8 @@ class WriteApiTest < MiniTest::Test
     client = InfluxDB::Client.new('http://localhost:9999', 'my-token',
                                   bucket: 'my-bucket',
                                   org: 'my-org',
-                                  precision: InfluxDB::WritePrecision::NANOSECOND)
+                                  precision: InfluxDB::WritePrecision::NANOSECOND,
+                                  use_ssl: false)
 
     client.create_write_api.write(data: 'h2o,location=west value=33i 15')
 
@@ -203,7 +210,8 @@ class WriteApiTest < MiniTest::Test
                                   bucket: 'my-bucket',
                                   org: 'my-org',
                                   precision: InfluxDB::WritePrecision::NANOSECOND,
-                                  max_redirect_count: 5)
+                                  max_redirect_count: 5,
+                                  use_ssl: false)
 
     error = assert_raises InfluxDB::InfluxError do
       client.create_write_api.write(data: 'h2o,location=west value=33i 15')
