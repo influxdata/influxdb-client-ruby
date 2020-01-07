@@ -31,8 +31,8 @@ module InfluxDB
     #   InfluxDBClient::Client.new(url: 'http://localhost:9999', token: 'my-token')
     #
     # @param [Hash] options The options to be used by the client.
-    # @param [String] url InfluxDB server API url (ex. http://localhost:9999).
-    # @param [String] token authentication token
+    # @param [String] url InfluxDB URL to connect to (ex. http://localhost:9999).
+    # @param [String] token Access Token used for authenticating/authorizing the InfluxDB request sent by client.
     #
     # @option options [String] :bucket the default destination bucket for writes
     # @option options [String] :org the default organization bucket for writes
@@ -61,7 +61,7 @@ module InfluxDB
     # Close all connections into InfluxDB 2.
     #
     # @return [ true ] Always true.
-    def close
+    def close!
       @closed = true
       true
     end
