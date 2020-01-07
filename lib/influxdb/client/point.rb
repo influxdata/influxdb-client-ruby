@@ -117,7 +117,7 @@ module InfluxDB
       line_protocol << measurement
 
       tags = _escape_tags
-      line_protocol << ",#{tags}" if tags
+      line_protocol << ",#{tags}" unless tags.empty?
       line_protocol << ' '.freeze if line_protocol[-1] == '\\'
 
       fields = _escape_fields

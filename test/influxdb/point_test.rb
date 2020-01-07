@@ -210,4 +210,12 @@ class PointTest < MiniTest::Test
 
     assert_nil point.to_line_protocol
   end
+
+  def test_without_tags
+    point = InfluxDB::Point.new(name: 'h2o')
+                           .add_field('level', 2)
+                           .time(123, InfluxDB::WritePrecision::NANOSECOND)
+
+    assert_equal 'h2o level=2i 123', point.to_line_protocol
+  end
 end
