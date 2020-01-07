@@ -48,7 +48,7 @@ module InfluxDB
       @options[:token] = token if token.is_a? String
       @closed = false
 
-      at_exit { close }
+      at_exit { close! }
     end
 
     # Write time series data into InfluxDB thought WriteApi.

@@ -55,8 +55,8 @@ class ClientTest < Minitest::Test
   def test_close
     client = InfluxDB::Client.new('http://localhost:9999', 'my-token')
 
-    assert_equal true, client.close
-    assert_equal true, client.close
+    assert_equal true, client.close!
+    assert_equal true, client.close!
   end
 
   def test_get_write_api
