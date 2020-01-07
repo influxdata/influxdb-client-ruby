@@ -139,10 +139,8 @@ write_api.write(data: ['h2o,location=west value=33i 15', point, hash])
 
 ## Local tests
 
-On a mac:
-
 ```
-brew install wget
+brew install wget # on a mac, if not yet installed!
 bin/influxdb-restart.sh
 rake test
 ```
