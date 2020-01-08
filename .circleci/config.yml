@@ -114,7 +114,7 @@ workflows:
     jobs:
       - tests-ruby:
           name: ruby-2.7
-           ruby-image: "circleci/ruby:2.7-buster"
+          ruby-image: "circleci/ruby:2.7-buster"
       - tests-ruby:
           name: ruby-2.6
       - tests-ruby:
