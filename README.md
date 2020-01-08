@@ -49,9 +49,9 @@ client = InfluxDB::Client.new('https://localhost:9999', 'my-token')
 | use_ssl | Turn on/off SSL for HTTP communication | bool | true |
 
 ```ruby
-client = InfluxDB::Client.new('https://localhost:9999', 'my-token', 
-  bucket: 'my-bucket', 
-  org: 'my-org', 
+client = InfluxDB::Client.new('https://localhost:9999', 'my-token',
+  bucket: 'my-bucket',
+  org: 'my-org',
   precision: InfluxDB::WritePrecision::NANOSECOND)
 ```
 
@@ -103,7 +103,7 @@ client = InfluxDB::Client.new('https://localhost:9999', 'my-token',
 ```
 
 but there is also possibility to override configuration per write:
- 
+
 ```ruby
 client = InfluxDB::Client.new('https://localhost:9999', 'my-token')
 
@@ -136,6 +136,14 @@ hash = { name: 'h2o',
 
 write_api = client.create_write_api
 write_api.write(data: ['h2o,location=west value=33i 15', point, hash])
+```
+
+## Local tests
+
+```
+brew install wget # on a mac, if not yet installed!
+bin/influxdb-restart.sh
+rake test
 ```
 
 ## Contributing
