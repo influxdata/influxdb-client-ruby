@@ -48,7 +48,8 @@ commands:
           name: Install dependencies
           command: |
             gem install bundler
-            bundle install --jobs=4 --retry=3 --path vendor/bundle
+            bundle config set path 'vendor/bundle'
+            bundle install --jobs=4 --retry=3
       - run:
           name: Static code analyze
           command: |
@@ -113,6 +114,9 @@ workflows:
   build:
     jobs:
       - tests-ruby:
+          name: ruby-2.7
+          ruby-image: "circleci/ruby:2.7-buster"
+      - tests-ruby:
           name: ruby-2.6
       - tests-ruby:
           name: ruby-2.5
@@ -122,6 +126,7 @@ workflows:
           ruby-image: "circleci/ruby:2.4-stretch"
       - deploy-preview:
           requires:
+            - ruby-2.7
             - ruby-2.6
             - ruby-2.5
             - ruby-2.4
