@@ -10,6 +10,7 @@
 This repository contains the reference Ruby client for the InfluxDB 2.0.
 
 #### Note: This library is for use with InfluxDB 2.x. For connecting to InfluxDB 1.x instances, please use the [influxdb-ruby](https://github.com/influxdata/influxdb-ruby) client.
+#### Disclaimer: This library is a work in progress and should not be considered production ready yet.
 
 ## Installation
 
