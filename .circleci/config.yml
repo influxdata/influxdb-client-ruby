@@ -76,18 +76,12 @@ jobs:
       ruby-image:
         type: string
         default: &default-ruby-image "circleci/ruby:2.6-stretch"
-      influxdb-repository:
+      influxdb-image:
         type: string
-        default: "influxdb"
-      influxdb-version:
-        type: string
-        default: "2.0.0-beta"
+        default: &default-influxdb-image "influxdb:2.0.0-beta"
     docker:
       - image: << parameters.ruby-image >>
-      - image: &influx-image quay.io/influxdb/influx:nightly
-    environment:
-      INFLUXDB_V2_REPOSITORY: << parameters.influxdb-repository >>
-      INFLUXDB_V2_VERSION: << parameters.influxdb-version >>
+      - image: &influx-image quay.io/influxdb/<< parameters.influxdb-image >>
     steps:
       - prepare
       - test:
@@ -95,6 +89,10 @@ jobs:
       - storing-test-results
 
   deploy-preview:
+    parameters:
+      influxdb-image:
+        type: string
+        default: *default-influxdb-image
     docker:
       - image: *default-ruby-image
       - image: *influx-image
@@ -129,8 +127,7 @@ workflows:
           name: ruby-2.6
       - tests-ruby:
           name: ruby-2.6-nightly
-          influxdb-repository: "influx"
-          influxdb-version: "nightly"
+          influxdb-image: "influx:nightly"
       - tests-ruby:
           name: ruby-2.5
           ruby-image: "circleci/ruby:2.5-stretch"
