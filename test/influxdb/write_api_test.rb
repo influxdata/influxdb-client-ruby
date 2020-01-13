@@ -123,8 +123,8 @@ class WriteApiTest < MiniTest::Test
 
     client.create_write_api.write(data: ['h2o,location=west value=33i 15', nil, '', point, hash])
 
-    expected = 'h2o,location=west value=33i 15\nh2o,location=europe level=2i'\
-               '\nh2o,host=aws,region=us level=5i,saturation="99%" 123'
+    expected = "h2o,location=west value=33i 15\nh2o,location=europe level=2i"\
+               "\nh2o,host=aws,region=us level=5i,saturation=\"99%\" 123"
     assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: expected)
   end

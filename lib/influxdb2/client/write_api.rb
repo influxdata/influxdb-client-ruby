@@ -147,7 +147,7 @@ module InfluxDB2
       elsif data.respond_to? :map
         data.map do |item|
           _generate_payload(item)
-        end.reject(&:nil?).join('\n'.freeze)
+        end.reject(&:nil?).join("\n".freeze)
       end
     end
   end
