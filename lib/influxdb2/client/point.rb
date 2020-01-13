@@ -18,7 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-module InfluxDB
+module InfluxDB2
   DEFAULT_WRITE_PRECISION = WritePrecision::NANOSECOND
   ESCAPE_KEY_LIST = ['\\'.freeze, ','.freeze, ' '.freeze, '='.freeze].freeze
   ESCAPE_VALUE_LIST = ['\\'.freeze, '"'.freeze].freeze
@@ -197,13 +197,13 @@ module InfluxDB
         nano_seconds = @time.to_i * 1e9
         nano_seconds += @time.tv_nsec
         case @precision || DEFAULT_WRITE_PRECISION
-        when InfluxDB::WritePrecision::MILLISECOND then
+        when InfluxDB2::WritePrecision::MILLISECOND then
           (nano_seconds / 1e6).round
-        when InfluxDB::WritePrecision::SECOND then
+        when InfluxDB2::WritePrecision::SECOND then
           (nano_seconds / 1e9).round
-        when InfluxDB::WritePrecision::MICROSECOND then
+        when InfluxDB2::WritePrecision::MICROSECOND then
           (nano_seconds / 1e3).round
-        when InfluxDB::WritePrecision::NANOSECOND then
+        when InfluxDB2::WritePrecision::NANOSECOND then
           nano_seconds.round
         end
       else

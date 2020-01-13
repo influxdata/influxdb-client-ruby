@@ -18,8 +18,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-require 'influxdb/client/version'
-require 'influxdb/client/client'
-require 'influxdb/client/influx_error'
-require 'influxdb/client/write_api'
-require 'influxdb/client/point'
+require 'influxdb2/client/version'
+require 'influxdb2/client/client'
+require 'influxdb2/client/influx_error'
+require 'influxdb2/client/write_api'
+require 'influxdb2/client/point'

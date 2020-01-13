@@ -18,7 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-module InfluxDB
+module InfluxDB2
   # Precision constants.
   #
   class WritePrecision

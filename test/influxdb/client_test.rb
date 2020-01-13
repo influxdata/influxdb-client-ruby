@@ -22,49 +22,49 @@ require 'test_helper'
 
 class ClientTest < Minitest::Test
   def test_defined_version_number
-    refute_nil ::InfluxDB::VERSION
+    refute_nil ::InfluxDB2::VERSION
   end
 
   def test_client_new
-    refute_nil InfluxDB::Client.new('http://localhost:9999', 'my-token')
+    refute_nil InfluxDB2::Client.new('http://localhost:9999', 'my-token')
   end
 
   def test_client_hash
-    client1 = InfluxDB::Client.new('http://localhost:9999', 'my-token')
-    client2 = InfluxDB::Client.new('http://localhost:9999', 'my-token-diff')
+    client1 = InfluxDB2::Client.new('http://localhost:9999', 'my-token')
+    client2 = InfluxDB2::Client.new('http://localhost:9999', 'my-token-diff')
 
     refute_equal client1.hash, client2.hash
     assert_equal client1.hash, client1.hash
   end
 
   def test_client_eq
-    client1 = InfluxDB::Client.new('http://localhost:9999', 'my-token')
-    client2 = InfluxDB::Client.new('http://localhost:9999', 'my-token-diff')
+    client1 = InfluxDB2::Client.new('http://localhost:9999', 'my-token')
+    client2 = InfluxDB2::Client.new('http://localhost:9999', 'my-token-diff')
 
     refute_equal client1, client2
     assert_equal client1, client1
   end
 
   def test_client_options
-    client = InfluxDB::Client.new('http://localhost:9999', 'my-token')
+    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token')
 
     assert_equal 'http://localhost:9999', client.options[:url]
     assert_equal 'my-token', client.options[:token]
   end
 
   def test_close
-    client = InfluxDB::Client.new('http://localhost:9999', 'my-token')
+    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token')
 
     assert_equal true, client.close!
     assert_equal true, client.close!
   end
 
   def test_get_write_api
-    client = InfluxDB::Client.new('http://localhost:9999', 'my-token')
+    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token')
 
     write_api = client.create_write_api
 
     refute_nil write_api
-    assert_instance_of InfluxDB::WriteApi, write_api
+    assert_instance_of InfluxDB2::WriteApi, write_api
   end
 end
