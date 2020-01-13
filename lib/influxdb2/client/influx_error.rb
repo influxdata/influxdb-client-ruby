@@ -1,4 +1,4 @@
-module InfluxDB
+module InfluxDB2
   # InfluxError that is raised during HTTP communication.
   class InfluxError < StandardError
     # HTTP status code

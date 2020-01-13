@@ -27,7 +27,7 @@ if ENV['CI'] == 'true'
 end
 
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
-require 'influxdb/client'
+require 'influxdb2/client'
 
 require 'minitest/autorun'
 require 'minitest/reporters'

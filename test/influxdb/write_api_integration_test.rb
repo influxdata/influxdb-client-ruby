@@ -27,19 +27,19 @@ class WriteApiIntegrationTest < MiniTest::Test
   end
 
   def test_write_into_influx_db
-    client = InfluxDB::Client.new('http://localhost:9999', 'my-token',
-                                  bucket: 'my-bucket',
-                                  org: 'my-org',
-                                  precision: InfluxDB::WritePrecision::NANOSECOND,
-                                  use_ssl: false)
+    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+                                   bucket: 'my-bucket',
+                                   org: 'my-org',
+                                   precision: InfluxDB2::WritePrecision::NANOSECOND,
+                                   use_ssl: false)
 
     now = Time.now.utc
 
     measurement = 'h2o_' + now.to_i.to_s
-    point = InfluxDB::Point.new(name: measurement)
-                           .add_tag('location', 'europe')
-                           .add_field('level', 2)
-                           .time(now, InfluxDB::WritePrecision::NANOSECOND)
+    point = InfluxDB2::Point.new(name: measurement)
+                            .add_tag('location', 'europe')
+                            .add_field('level', 2)
+                            .time(now, InfluxDB2::WritePrecision::NANOSECOND)
 
     client.create_write_api.write(data: point)
 

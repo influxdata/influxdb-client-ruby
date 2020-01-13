@@ -33,7 +33,7 @@ gem install influxdb-client --pre
 Use **InfluxDB::Client** to create a client connected to a running InfluxDB 2 instance.
 
 ```ruby
-client = InfluxDB::Client.new('https://localhost:9999', 'my-token')
+client = InfluxDB2::Client.new('https://localhost:9999', 'my-token')
 ```
 
 #### Client Options
@@ -50,19 +50,19 @@ client = InfluxDB::Client.new('https://localhost:9999', 'my-token')
 | use_ssl | Turn on/off SSL for HTTP communication | bool | true |
 
 ```ruby
-client = InfluxDB::Client.new('https://localhost:9999', 'my-token',
+client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
   bucket: 'my-bucket',
   org: 'my-org',
-  precision: InfluxDB::WritePrecision::NANOSECOND)
+  precision: InfluxDB2::WritePrecision::NANOSECOND)
 ```
 
 ### Writing data
 
 ```ruby
-client = InfluxDB::Client.new('https://localhost:9999', 'my-token',
+client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
                               bucket: 'my-bucket',
                               org: 'my-org',
-                              precision: InfluxDB::WritePrecision::NANOSECOND)
+                              precision: InfluxDB2::WritePrecision::NANOSECOND)
 
 write_api = client.create_write_api
 write_api.write(data: 'h2o,location=west value=33i 15')
@@ -72,20 +72,20 @@ write_api.write(data: 'h2o,location=west value=33i 15')
 
 Configure default time precision:
 ```ruby
-client = InfluxDB::Client.new('https://localhost:9999', 'my-token',
+client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
                               bucket: 'my-bucket',
                               org: 'my-org',
-                              precision: InfluxDB::WritePrecision::NANOSECOND)
+                              precision: InfluxDB2::WritePrecision::NANOSECOND)
 ```
 
 Configure precision per write:
 ```ruby
-client = InfluxDB::Client.new('https://localhost:9999', 'my-token',
+client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
                                   bucket: 'my-bucket',
                                   org: 'my-org')
 
 write_api = client.create_write_api
-write_api.write(data: 'h2o,location=west value=33i 15', precision: InfluxDB::WritePrecision::SECOND)
+write_api.write(data: 'h2o,location=west value=33i 15', precision: InfluxDB2::WritePrecision::SECOND)
 ```
 
 Allowed values for precision are:
@@ -98,7 +98,7 @@ Allowed values for precision are:
 
 Default `bucket` and `organization` destination are configured via `InfluxDB::Client`:
 ```ruby
-client = InfluxDB::Client.new('https://localhost:9999', 'my-token',
+client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
                               bucket: 'my-bucket',
                               org: 'my-org')
 ```
@@ -106,7 +106,7 @@ client = InfluxDB::Client.new('https://localhost:9999', 'my-token',
 but there is also possibility to override configuration per write:
 
 ```ruby
-client = InfluxDB::Client.new('https://localhost:9999', 'my-token')
+client = InfluxDB2::Client.new('https://localhost:9999', 'my-token')
 
 write_api = client.create_write_api
 write_api.write(data: 'h2o,location=west value=33i 15', bucket: 'production-data', org: 'customer-1')
@@ -122,12 +122,12 @@ The data could be written as:
 1. `Array` of above items
 
 ```ruby
-client = InfluxDB::Client.new('https://localhost:9999', 'my-token',
+client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
                               bucket: 'my-bucket',
                               org: 'my-org',
-                              precision: InfluxDB::WritePrecision::NANOSECOND)
+                              precision: InfluxDB2::WritePrecision::NANOSECOND)
 
-point = InfluxDB::Point.new(name: 'h2o')
+point = InfluxDB2::Point.new(name: 'h2o')
                        .add_tag('location', 'europe')
                        .add_field('level', 2)
 

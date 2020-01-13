@@ -20,11 +20,11 @@
 
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'influxdb/client/version'
+require 'influxdb2/client/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'influxdb-client'
-  spec.version       = ENV['CIRCLE_BUILD_NUM'] ? "#{InfluxDB::VERSION}-#{ENV['CIRCLE_BUILD_NUM']}" : InfluxDB::VERSION
+  spec.version       = ENV['CIRCLE_BUILD_NUM'] ? "#{InfluxDB2::VERSION}-#{ENV['CIRCLE_BUILD_NUM']}" : InfluxDB2::VERSION
   spec.authors       = ['Jakub Bednar']
   spec.email         = ['jakub.bednar@gmail.com']
 
