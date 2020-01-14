@@ -1,11 +1,12 @@
 # influxdb-client-ruby
 
-[![CircleCI](https://circleci.com/gh/bonitoo-io/influxdb-client-ruby.svg?style=svg)](https://circleci.com/gh/bonitoo-io/influxdb-client-ruby)
-[![codecov](https://codecov.io/gh/bonitoo-io/influxdb-client-ruby/branch/master/graph/badge.svg)](https://codecov.io/gh/bonitoo-io/influxdb-client-ruby)
+[![CircleCI](https://circleci.com/gh/influxdata/influxdb-client-ruby.svg?style=svg)](https://circleci.com/gh/influxdata/influxdb-client-ruby)
+[![codecov](https://codecov.io/gh/influxdata/influxdb-client-ruby/branch/master/graph/badge.svg)](https://codecov.io/gh/influxdata/influxdb-client-ruby)
 [![Gem Version](https://badge.fury.io/rb/influxdb-client.svg)](https://badge.fury.io/rb/influxdb-client)
-[![License](https://img.shields.io/github/license/bonitoo-io/influxdb-client-ruby.svg)](https://github.com/bonitoo-io/influxdb-client-ruby/blob/master/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues-raw/bonitoo-io/influxdb-client-ruby.svg)](https://github.com/bonitoo-io/influxdb-client-ruby/issues)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/bonitoo-io/influxdb-client-ruby.svg)](https://github.com/bonitoo-io/influxdb-client-ruby/pulls)
+[![License](https://img.shields.io/github/license/influxdata/influxdb-client-ruby.svg)](https://github.com/influxdata/influxdb-client-ruby/blob/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues-raw/influxdata/influxdb-client-ruby.svg)](https://github.com/influxdata/influxdb-client-ruby/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/influxdata/influxdb-client-ruby.svg)](https://github.com/influxdata/influxdb-client-ruby/pulls)
+[![Slack Status](https://img.shields.io/badge/slack-join_chat-white.svg?logo=slack&style=social)](https://www.influxdata.com/slack)
 
 This repository contains the reference Ruby client for the InfluxDB 2.0.
 
@@ -118,7 +119,7 @@ The data could be written as:
 
 1. `String` that is formatted as a InfluxDB's line protocol
 1. `Hash` with keys: name, tags, fields and time
-1. [Data Point](https://github.com/bonitoo-io/influxdb-client-ruby/blob/master/lib/influxdb/client/point.rb#L28) structure
+1. [Data Point](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb/client/point.rb#L28) structure
 1. `Array` of above items
 
 ```ruby
@@ -149,7 +150,7 @@ rake test
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/bonitoo-io/influxdb-client-ruby.
+Bug reports and pull requests are welcome on GitHub at https://github.com/influxdata/influxdb-client-ruby.
 
 ## License
 
