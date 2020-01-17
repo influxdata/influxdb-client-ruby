@@ -1,3 +1,5 @@
+## 1.1.0 [unreleased]
+ 
 ## 1.0.0.beta [2020-01-17]
 
 ### Features
