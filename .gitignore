@@ -12,3 +12,4 @@
 .rakeTasks
 /influxdb-client-*.gem
 /TAGS
+/vendor
