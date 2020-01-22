@@ -64,7 +64,7 @@ module InfluxDB2
     #
     # @return [QueryApi] New instance of QueryApi.
     def create_query_api
-      QueryApi.new
+      QueryApi.new(options: @options)
     end
 
     # Close all connections into InfluxDB 2.

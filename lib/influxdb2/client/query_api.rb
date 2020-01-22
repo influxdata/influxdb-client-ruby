@@ -17,21 +17,49 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+# require_relative 'basic_api'
+require_relative 'models/dialect'
+require_relative 'models/query'
 
 module InfluxDB2
-
   # The client of the InfluxDB 2.0 that implement Query HTTP API endpoint.
   #
-  class QueryApi
+  class QueryApi < DefaultApi
+    DEFAULT_DIALECT = InfluxDB2::Dialect.new(header: true, delimiter: ',', comment_prefix: '#')
 
-    def initialize
-
+    # @param [Hash] options The options to be used by the client.
+    def initialize(options:)
+      super(options: options)
     end
 
-    def query(query)
+    # @param [Object] query the flux query to execute. The data could be represent by [String], [Query]
+    # @param [String] org specifies the source organization
+    # @return [Array] list of FluxTables which are matched the query
+    def query(query: nil, org: nil, dialect: DEFAULT_DIALECT)
+      org_param = org || @options[:org]
+      _check('org', org_param)
 
+      payload = _generate_payload(query, dialect)
+      return nil if payload.nil?
+
+      uri = URI.parse(File.join(@options[:url], '/api/v2/query'))
+      uri.query = URI.encode_www_form(org: org_param)
+
+      _post(payload, uri)
     end
 
+    def _generate_payload(query, dialect)
+      if query.nil?
+        nil
+      elsif query.is_a?(Query)
+        query
+      elsif query.is_a?(String)
+        if query.empty?
+          nil
+        else
+          Query.new(query: query, dialect: dialect, type: nil)
+        end
+      end
+    end
   end
-
 end
