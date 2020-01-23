@@ -23,8 +23,8 @@ module InfluxDB2
   # Ref: http://bit.ly/flux-spec#table
   class FluxTable
     def initialize
-      @columns = {}
-      @records = {}
+      @columns = []
+      @records = []
     end
     attr_reader :columns, :records
   end

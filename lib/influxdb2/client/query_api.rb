@@ -17,15 +17,17 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-# require_relative 'basic_api'
 require_relative 'models/dialect'
 require_relative 'models/query'
+require_relative 'flux_csv_parser'
+require 'json'
 
 module InfluxDB2
   # The client of the InfluxDB 2.0 that implement Query HTTP API endpoint.
   #
   class QueryApi < DefaultApi
-    DEFAULT_DIALECT = InfluxDB2::Dialect.new(header: true, delimiter: ',', comment_prefix: '#')
+    DEFAULT_DIALECT = InfluxDB2::Dialect.new(header: true, delimiter: ',', comment_prefix: '#',
+                                             annotations: %w[datatype group default])
 
     # @param [Hash] options The options to be used by the client.
     def initialize(options:)
@@ -45,7 +47,14 @@ module InfluxDB2
       uri = URI.parse(File.join(@options[:url], '/api/v2/query'))
       uri.query = URI.encode_www_form(org: org_param)
 
-      _post(payload, uri)
+      response = _post(payload.to_body.to_json, uri)
+      parser = InfluxDB2::FluxCsvParser.new
+
+      response.read_body do |chunk|
+        parser.parse(chunk)
+      end
+
+      parser.tables
     end
 
     def _generate_payload(query, dialect)
