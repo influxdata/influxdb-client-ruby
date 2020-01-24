@@ -37,7 +37,7 @@ module InfluxDB2
     # @param [Object] query the flux query to execute. The data could be represent by [String], [Query]
     # @param [String] org specifies the source organization
     # @return [Array] list of FluxTables which are matched the query
-    def query(query: nil, org: nil, dialect: DEFAULT_DIALECT)
+    def query_raw(query: nil, org: nil, dialect: DEFAULT_DIALECT)
       org_param = org || @options[:org]
       _check('org', org_param)
 
@@ -47,7 +47,14 @@ module InfluxDB2
       uri = URI.parse(File.join(@options[:url], '/api/v2/query'))
       uri.query = URI.encode_www_form(org: org_param)
 
-      response = _post(payload.to_body.to_json, uri)
+      _post(payload.to_body.to_json, uri)
+    end
+
+    # @param [Object] query the flux query to execute. The data could be represent by [String], [Query]
+    # @param [String] org specifies the source organization
+    # @return [Array] list of FluxTables which are matched the query
+    def query(query: nil, org: nil, dialect: DEFAULT_DIALECT)
+      response = query_raw(query: query, org: org, dialect: dialect)
       parser = InfluxDB2::FluxCsvParser.new
 
       response.read_body do |chunk|

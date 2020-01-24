@@ -96,44 +96,8 @@ module InfluxDB2
       elsif token == '#default'
         FluxCsvParser.add_default_empty_values(@table, csv)
       else
-        # parse column names
-        if @start_new_table
-          FluxCsvParser.add_column_names_and_tags(@table, csv)
-          @start_new_table = false
-          return
-        end
-
-        @current_index = csv[2].to_i
-
-        if @current_index > (@table_index - 1)
-          # create new table with previous column headers settings
-          @flux_columns = @table.columns
-          @table = InfluxDB2::FluxTable.new
-
-          @flux_columns.each do |column|
-            @table.columns.push(column)
-          end
-
-          @tables[@table_index] = @table
-          @table_index += 1
-        end
-
-        flux_record = parse_record(@table_index - 1, @table, csv)
-
-        @tables[@table_index - 1].records.push(flux_record)
+        _parse_values(csv)
       end
-    end
-
-    def parse_record(table_index, table, csv)
-      record = InfluxDB2::FluxRecord.new(table_index)
-
-      table.columns.each do |fluxColumn|
-        column_name = fluxColumn.label
-        str_val = csv[fluxColumn.index + 1]
-        record.values[column_name] = _to_value(str_val, fluxColumn)
-      end
-
-      record
     end
 
     def self.add_data_types(table, data_types)
@@ -172,21 +136,59 @@ module InfluxDB2
 
     private
 
+    def _parse_values(csv)
+      # parse column names
+      if @start_new_table
+        FluxCsvParser.add_column_names_and_tags(@table, csv)
+        @start_new_table = false
+        return
+      end
+
+      @current_index = csv[2].to_i
+
+      if @current_index > (@table_index - 1)
+        # create new table with previous column headers settings
+        @flux_columns = @table.columns
+        @table = InfluxDB2::FluxTable.new
+
+        @flux_columns.each do |column|
+          @table.columns.push(column)
+        end
+
+        @tables[@table_index] = @table
+        @table_index += 1
+      end
+
+      flux_record = _parse_record(@table_index - 1, @table, csv)
+
+      @tables[@table_index - 1].records.push(flux_record)
+    end
+
+    def _parse_record(table_index, table, csv)
+      record = InfluxDB2::FluxRecord.new(table_index)
+
+      table.columns.each do |flux_column|
+        column_name = flux_column.label
+        str_val = csv[flux_column.index + 1]
+        record.values[column_name] = _to_value(str_val, flux_column)
+      end
+
+      record
+    end
+
     def _to_value(str_val, column)
       if str_val.nil? || str_val.empty?
         default_value = column.default_value
 
-        if default_value.nil? || default_value.empty?
-          return nil
-        end
+        return nil if default_value.nil? || default_value.empty?
 
         _to_value(default_value, column)
       end
 
       case column.data_type
       when 'boolean'
-        str_val.downcase == 'true'
-      when 'unsignedLong', 'long'
+        str_val.casecmp('true').zero?
+      when 'unsignedLong', 'long', 'duration'
         str_val.to_i
       when 'double'
         str_val.to_f
@@ -194,8 +196,6 @@ module InfluxDB2
         Base64.decode64(str_val)
       when 'dateTime:RFC3339', 'dateTime:RFC3339Nano'
         Time.parse(str_val).to_datetime.rfc3339
-      when 'duration'
-        eval(str_val)
       else
         str_val
       end
