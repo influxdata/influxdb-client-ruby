@@ -34,7 +34,7 @@ module InfluxDB2
   class FluxRecord
     # @param [Integer] table the index of table which contains the record
     # @param [Hash] values tuple of values
-    def initialize(table:, values: nil)
+    def initialize(table, values: nil)
       @table = table
       @values = values || {}
     end
