@@ -36,7 +36,7 @@ module InfluxDB2
 
     # @param [Object] query the flux query to execute. The data could be represent by [String], [Query]
     # @param [String] org specifies the source organization
-    # @return [Array] list of FluxTables which are matched the query
+    # @return the raw response that matched the query
     def query_raw(query: nil, org: nil, dialect: DEFAULT_DIALECT)
       org_param = org || @options[:org]
       _check('org', org_param)
