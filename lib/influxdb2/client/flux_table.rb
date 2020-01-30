@@ -27,6 +27,18 @@ module InfluxDB2
       @records = []
     end
     attr_reader :columns, :records
+
+    # A table's group key is subset of the entire columns dataset that assigned to the table.
+    # As such, all records within a table will have the same values for each column that is part of the group key.
+    def group_key
+      columns = []
+
+      @columns.each do |column|
+        columns.push(column) if column.group
+      end
+
+      columns
+    end
   end
 
   # A record is a tuple of values. Each record in the table represents a single point in the series.

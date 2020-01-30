@@ -25,10 +25,10 @@ module InfluxDB2
   class FluxQueryError < StandardError
     def initialize(message, reference)
       super(message)
-      @message = reference
+      @reference = reference
     end
 
-    attr_reader :response
+    attr_reader :reference
   end
 
   # This class represents Flux query error
@@ -63,13 +63,15 @@ module InfluxDB2
 
         # Throw  InfluxException with error response
         if @parsing_state_error
-          @error = csv[1]
-          @reference_value = csv[2]
-          raise FluxQueryError.new(error, @reference_value)
+          error = csv[1]
+          reference_value = csv[2]
+          raise FluxQueryError.new(error, reference_value.nil? || reference_value.empty? ? 0 : reference_value.to_i)
         end
 
         parse_line(csv)
       end
+
+      @tables
     end
 
     def parse_line(csv)
@@ -101,7 +103,7 @@ module InfluxDB2
     end
 
     def self.add_data_types(table, data_types)
-      (1..data_types.length).each do |index|
+      (1..data_types.length - 1).each do |index|
         column_def = InfluxDB2::FluxColumn.new(index: index - 1, data_type: data_types[index])
         table.columns.push(column_def)
       end
@@ -187,7 +189,11 @@ module InfluxDB2
 
       case column.data_type
       when 'boolean'
-        str_val.casecmp('true').zero?
+        if str_val.nil? || str_val.empty?
+          true
+        else
+          str_val.casecmp('true').zero?
+        end
       when 'unsignedLong', 'long', 'duration'
         str_val.to_i
       when 'double'
