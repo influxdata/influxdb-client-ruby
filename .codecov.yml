@@ -1,0 +1,3 @@
+ignore:
+  - "lib/influxdb2/client/models/**/*"
+  - "test/influxdb/**/*"
