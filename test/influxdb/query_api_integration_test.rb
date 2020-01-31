@@ -43,16 +43,6 @@ class QueryApiIntegrationTest < MiniTest::Test
     result = @client.create_query_api.query(query: 'from(bucket: "my-bucket") |> range(start: -1m, stop: now()) '\
           "|> filter(fn: (r) => r._measurement == \"#{measurement}\")")
 
-    assert_equal 1, result.size
-
-    records = result[0].records
-    assert_equal 1, records.size
-
-    record = records[0]
-
-    assert_equal measurement, record.measurement
-    assert_equal 'europe', record.values['location']
-    assert_equal 2, record.value
-    assert_equal 'level', record.field
+    assert !result.empty?
   end
 end
