@@ -46,7 +46,7 @@ class QueryApiTest < MiniTest::Test
     result = client.create_query_api.query_raw(query:
       'from(bucket:"' + bucket + '") |> range(start: 1970-01-01T00:00:00.000000001Z) |> last()')
 
-    assert_equal result.read_body.to_s, SUCCESS_DATA
+    assert_equal result, SUCCESS_DATA
   end
 
   def test_query

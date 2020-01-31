@@ -60,6 +60,8 @@ module InfluxDB2
       parser.parse(response)
     end
 
+    private
+
     def _generate_payload(query, dialect)
       if query.nil?
         nil
