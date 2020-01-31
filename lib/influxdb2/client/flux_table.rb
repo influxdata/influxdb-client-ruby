@@ -53,12 +53,6 @@ module InfluxDB2
     attr_reader :table, :values
     attr_writer :table
 
-    # @param [String] key
-    # @param [Object] value
-    def add_value(key:, value:)
-      values[key] = value
-    end
-
     # @return [Time] the inclusive lower time bound of all records
     def start
       values['_start']

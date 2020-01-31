@@ -68,13 +68,15 @@ module InfluxDB2
           raise FluxQueryError.new(error, reference_value.nil? || reference_value.empty? ? 0 : reference_value.to_i)
         end
 
-        parse_line(csv)
+        _parse_line(csv)
       end
 
       @tables
     end
 
-    def parse_line(csv)
+    private
+
+    def _parse_line(csv)
       token = csv[0]
 
       # start new table
@@ -90,26 +92,26 @@ module InfluxDB2
 
       #  # datatype,string,long,dateTime:RFC3339,dateTime:RFC3339,dateTime:RFC3339,double,string,string,string
       if token == '#datatype'
-        FluxCsvParser.add_data_types(@table, csv)
+        _add_data_types(@table, csv)
 
       elsif token == '#group'
-        FluxCsvParser.add_groups(@table, csv)
+        _add_groups(@table, csv)
 
       elsif token == '#default'
-        FluxCsvParser.add_default_empty_values(@table, csv)
+        _add_default_empty_values(@table, csv)
       else
         _parse_values(csv)
       end
     end
 
-    def self.add_data_types(table, data_types)
+    def _add_data_types(table, data_types)
       (1..data_types.length - 1).each do |index|
         column_def = InfluxDB2::FluxColumn.new(index: index - 1, data_type: data_types[index])
         table.columns.push(column_def)
       end
     end
 
-    def self.add_groups(table, csv)
+    def _add_groups(table, csv)
       i = 1
 
       table.columns.each do |column|
@@ -118,7 +120,7 @@ module InfluxDB2
       end
     end
 
-    def self.add_default_empty_values(table, default_values)
+    def _add_default_empty_values(table, default_values)
       i = 1
 
       table.columns.each do |column|
@@ -127,7 +129,7 @@ module InfluxDB2
       end
     end
 
-    def self.add_column_names_and_tags(table, csv)
+    def _add_column_names_and_tags(table, csv)
       i = 1
 
       table.columns.each do |column|
@@ -136,12 +138,10 @@ module InfluxDB2
       end
     end
 
-    private
-
     def _parse_values(csv)
       # parse column names
       if @start_new_table
-        FluxCsvParser.add_column_names_and_tags(@table, csv)
+        _add_column_names_and_tags(@table, csv)
         @start_new_table = false
         return
       end
