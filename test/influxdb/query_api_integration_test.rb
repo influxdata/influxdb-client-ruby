@@ -23,34 +23,32 @@ require 'test_helper'
 class QueryApiIntegrationTest < MiniTest::Test
   def setup
     WebMock.allow_net_connect!
+
+    @client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+                                    bucket: 'my-bucket',
+                                    org: 'my-org',
+                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
+                                    use_ssl: false)
   end
 
   def test_query
-    bucket = 'my-bucket'
-
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
-                                   bucket: bucket,
-                                   org: 'my-org',
-                                   precision: InfluxDB2::WritePrecision::NANOSECOND,
-                                   use_ssl: false)
-
     now = Time.now.utc
-
     measurement = 'h2o_' + now.to_i.to_s
-    point = InfluxDB2::Point.new(name: measurement)
-                .add_tag('location', 'europe')
-                .add_field('level', 2)
-                .time(now, InfluxDB2::WritePrecision::NANOSECOND)
 
-    client.create_write_api.write(data: point)
+    @client.create_write_api.write(data: InfluxDB2::Point.new(name: measurement)
+                                                         .add_tag('location', 'europe')
+                                                         .add_field('level', 2)
+                                                         .time(now, InfluxDB2::WritePrecision::NANOSECOND))
 
-    result = client.create_query_api.query(query: 'from(bucket: "my-bucket") |> range(start: -15m, stop: now()) '\
+    result = @client.create_query_api.query(query: 'from(bucket: "my-bucket") |> range(start: -15m, stop: now()) '\
           "|> filter(fn: (r) => r._measurement == \"#{measurement}\")")
 
     assert_equal 1, result.size
-    assert_equal 1, result[0].records.size
 
-    record = result[0].records[0]
+    records = result[0].records
+    assert_equal 1, records.size
+
+    record = records[0]
 
     assert_equal measurement, record.measurement
     assert_equal 'europe', record.values['location']
