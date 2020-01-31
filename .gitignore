@@ -12,3 +12,5 @@
 .rakeTasks
 /influxdb-client-*.gem
 /TAGS
+/vendor
+/.openapi-generator/

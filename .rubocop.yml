@@ -20,6 +20,10 @@
 # THE SOFTWARE.
 #
 
+AllCops:
+  Exclude:
+    - 'lib/influxdb2/client/models/**/*'
+    - 'vendor/**/*'
 Metrics/LineLength:
   Max: 120
 Metrics/MethodLength:

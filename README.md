@@ -57,6 +57,35 @@ client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
   precision: InfluxDB2::WritePrecision::NANOSECOND)
 ```
 
+### Queries
+
+The result retrieved by [QueryApi](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb2/client/query_api.rb) could be formatted as a:
+
+   1. Raw query response
+   2. Flux data structure: [FluxTable, FluxColumn and FluxRecord](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb2/client/flux_table.rb)
+
+#### Query raw
+
+Synchronously executes the Flux query and return result as unprocessed String
+```ruby
+client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
+                              bucket: 'my-bucket',
+                              org: 'my-org')
+
+query_api = client.create_query_api
+result = query_api.query_raw(query: 'from(bucket:"' + bucket + '") |> range(start: 1970-01-01T00:00:00.000000001Z) |> last()')
+```
+#### Synchronous query
+Synchronously executes the Flux query and return result as a Array of [FluxTables](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb2/client/flux_table.rb)
+```ruby
+client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
+                              bucket: 'my-bucket',
+                              org: 'my-org')
+
+query_api = client.create_query_api
+result = query_api.query(query: 'from(bucket:"' + bucket + '") |> range(start: 1970-01-01T00:00:00.000000001Z) |> last()')
+```
+
 ### Writing data
 
 ```ruby

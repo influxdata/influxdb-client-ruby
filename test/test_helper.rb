@@ -19,7 +19,10 @@
 # THE SOFTWARE.
 
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start do
+  add_filter 'lib/influxdb2/client/models/'
+  add_filter 'test/influxdb'
+end
 
 if ENV['CI'] == 'true'
   require 'codecov'
