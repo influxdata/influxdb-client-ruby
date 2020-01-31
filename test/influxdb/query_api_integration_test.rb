@@ -20,7 +20,7 @@
 
 require 'test_helper'
 
-class WriteApiTest < MiniTest::Test
+class QueryApiIntegrationTest < MiniTest::Test
   def setup
     WebMock.allow_net_connect!
   end
