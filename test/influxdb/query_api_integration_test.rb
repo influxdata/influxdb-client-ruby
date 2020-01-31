@@ -40,7 +40,7 @@ class QueryApiIntegrationTest < MiniTest::Test
                                                          .add_field('level', 2)
                                                          .time(now, InfluxDB2::WritePrecision::NANOSECOND))
 
-    result = @client.create_query_api.query(query: 'from(bucket: "my-bucket") |> range(start: -15m, stop: now()) '\
+    result = @client.create_query_api.query(query: 'from(bucket: "my-bucket") |> range(start: -1m, stop: now()) '\
           "|> filter(fn: (r) => r._measurement == \"#{measurement}\")")
 
     assert_equal 1, result.size
