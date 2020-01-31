@@ -35,6 +35,6 @@ class QueryApiIntegrationTest < MiniTest::Test
     result = client.create_query_api.query(query:
       'from(bucket:"' + bucket + '") |> range(start: 1970-01-01T00:00:00.000000001Z) |> last()')
 
-    assert !result.empty?
+    assert !result.nil?
   end
 end
