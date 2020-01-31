@@ -26,15 +26,35 @@ class QueryApiIntegrationTest < MiniTest::Test
   end
 
   def test_query
+    bucket = 'my-bucket'
+
     client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
-                                   bucket: 'my-bucket',
+                                   bucket: bucket,
                                    org: 'my-org',
+                                   precision: InfluxDB2::WritePrecision::NANOSECOND,
                                    use_ssl: false)
 
-    bucket = 'my-bucket'
-    result = client.create_query_api.query(query:
-      'from(bucket:"' + bucket + '") |> range(start: 1970-01-01T00:00:00.000000001Z) |> last()')
+    now = Time.now.utc
 
-    assert !result.nil?
+    measurement = 'h2o_' + now.to_i.to_s
+    point = InfluxDB2::Point.new(name: measurement)
+                .add_tag('location', 'europe')
+                .add_field('level', 2)
+                .time(now, InfluxDB2::WritePrecision::NANOSECOND)
+
+    client.create_write_api.write(data: point)
+
+    result = client.create_query_api.query(query: 'from(bucket: "my-bucket") |> range(start: -15m, stop: now()) '\
+          "|> filter(fn: (r) => r._measurement == \"#{measurement}\")")
+
+    assert_equal 1, result.size
+    assert_equal 1, result[0].records.size
+
+    record = result[0].records[0]
+
+    assert_equal measurement, record.measurement
+    assert_equal 'europe', record.values['location']
+    assert_equal 2, record.value
+    assert_equal 'level', record.field
   end
 end
