@@ -21,6 +21,37 @@
 require 'test_helper'
 
 class QueryApiStreamTest < MiniTest::Test
+  def setup
+    WebMock.allow_net_connect!
+
+    @client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+                                    bucket: 'my-bucket',
+                                    org: 'my-org',
+                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
+                                    use_ssl: false)
+  end
+
+  def test_query_stream
+    now = Time.now.utc
+    measurement = 'h2o_query_' + now.to_i.to_s
+
+    @client.create_write_api.write(data: InfluxDB2::Point.new(name: measurement)
+                                             .add_tag('location', 'europe')
+                                             .add_field('level', 2)
+                                             .time(now, InfluxDB2::WritePrecision::NANOSECOND))
+
+    bucket = 'my-bucket'
+    query = 'from(bucket:"' + bucket + '") |> range(start: 1970-01-01T00:00:00.000000001Z) |> last()'
+
+    count = 0
+    @client.create_query_api.query_stream(query: query).each do |record|
+      puts record
+      count += 1
+
+      break if count > 2
+    end
+  end
+
   def test_length
     stream_iterator = StreamIterator.new
     assert_equal 2, stream_iterator.count

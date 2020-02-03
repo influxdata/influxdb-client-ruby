@@ -22,6 +22,7 @@ require 'base64'
 
 module InfluxDB2
   # This class represents Flux query error
+  #
   class FluxQueryError < StandardError
     def initialize(message, reference)
       super(message)
@@ -32,6 +33,7 @@ module InfluxDB2
   end
 
   # This class represents Flux query error
+  #
   class FluxCsvParserError < StandardError
     def initialize(message)
       super(message)
@@ -39,20 +41,26 @@ module InfluxDB2
   end
 
   # This class us used to construct FluxResult from CSV.
+  #
   class FluxCsvParser
-    def initialize
+    include Enumerable
+    def initialize(response, stream: false)
+      @response = response
+      @stream = stream
       @tables = {}
 
       @table_index = 0
       @start_new_table = false
       @table = nil
       @parsing_state_error = false
+
+      @closed = false
     end
 
-    attr_reader :tables
+    attr_reader :tables, :closed
 
-    def parse(response)
-      CSV.parse(response) do |csv|
+    def parse
+      CSV.parse(@response) do |csv|
         # Response has HTTP status ok, but response is error.
         next if csv.empty?
 
@@ -68,10 +76,22 @@ module InfluxDB2
           raise FluxQueryError.new(error, reference_value.nil? || reference_value.empty? ? 0 : reference_value.to_i)
         end
 
-        _parse_line(csv)
+        result = _parse_line(csv)
+
+        yield result if @stream && result.instance_of?(InfluxDB2::FluxRecord)
+      end
+    end
+
+    def each
+      return enum_for(:each) unless block_given?
+
+      parse do |record|
+        yield record
       end
 
-      @tables
+      self
+    ensure
+      _close_connection
     end
 
     private
@@ -163,7 +183,11 @@ module InfluxDB2
 
       flux_record = _parse_record(@table_index - 1, @table, csv)
 
-      @tables[@table_index - 1].records.push(flux_record)
+      if @stream
+        flux_record
+      else
+        @tables[@table_index - 1].records.push(flux_record)
+      end
     end
 
     def _parse_record(table_index, table, csv)
@@ -205,6 +229,11 @@ module InfluxDB2
       else
         str_val
       end
+    end
+
+    def _close_connection
+      # Close CSV Parser and HTTP request
+      @closed = true
     end
   end
 end

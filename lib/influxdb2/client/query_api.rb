@@ -55,9 +55,19 @@ module InfluxDB2
     # @return [Array] list of FluxTables which are matched the query
     def query(query: nil, org: nil, dialect: DEFAULT_DIALECT)
       response = query_raw(query: query, org: org, dialect: dialect)
-      parser = InfluxDB2::FluxCsvParser.new
+      parser = InfluxDB2::FluxCsvParser.new(response)
 
-      parser.parse(response)
+      parser.parse
+      parser.tables
+    end
+
+    # @param [Object] query the flux query to execute. The data could be represent by [String], [Query]
+    # @param [String] org specifies the source organization
+    # @return stream of Flux Records
+    def query_stream(query: nil, org: nil, dialect: DEFAULT_DIALECT)
+      response = query_raw(query: query, org: org, dialect: dialect)
+
+      InfluxDB2::FluxCsvParser.new(response, stream: true)
     end
 
     private
