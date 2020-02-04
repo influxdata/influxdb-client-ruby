@@ -31,7 +31,7 @@ class FluxCsvParserTest < MiniTest::Test
       ",,2,1677-09-21T00:12:43.145224192Z,2018-07-16T11:21:02.547596934Z,usage_system,cpu,A,west,1444,38,test\n" \
       ',,3,1677-09-21T00:12:43.145224192Z,2018-07-16T11:21:02.547596934Z,user_usage,cpu,A,west,2401,49,test'
 
-    tables = InfluxDB2::FluxCsvParser.new(data).parse
+    tables = InfluxDB2::FluxCsvParser.new(data).parse.tables
 
     column_headers = tables[0].columns
     assert_equal 11, column_headers.size
@@ -51,7 +51,7 @@ class FluxCsvParserTest < MiniTest::Test
       ",result,table,_start,_stop,_time,_value,_field,_measurement,host,value\n" \
       ",,0,1970-01-01T00:00:10Z,1970-01-01T00:00:20Z,1970-01-01T00:00:10Z,10,free,mem,A,true\n"
 
-    tables = InfluxDB2::FluxCsvParser.new(data).parse
+    tables = InfluxDB2::FluxCsvParser.new(data).parse.tables
 
     assert_equal 1, tables.size
     assert_equal 1, tables[0].records.size
@@ -77,7 +77,7 @@ class FluxCsvParserTest < MiniTest::Test
       ",,0,1970-01-01T00:00:10Z,1970-01-01T00:00:20Z,1970-01-01T00:00:10Z,10,free,mem,A,x\n" \
       ",,0,1970-01-01T00:00:10Z,1970-01-01T00:00:20Z,1970-01-01T00:00:10Z,10,free,mem,A,\n"
 
-    tables = InfluxDB2::FluxCsvParser.new(data).parse
+    tables = InfluxDB2::FluxCsvParser.new(data).parse.tables
     records = tables[0].records
 
     assert_equal true, records[0].values['value']
@@ -97,7 +97,7 @@ class FluxCsvParserTest < MiniTest::Test
 
     expected = 17_916_881_237_904_312_345
 
-    tables = InfluxDB2::FluxCsvParser.new(data).parse
+    tables = InfluxDB2::FluxCsvParser.new(data).parse.tables
     records = tables[0].records
 
     assert_equal expected, records[0].values['value']
@@ -113,7 +113,7 @@ class FluxCsvParserTest < MiniTest::Test
       ",,0,1970-01-01T00:00:10Z,1970-01-01T00:00:20Z,1970-01-01T00:00:10Z,10,free,mem,A,12.25\n" \
       ",,0,1970-01-01T00:00:10Z,1970-01-01T00:00:20Z,1970-01-01T00:00:10Z,10,free,mem,A,\n" \
 
-    tables = InfluxDB2::FluxCsvParser.new(data).parse
+    tables = InfluxDB2::FluxCsvParser.new(data).parse.tables
     records = tables[0].records
 
     assert_equal 12.25, records[0].values['value']
@@ -132,7 +132,7 @@ class FluxCsvParserTest < MiniTest::Test
       ',,0,1970-01-01T00:00:10Z,1970-01-01T00:00:20Z,1970-01-01T00:00:10Z,10,free,mem,A,' + encoded_data + "\n" \
       ",,0,1970-01-01T00:00:10Z,1970-01-01T00:00:20Z,1970-01-01T00:00:10Z,10,free,mem,A,\n"
 
-    tables = InfluxDB2::FluxCsvParser.new(data).parse
+    tables = InfluxDB2::FluxCsvParser.new(data).parse.tables
     records = tables[0].records
 
     value = records[0].values['value']
@@ -152,7 +152,7 @@ class FluxCsvParserTest < MiniTest::Test
       ",,0,1970-01-01T00:00:10Z,1970-01-01T00:00:20Z,1970-01-01T00:00:10Z,10,free,mem,A,1970-01-01T00:00:10Z\n" \
       ",,0,1970-01-01T00:00:10Z,1970-01-01T00:00:20Z,1970-01-01T00:00:10Z,10,free,mem,A,\n"
 
-    tables = InfluxDB2::FluxCsvParser.new(data).parse
+    tables = InfluxDB2::FluxCsvParser.new(data).parse.tables
     records = tables[0].records
 
     assert_equal Time.parse('1970-01-01T00:00:10Z').to_datetime.rfc3339, records[0].values['value']
@@ -168,7 +168,7 @@ class FluxCsvParserTest < MiniTest::Test
       ",,0,1970-01-01T00:00:10Z,1970-01-01T00:00:20Z,1970-01-01T00:00:10Z,10,free,mem,A,125\n" \
       ",,0,1970-01-01T00:00:10Z,1970-01-01T00:00:20Z,1970-01-01T00:00:10Z,10,free,mem,A,\n"
 
-    tables = InfluxDB2::FluxCsvParser.new(data).parse
+    tables = InfluxDB2::FluxCsvParser.new(data).parse.tables
     records = tables[0].records
 
     assert_equal 125, records[0].values['value']
@@ -184,7 +184,7 @@ class FluxCsvParserTest < MiniTest::Test
       ",,0,1970-01-01T00:00:10Z,1970-01-01T00:00:20Z,1970-01-01T00:00:10Z,10,free,mem,A,125\n" \
       ",,0,1970-01-01T00:00:10Z,1970-01-01T00:00:20Z,1970-01-01T00:00:10Z,10,free,mem,A,\n" \
 
-    tables = InfluxDB2::FluxCsvParser.new(data).parse
+    tables = InfluxDB2::FluxCsvParser.new(data).parse.tables
 
     assert_equal 10, tables[0].columns.size
     assert_equal 2, tables[0].group_key.size
@@ -199,7 +199,7 @@ class FluxCsvParserTest < MiniTest::Test
       ",,0,1970-01-01T00:00:10Z,1970-01-01T00:00:20Z,1970-01-01T00:00:10Z,10,free,mem,A,12.25\n" \
       ",,0,1970-01-01T00:00:10Z,1970-01-01T00:00:20Z,1970-01-01T00:00:10Z,10,free,mem,A,\n"
 
-    tables = InfluxDB2::FluxCsvParser.new(data).parse
+    tables = InfluxDB2::FluxCsvParser.new(data).parse.tables
     records = tables[0].records
 
     assert_equal '12.25', records[0].values['value']

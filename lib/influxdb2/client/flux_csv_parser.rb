@@ -60,7 +60,9 @@ module InfluxDB2
     attr_reader :tables, :closed
 
     def parse
-      CSV.parse(@response) do |csv|
+      @csv_file = CSV.new(@response.instance_of?(Net::HTTPOK) ? @response.body : @response)
+
+      while (csv = @csv_file.shift)
         # Response has HTTP status ok, but response is error.
         next if csv.empty?
 
@@ -80,6 +82,8 @@ module InfluxDB2
 
         yield result if @stream && result.instance_of?(InfluxDB2::FluxRecord)
       end
+
+      self
     end
 
     def each
@@ -232,7 +236,8 @@ module InfluxDB2
     end
 
     def _close_connection
-      # Close CSV Parser and HTTP request
+      # Close CSV Parser
+      @csv_file.close
       @closed = true
     end
   end

@@ -38,16 +38,7 @@ module InfluxDB2
     # @param [String] org specifies the source organization
     # @return [String] result of query
     def query_raw(query: nil, org: nil, dialect: DEFAULT_DIALECT)
-      org_param = org || @options[:org]
-      _check('org', org_param)
-
-      payload = _generate_payload(query, dialect)
-      return nil if payload.nil?
-
-      uri = URI.parse(File.join(@options[:url], '/api/v2/query'))
-      uri.query = URI.encode_www_form(org: org_param)
-
-      _post(payload.to_body.to_json, uri).read_body
+      _post_query(query: query, org: org, dialect: dialect).read_body
     end
 
     # @param [Object] query the flux query to execute. The data could be represent by [String], [Query]
@@ -65,12 +56,25 @@ module InfluxDB2
     # @param [String] org specifies the source organization
     # @return stream of Flux Records
     def query_stream(query: nil, org: nil, dialect: DEFAULT_DIALECT)
-      response = query_raw(query: query, org: org, dialect: dialect)
+      response = _post_query(query: query, org: org, dialect: dialect)
 
       InfluxDB2::FluxCsvParser.new(response, stream: true)
     end
 
     private
+
+    def _post_query(query: nil, org: nil, dialect: DEFAULT_DIALECT)
+      org_param = org || @options[:org]
+      _check('org', org_param)
+
+      payload = _generate_payload(query, dialect)
+      return nil if payload.nil?
+
+      uri = URI.parse(File.join(@options[:url], '/api/v2/query'))
+      uri.query = URI.encode_www_form(org: org_param)
+
+      _post(payload.to_body.to_json, uri)
+    end
 
     def _generate_payload(query, dialect)
       if query.nil?
