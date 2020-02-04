@@ -33,7 +33,7 @@ class QueryApiStreamTest < MiniTest::Test
   end
 
   def test_query_stream
-    measurement = 'h2o_query_stream' + @now.to_i.to_s
+    measurement = 'h2o_query_stream' + @now.to_i.to_s + @now.nsec.to_s
     _write(10, measurement: measurement)
 
     query = 'from(bucket: "my-bucket") |> range(start: -1m, stop: now()) ' \
