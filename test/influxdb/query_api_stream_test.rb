@@ -36,24 +36,26 @@ class QueryApiStreamTest < MiniTest::Test
     measurement = 'h2o_query_stream' + @now.to_i.to_s
     _write(10, measurement: measurement)
 
-    query = 'from(bucket: "my-bucket") |> range(start: -10m, stop: now()) ' \
+    query = 'from(bucket: "my-bucket") |> range(start: -1m, stop: now()) ' \
       "|> filter(fn: (r) => r._measurement == \"#{measurement}\")"
 
-    count = 1
+    count = 0
     @client.create_query_api.query_stream(query: query).each do |record|
+      count += 1
       assert_equal measurement, record.measurement
       assert_equal 'europe', record.values['location']
       assert_equal count, record.value
       assert_equal 'level', record.field
-      count += 1
     end
+
+    assert_equal 10, count
   end
 
   def test_query_stream_break
-    measurement = 'h2o_query_stream' + @now.to_i.to_s
+    measurement = 'h2o_query_stream_break' + @now.to_i.to_s
     _write(20, measurement: measurement)
 
-    query = 'from(bucket: "my-bucket") |> range(start: -10m, stop: now()) ' \
+    query = 'from(bucket: "my-bucket") |> range(start: -1m, stop: now()) ' \
       "|> filter(fn: (r) => r._measurement == \"#{measurement}\")"
 
     records = []
