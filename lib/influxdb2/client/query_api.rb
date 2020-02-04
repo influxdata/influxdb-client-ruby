@@ -38,6 +38,32 @@ module InfluxDB2
     # @param [String] org specifies the source organization
     # @return [String] result of query
     def query_raw(query: nil, org: nil, dialect: DEFAULT_DIALECT)
+      _post_query(query: query, org: org, dialect: dialect).read_body
+    end
+
+    # @param [Object] query the flux query to execute. The data could be represent by [String], [Query]
+    # @param [String] org specifies the source organization
+    # @return [Array] list of FluxTables which are matched the query
+    def query(query: nil, org: nil, dialect: DEFAULT_DIALECT)
+      response = query_raw(query: query, org: org, dialect: dialect)
+      parser = InfluxDB2::FluxCsvParser.new(response)
+
+      parser.parse
+      parser.tables
+    end
+
+    # @param [Object] query the flux query to execute. The data could be represent by [String], [Query]
+    # @param [String] org specifies the source organization
+    # @return stream of Flux Records
+    def query_stream(query: nil, org: nil, dialect: DEFAULT_DIALECT)
+      response = _post_query(query: query, org: org, dialect: dialect)
+
+      InfluxDB2::FluxCsvParser.new(response, stream: true)
+    end
+
+    private
+
+    def _post_query(query: nil, org: nil, dialect: DEFAULT_DIALECT)
       org_param = org || @options[:org]
       _check('org', org_param)
 
@@ -47,20 +73,8 @@ module InfluxDB2
       uri = URI.parse(File.join(@options[:url], '/api/v2/query'))
       uri.query = URI.encode_www_form(org: org_param)
 
-      _post(payload.to_body.to_json, uri).read_body
+      _post(payload.to_body.to_json, uri)
     end
-
-    # @param [Object] query the flux query to execute. The data could be represent by [String], [Query]
-    # @param [String] org specifies the source organization
-    # @return [Array] list of FluxTables which are matched the query
-    def query(query: nil, org: nil, dialect: DEFAULT_DIALECT)
-      response = query_raw(query: query, org: org, dialect: dialect)
-      parser = InfluxDB2::FluxCsvParser.new
-
-      parser.parse(response)
-    end
-
-    private
 
     def _generate_payload(query, dialect)
       if query.nil?

@@ -2,6 +2,7 @@
 
 ### Features
 1. [#14](https://github.com/influxdata/influxdb-client-ruby/issues/14): Added QueryApi
+2. [#17](https://github.com/influxdata/influxdb-client-ruby/issues/17): Added query_steam
  
 ## 1.0.0.beta [2020-01-17]
 
