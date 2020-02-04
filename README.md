@@ -63,6 +63,7 @@ The result retrieved by [QueryApi](https://github.com/influxdata/influxdb-client
 
    1. Raw query response
    2. Flux data structure: [FluxTable, FluxColumn and FluxRecord](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb2/client/flux_table.rb)
+   3. Stream of [FluxRecord](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb2/client/flux_table.rb)
 
 #### Query raw
 
@@ -84,6 +85,23 @@ client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
 
 query_api = client.create_query_api
 result = query_api.query(query: 'from(bucket:"' + bucket + '") |> range(start: 1970-01-01T00:00:00.000000001Z) |> last()')
+```
+
+#### Query stream
+Synchronously executes the Flux query and return stream of [FluxRecord](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb2/client/flux_table.rb)
+```ruby
+client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
+                              bucket: 'my-bucket',
+                              org: 'my-org')
+
+query_api = client.create_query_api
+
+query = 'from(bucket: "my-bucket") |> range(start: -10m, stop: now()) ' \
+      "|> filter(fn: (r) => r._measurement == \"#{measurement}\")"
+
+query_api.query_stream(query: query).each do |record|
+  puts record.to_s
+end
 ```
 
 ### Writing data

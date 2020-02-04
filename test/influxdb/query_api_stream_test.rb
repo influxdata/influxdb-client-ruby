@@ -29,142 +29,68 @@ class QueryApiStreamTest < MiniTest::Test
                                     org: 'my-org',
                                     precision: InfluxDB2::WritePrecision::NANOSECOND,
                                     use_ssl: false)
+    @now = Time.now.utc
   end
 
   def test_query_stream
-    now = Time.now.utc
-    measurement = 'h2o_query_' + now.to_i.to_s
+    measurement = 'h2o_query_stream' + @now.to_i.to_s
+    _write(10, measurement: measurement)
 
-    @client.create_write_api.write(data: InfluxDB2::Point.new(name: measurement)
-                                             .add_tag('location', 'europe')
-                                             .add_field('level', 2)
-                                             .time(now, InfluxDB2::WritePrecision::NANOSECOND))
+    query = 'from(bucket: "my-bucket") |> range(start: -10m, stop: now()) ' \
+      "|> filter(fn: (r) => r._measurement == \"#{measurement}\")"
 
-    bucket = 'my-bucket'
-    query = 'from(bucket:"' + bucket + '") |> range(start: 1970-01-01T00:00:00.000000001Z) |> last()'
+    count = 1
+    @client.create_query_api.query_stream(query: query).each do |record|
+      assert_equal measurement, record.measurement
+      assert_equal 'europe', record.values['location']
+      assert_equal count, record.value
+      assert_equal 'level', record.field
+      count += 1
+    end
+  end
+
+  def test_query_stream_break
+    measurement = 'h2o_query_stream' + @now.to_i.to_s
+    _write(20, measurement: measurement)
+
+    query = 'from(bucket: "my-bucket") |> range(start: -10m, stop: now()) ' \
+      "|> filter(fn: (r) => r._measurement == \"#{measurement}\")"
+
+    records = []
+
+    parser = @client.create_query_api.query_stream(query: query)
+
+    assert_equal false, parser.closed
 
     count = 0
-    @client.create_query_api.query_stream(query: query).each do |record|
-      puts record
+    parser.each do |record|
+      records.push(record)
       count += 1
 
-      break if count > 2
-    end
-  end
-
-  def test_length
-    stream_iterator = StreamIterator.new
-    assert_equal 2, stream_iterator.count
-    assert_equal true, stream_iterator.closed
-  end
-
-  def test_iterate_enumerator
-    stream_iterator = StreamIterator.new
-    enumeration = stream_iterator.each
-    assert_equal 'flux_record1', enumeration.next
-    assert_equal 'flux_record2', enumeration.next
-
-    error = assert_raises StopIteration do
-      enumeration.next
+      break if count >= 5
     end
 
-    assert_equal 'iteration reached an end', error.message
-    assert_equal true, stream_iterator.closed
-  end
+    assert_equal 5, records.size
+    assert_equal true, parser.closed
 
-  def test_iterate_enumerator2
-    stream_iterator = StreamIterator.new
-    enumeration = stream_iterator.to_enum
-    assert_equal 'flux_record1', enumeration.next
-    assert_equal 'flux_record2', enumeration.next
-
-    error = assert_raises StopIteration do
-      enumeration.next
-    end
-
-    assert_equal 'iteration reached an end', error.message
-    assert_equal true, stream_iterator.closed
-  end
-
-  def test_iterate_block
-    records = []
-
-    stream_iterator = StreamIterator.new
-    stream_iterator.each do |flux_record|
-      records.push(flux_record)
-    end
-
-    assert_equal 2, records.count
-    assert_equal 'flux_record1', records[0]
-    assert_equal 'flux_record2', records[1]
-    assert_equal true, stream_iterator.closed
-  end
-
-  def test_iterate_block_break
-    records = []
-
-    stream_iterator = StreamIterator.new
-    stream_iterator.each do |flux_record|
-      break if records.count > 0
-
-      records.push(flux_record)
-    end
-
-    assert_equal 1, records.count
-    assert_equal 'flux_record1', records[0]
-    assert_equal true, stream_iterator.closed
-  end
-
-  def test_query_syntax
-    records = []
-
-    query(query: 'from >|', org: 'my-org').each do |flux_record|
-      records.push(flux_record)
-    end
-
-    assert_equal 2, records.count
-    assert_equal 'flux_record1', records[0]
-    assert_equal 'flux_record2', records[1]
-  end
-
-  def query(*)
-    StreamIterator.new
-  end
-end
-
-class StreamIterator
-  include Enumerable
-
-  def initialize
-    # Init CVS parser
-    puts 'init http request...'
-    @current = 1
-    @closed = false
-  end
-  attr_reader :closed
-
-  def each
-    return enum_for(:each) unless block_given?
-
-    while @current <= 2
-      yield _parse_next_flux_record
-      @current += 1
-    end
-    self
-  ensure
-    _close_connection
+    # record 1
+    record = records[0]
+    assert_equal measurement, record.measurement
+    assert_equal 'europe', record.values['location']
+    assert_equal 1, record.value
+    assert_equal 'level', record.field
   end
 
   private
 
-  def _parse_next_flux_record
-    # Parse next line
-    "flux_record#{@current}"
-  end
+  def _write(values, measurement:)
+    write_api = @client.create_write_api
 
-  def _close_connection
-    # Close CSV Parser and HTTP request
-    @closed = true
-    puts 'close http request...'
+    (1..values).each do |value|
+      write_api.write(data: InfluxDB2::Point.new(name: measurement)
+                                 .add_tag('location', 'europe')
+                                 .add_field('level', value)
+                                 .time(@now - values + value, InfluxDB2::WritePrecision::NANOSECOND))
+    end
   end
 end
