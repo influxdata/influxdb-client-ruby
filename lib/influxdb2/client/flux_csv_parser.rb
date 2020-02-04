@@ -108,7 +108,9 @@ module InfluxDB2
         # Return already parsed DataFrame
         @start_new_table = true
         @table = InfluxDB2::FluxTable.new
-        @tables[@table_index] = @table
+
+        @tables[@table_index] = @table unless @stream
+
         @table_index += 1
       elsif @table.nil?
         raise FluxCsvParserError, 'Unable to parse CSV response. FluxTable definition was not found.'
@@ -181,7 +183,7 @@ module InfluxDB2
           @table.columns.push(column)
         end
 
-        @tables[@table_index] = @table
+        @tables[@table_index] = @table unless @stream
         @table_index += 1
       end
 
