@@ -19,6 +19,25 @@
 # THE SOFTWARE.
 
 module InfluxDB2
+  module WriteType
+    SYNCHRONOUS = 1
+    BATCHING = 2
+  end
+
+  #Creates write api configuration.
+  #
+  #@param write_type: methods of write (batching, asynchronous, synchronous)
+  #@param batch_size: the number of data point to collect in batch
+  #@param flush_interval: flush data at least in this interval
+  class WriteOptions
+    def initialize(write_type: WriteType::SYNCHRONOUS, batch_size: 1_000, flush_interval: 1_000)
+      @write_type = write_type
+      @batch_size = batch_size
+      @flush_interval = flush_interval
+    end
+
+    attr_reader :write_type, :batch_size, :flush_interval
+  end
   # Precision constants.
   #
   class WritePrecision
@@ -28,7 +47,7 @@ module InfluxDB2
     NANOSECOND = 'ns'.freeze
 
     def get_from_value(value)
-      constants = WritePrecision.constants.select { |c| WritePrecision.const_get(c) == value }
+      constants = WritePrecision.constants.select {|c| WritePrecision.const_get(c) == value}
       raise "The time precision #{value} is not supported." if constants.empty?
 
       value
@@ -39,8 +58,9 @@ module InfluxDB2
   #
   class WriteApi < DefaultApi
     # @param [Hash] options The options to be used by the client.
-    def initialize(options:)
+    def initialize(options:, write_options: InfluxDB2::WriteOptions.new)
       super(options: options)
+      @write_options = write_options
     end
 
     # Write data into specified Bucket.
@@ -83,7 +103,7 @@ module InfluxDB2
       _check('bucket', bucket_param)
       _check('org', org_param)
 
-      payload = _generate_payload(data)
+      payload = _generate_payload(data, bucket: bucket_param, org: org_param, precision: precision_param)
       return nil if payload.nil?
 
       uri = URI.parse(File.join(@options[:url], '/api/v2/write'))
@@ -92,24 +112,43 @@ module InfluxDB2
       _post(payload, uri)
     end
 
+    class BatchItem
+      def initialize(key, data)
+        @key = key
+        @data = data
+      end
+    end
+
+    class BatchItemKey
+      def initialize(bucket, org, precision = DEFAULT_WRITE_PRECISION)
+        @bucket = bucket
+        @org = org
+        @precision = precision
+      end
+    end
+
     private
 
-    def _generate_payload(data)
+    def _generate_payload(data, precision: nil, bucket: nil, org: nil)
       if data.nil?
         nil
       elsif data.is_a?(Point)
-        data.to_line_protocol
+        _generate_payload(data.to_line_protocol, bucket: bucket, org: org, precision: precision)
       elsif data.is_a?(String)
         if data.empty?
           nil
         else
-          data
+          if @write_options.write_type == WriteType::BATCHING
+            BatchItem.new(BatchItemKey.new(bucket, org, precision), data)
+          else
+            data
+          end
         end
       elsif data.is_a?(Hash)
-        _generate_payload(Point.from_hash(data))
+        _generate_payload(Point.from_hash(data), bucket: bucket, org: org, precision: precision)
       elsif data.respond_to? :map
         data.map do |item|
-          _generate_payload(item)
+          _generate_payload(item, bucket: bucket, org: org, precision: precision)
         end.reject(&:nil?).join("\n".freeze)
       end
     end
