@@ -17,6 +17,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+require_relative 'worker'
 
 module InfluxDB2
   module WriteType
@@ -24,11 +25,11 @@ module InfluxDB2
     BATCHING = 2
   end
 
-  #Creates write api configuration.
+  # Creates write api configuration.
   #
-  #@param write_type: methods of write (batching, asynchronous, synchronous)
-  #@param batch_size: the number of data point to collect in batch
-  #@param flush_interval: flush data at least in this interval
+  # @param write_type: methods of write (batching, asynchronous, synchronous)
+  # @param batch_size: the number of data point to collect in batch
+  # @param flush_interval: flush data at least in this interval
   class WriteOptions
     def initialize(write_type: WriteType::SYNCHRONOUS, batch_size: 1_000, flush_interval: 1_000)
       @write_type = write_type
@@ -47,7 +48,7 @@ module InfluxDB2
     NANOSECOND = 'ns'.freeze
 
     def get_from_value(value)
-      constants = WritePrecision.constants.select {|c| WritePrecision.const_get(c) == value}
+      constants = WritePrecision.constants.select { |c| WritePrecision.const_get(c) == value }
       raise "The time precision #{value} is not supported." if constants.empty?
 
       value
@@ -109,25 +110,46 @@ module InfluxDB2
       uri = URI.parse(File.join(@options[:url], '/api/v2/write'))
       uri.query = URI.encode_www_form(bucket: bucket_param, org: org_param, precision: precision_param.to_s)
 
-      _post(payload, uri)
+      if WriteType::BATCHING == @write_options.write_type
+        _worker.push(payload)
+      else
+        _post(payload, uri)
+      end
     end
 
+    # Item for batching queue
     class BatchItem
       def initialize(key, data)
         @key = key
         @data = data
       end
+      attr_reader :key, :data
     end
 
+    # Key for batch item
     class BatchItemKey
       def initialize(bucket, org, precision = DEFAULT_WRITE_PRECISION)
         @bucket = bucket
         @org = org
         @precision = precision
       end
+      attr_reader :bucket, :org, :precision
     end
 
     private
+
+    WORKER_MUTEX = Mutex.new
+    def _worker
+      return @worker if @worker
+
+      WORKER_MUTEX.synchronize do
+        # this return is necessary because the previous mutex holder
+        # might have already assigned the @worker
+        return @worker if @worker
+
+        @worker = Worker.new(@write_options)
+      end
+    end
 
     def _generate_payload(data, precision: nil, bucket: nil, org: nil)
       if data.nil?
@@ -137,12 +159,10 @@ module InfluxDB2
       elsif data.is_a?(String)
         if data.empty?
           nil
+        elsif @write_options.write_type == WriteType::BATCHING
+          BatchItem.new(BatchItemKey.new(bucket, org, precision), data)
         else
-          if @write_options.write_type == WriteType::BATCHING
-            BatchItem.new(BatchItemKey.new(bucket, org, precision), data)
-          else
-            data
-          end
+          data
         end
       elsif data.is_a?(Hash)
         _generate_payload(Point.from_hash(data), bucket: bucket, org: org, precision: precision)

@@ -56,8 +56,8 @@ module InfluxDB2
     # Write time series data into InfluxDB thought WriteApi.
     #
     # @return [WriteApi] New instance of WriteApi.
-    def create_write_api
-      WriteApi.new(options: @options)
+    def create_write_api(write_options: InfluxDB2::WriteOptions.new)
+      WriteApi.new(options: @options, write_options: write_options)
     end
 
     # Get the Query client.
