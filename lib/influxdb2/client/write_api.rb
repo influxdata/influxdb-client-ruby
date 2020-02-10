@@ -62,7 +62,9 @@ module InfluxDB2
     def initialize(options:, write_options: InfluxDB2::WriteOptions.new)
       super(options: options)
       @write_options = write_options
+      @closed = false
     end
+    attr_reader :closed
 
     # Write data into specified Bucket.
     #
@@ -134,6 +136,22 @@ module InfluxDB2
         @precision = precision
       end
       attr_reader :bucket, :org, :precision
+
+      def ==(object)
+        @bucket == object.bucket && @org == object.org && @precision == object.precision
+      end
+
+      alias eql? ==
+
+      def hash
+        @bucket.hash ^ @org.hash ^ @precision.hash # XOR
+      end
+    end
+
+    # @return [ true ] Always true.
+    def close!
+      @closed = true
+      true
     end
 
     private
@@ -147,7 +165,7 @@ module InfluxDB2
         # might have already assigned the @worker
         return @worker if @worker
 
-        @worker = Worker.new(@write_options)
+        @worker = Worker.new(self, @write_options)
       end
     end
 
