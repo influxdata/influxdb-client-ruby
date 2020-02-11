@@ -75,10 +75,7 @@ module InfluxDB2
     # @return [ true ] Always true.
     def close!
       @closed = true
-
-      @auto_closeable.each do |closeable|
-        closeable.close!
-      end
+      @auto_closeable.each(&:close!)
       true
     end
   end

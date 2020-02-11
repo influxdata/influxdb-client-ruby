@@ -154,8 +154,8 @@ module InfluxDB2
       end
       attr_reader :bucket, :org, :precision
 
-      def ==(object)
-        @bucket == object.bucket && @org == object.org && @precision == object.precision
+      def ==(other)
+        @bucket == other.bucket && @org == other.org && @precision == other.precision
       end
 
       alias eql? ==

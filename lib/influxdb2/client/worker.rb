@@ -40,9 +40,7 @@ module InfluxDB2
 
       @thread_size = Thread.new do
         until api_client.closed
-          if @queue.length >= @write_options.batch_size
-            check_background_queue(size: true)
-          end
+          check_background_queue(size: true) if @queue.length >= @write_options.batch_size
           sleep 0.01
         end
       end
@@ -63,7 +61,7 @@ module InfluxDB2
         begin
           item = @queue.pop(true)
           key = item.key
-          data[key] = [] unless data.has_key?(key)
+          data[key] = [] unless data.key?(key)
           data[key] << item.data
           points += 1
         rescue ThreadError
