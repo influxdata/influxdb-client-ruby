@@ -78,7 +78,6 @@ module InfluxDB2
     def write(data)
       data.each do |key, points|
         @api_client.write_raw(points.join("\n"), precision: key.precision, bucket: key.bucket, org: key.org)
-        puts points
       end
     end
   end

@@ -45,6 +45,7 @@ module InfluxDB2
     # @option options [bool] :use_ssl Turn on/off SSL for HTTP communication
     #   the body line-protocol
     def initialize(url, token, options = nil)
+      @auto_closeable = []
       @options = options ? options.dup : {}
       @options[:url] = url if url.is_a? String
       @options[:token] = token if token.is_a? String
@@ -57,7 +58,9 @@ module InfluxDB2
     #
     # @return [WriteApi] New instance of WriteApi.
     def create_write_api(write_options: InfluxDB2::WriteOptions.new)
-      WriteApi.new(options: @options, write_options: write_options)
+      write_api = WriteApi.new(options: @options, write_options: write_options)
+      @auto_closeable.push(write_api)
+      write_api
     end
 
     # Get the Query client.
@@ -72,6 +75,10 @@ module InfluxDB2
     # @return [ true ] Always true.
     def close!
       @closed = true
+
+      @auto_closeable.each do |closeable|
+        closeable.close!
+      end
       true
     end
   end
