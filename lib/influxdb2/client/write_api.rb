@@ -109,14 +109,31 @@ module InfluxDB2
       payload = _generate_payload(data, bucket: bucket_param, org: org_param, precision: precision_param)
       return nil if payload.nil?
 
-      uri = URI.parse(File.join(@options[:url], '/api/v2/write'))
-      uri.query = URI.encode_www_form(bucket: bucket_param, org: org_param, precision: precision_param.to_s)
-
       if WriteType::BATCHING == @write_options.write_type
         _worker.push(payload)
       else
-        _post(payload, uri)
+        write_raw(payload, precision: precision_param, bucket: bucket_param, org: org_param)
       end
+    end
+
+    # @param [String] payload data as String
+    # @param [WritePrecision] precision The precision for the unix timestamps within the body line-protocol
+    # @param [String] bucket specifies the destination bucket for writes
+    # @param [String] org specifies the destination organization for writes
+    def write_raw(payload, precision: nil, bucket: nil, org: nil)
+      precision_param = precision || @options[:precision]
+      bucket_param = bucket || @options[:bucket]
+      org_param = org || @options[:org]
+      _check('precision', precision_param)
+      _check('bucket', bucket_param)
+      _check('org', org_param)
+
+      return nil unless payload.instance_of?(String) || payload.empty?
+
+      uri = URI.parse(File.join(@options[:url], '/api/v2/write'))
+      uri.query = URI.encode_www_form(bucket: bucket_param, org: org_param, precision: precision_param.to_s)
+
+      _post(payload, uri)
     end
 
     # Item for batching queue

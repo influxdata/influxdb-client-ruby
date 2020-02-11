@@ -29,6 +29,8 @@ module InfluxDB2
       @queue = Queue.new
       @queue_event = Queue.new
 
+      @queue_event.push(true)
+
       @thread_flush = Thread.new do
         until api_client.closed
           sleep @write_options.flush_interval
@@ -39,9 +41,9 @@ module InfluxDB2
       @thread_size = Thread.new do
         until api_client.closed
           if @queue.length >= @write_options.batch_size
-            check_background_queue
-            sleep 0.01
+            check_background_queue(size: true)
           end
+          sleep 0.01
         end
       end
     end
@@ -50,37 +52,34 @@ module InfluxDB2
       @queue.push(payload)
     end
 
-    def check_background_queue
-      if @queue_event.empty?
-        @queue_event.push(true)
+    def check_background_queue(size: false)
+      @queue_event.pop
+      data = {}
+      points = 0
 
-        data = {}
-        points = 0
+      return if size && @queue.length < @write_options.batch_size
 
-        while points < @write_options.batch_size && !@queue.empty?
-          begin
-            item = @queue.pop(true)
-            key = item.key
-            data[key] = [] unless data.has_key?(key)
-            data[key] << item.data
-            points += 1
-          rescue ThreadError
-            next
-          end
+      while points < @write_options.batch_size && !@queue.empty?
+        begin
+          item = @queue.pop(true)
+          key = item.key
+          data[key] = [] unless data.has_key?(key)
+          data[key] << item.data
+          points += 1
+        rescue ThreadError
+          return
         end
-
-        return if data.values.flatten.empty?
-
-        # write
-        write(data)
-
-        @queue_event.pop
       end
+
+      write(data) unless data.values.flatten.empty?
+      @queue_event.push(true)
     end
 
     def write(data)
-      data.each {|d| puts d}
-      puts '----'
+      data.each do |key, points|
+        @api_client.write_raw(points.join("\n"), precision: key.precision, bucket: key.bucket, org: key.org)
+        puts points
+      end
     end
   end
 end
