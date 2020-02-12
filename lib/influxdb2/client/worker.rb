@@ -33,7 +33,7 @@ module InfluxDB2
 
       @thread_flush = Thread.new do
         until api_client.closed
-          sleep @write_options.flush_interval
+          sleep @write_options.flush_interval / 1_000
           check_background_queue
         end
       end
@@ -50,14 +50,14 @@ module InfluxDB2
       @queue.push(payload)
     end
 
-    def check_background_queue(size: false)
+    def check_background_queue(size: false, flush_all: false)
       @queue_event.pop
       data = {}
       points = 0
 
       return if size && @queue.length < @write_options.batch_size
 
-      while points < @write_options.batch_size && !@queue.empty?
+      while (flush_all || points < @write_options.batch_size) && !@queue.empty?
         begin
           item = @queue.pop(true)
           key = item.key
@@ -71,6 +71,10 @@ module InfluxDB2
 
       write(data) unless data.values.flatten.empty?
       @queue_event.push(true)
+    end
+
+    def flush_all
+      check_background_queue(flush_all: true) unless @queue.empty?
     end
 
     def write(data)

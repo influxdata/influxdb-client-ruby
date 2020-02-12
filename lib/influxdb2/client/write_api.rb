@@ -167,6 +167,7 @@ module InfluxDB2
 
     # @return [ true ] Always true.
     def close!
+      _worker.flush_all
       @closed = true
       true
     end
