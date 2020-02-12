@@ -59,6 +59,7 @@ module InfluxDB2
   #
   class WriteApi < DefaultApi
     # @param [Hash] options The options to be used by the client.
+    # @param [WriteOptions] write_options Write api configuration.
     def initialize(options:, write_options: InfluxDB2::WriteOptions.new)
       super(options: options)
       @write_options = write_options
