@@ -158,7 +158,7 @@ module InfluxDB2
 
     # Key for batch item
     class BatchItemKey
-      def initialize(bucket, org, precision: DEFAULT_WRITE_PRECISION)
+      def initialize(bucket, org, precision = DEFAULT_WRITE_PRECISION)
         @bucket = bucket
         @org = org
         @precision = precision
