@@ -39,6 +39,9 @@ module InfluxDB2
 
     attr_reader :write_type, :batch_size, :flush_interval
   end
+
+  SYNCHRONOUS = InfluxDB2::WriteOptions.new(write_type: WriteType::SYNCHRONOUS)
+
   # Precision constants.
   #
   class WritePrecision
@@ -60,7 +63,7 @@ module InfluxDB2
   class WriteApi < DefaultApi
     # @param [Hash] options The options to be used by the client.
     # @param [WriteOptions] write_options Write api configuration.
-    def initialize(options:, write_options: InfluxDB2::WriteOptions.new)
+    def initialize(options:, write_options: SYNCHRONOUS)
       super(options: options)
       @write_options = write_options
       @closed = false
@@ -117,6 +120,13 @@ module InfluxDB2
       end
     end
 
+    # @return [ true ] Always true.
+    def close!
+      _worker.flush_all unless _worker.nil?
+      @closed = true
+      true
+    end
+
     # @param [String] payload data as String
     # @param [WritePrecision] precision The precision for the unix timestamps within the body line-protocol
     # @param [String] bucket specifies the destination bucket for writes
@@ -166,17 +176,12 @@ module InfluxDB2
       end
     end
 
-    # @return [ true ] Always true.
-    def close!
-      _worker.flush_all
-      @closed = true
-      true
-    end
-
     private
 
     WORKER_MUTEX = Mutex.new
     def _worker
+      return nil unless @write_options.write_type == WriteType::BATCHING
+
       return @worker if @worker
 
       WORKER_MUTEX.synchronize do
@@ -192,7 +197,7 @@ module InfluxDB2
       if data.nil?
         nil
       elsif data.is_a?(Point)
-        _generate_payload(data.to_line_protocol, bucket: bucket, org: org, precision: precision)
+        _generate_payload(data.to_line_protocol, bucket: bucket, org: org, precision: data.precision)
       elsif data.is_a?(String)
         if data.empty?
           nil

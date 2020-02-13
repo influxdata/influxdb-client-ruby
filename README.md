@@ -105,6 +105,7 @@ end
 ```
 
 ### Writing data
+The [WriteApi](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb2/client/write_api.rb) supports synchronous and batching writes into InfluxDB 2.0.
 
 ```ruby
 client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
