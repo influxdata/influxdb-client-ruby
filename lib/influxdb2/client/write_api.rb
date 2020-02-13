@@ -158,7 +158,7 @@ module InfluxDB2
 
     # Key for batch item
     class BatchItemKey
-      def initialize(bucket, org, precision = DEFAULT_WRITE_PRECISION)
+      def initialize(bucket, org, precision: DEFAULT_WRITE_PRECISION)
         @bucket = bucket
         @org = org
         @precision = precision
@@ -197,7 +197,8 @@ module InfluxDB2
       if data.nil?
         nil
       elsif data.is_a?(Point)
-        _generate_payload(data.to_line_protocol, bucket: bucket, org: org, precision: data.precision)
+        _generate_payload(data.to_line_protocol, bucket: bucket, org: org, precision: data.precision ||
+            DEFAULT_WRITE_PRECISION)
       elsif data.is_a?(String)
         if data.empty?
           nil
