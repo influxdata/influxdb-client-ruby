@@ -55,7 +55,10 @@ module InfluxDB2
       data = {}
       points = 0
 
-      return if size && @queue.length < @write_options.batch_size
+      if size && @queue.length < @write_options.batch_size
+        @queue_event.push(true)
+        return
+      end
 
       while (flush_all || points < @write_options.batch_size) && !@queue.empty?
         begin
