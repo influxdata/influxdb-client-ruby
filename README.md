@@ -105,6 +105,7 @@ end
 ```
 
 ### Writing data
+The [WriteApi](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb2/client/write_api.rb) supports synchronous and batching writes into InfluxDB 2.0. In default api uses synchronous write. To enable batching you can use WriteOption.
 
 ```ruby
 client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
@@ -113,6 +114,28 @@ client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
                               precision: InfluxDB2::WritePrecision::NANOSECOND)
 
 write_api = client.create_write_api
+write_api.write(data: 'h2o,location=west value=33i 15')
+```
+
+#### Batching
+The writes are processed in batches which are configurable by `WriteOptions`:
+
+| Property | Description | Default Value |
+| --- | --- | --- |
+| **batchSize** | the number of data point to collect in batch | 1000 |
+| **flushInterval** | the number of milliseconds before the batch is written | 1000 |
+
+```ruby
+write_options = InfluxDB2::WriteOptions.new(write_type: InfluxDB2::WriteType::BATCHING,
+                                            batch_size: 10, flush_interval: 5_000)
+client = InfluxDB2::Client.new('http://localhost:9999',
+                               'my-token',
+                               bucket: 'my-bucket',
+                               org: 'my-org',
+                               precision: InfluxDB2::WritePrecision::NANOSECOND,
+                               use_ssl: false)
+
+write_api = client.create_write_api(write_options: write_options)
 write_api.write(data: 'h2o,location=west value=33i 15')
 ```
 
@@ -135,7 +158,6 @@ client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
 write_api = client.create_write_api
 write_api.write(data: 'h2o,location=west value=33i 15', precision: InfluxDB2::WritePrecision::SECOND)
 ```
-
 Allowed values for precision are:
 - `InfluxDB::WritePrecision::NANOSECOND` for nanosecond
 - `InfluxDB::WritePrecision::MICROSECOND` for microsecond

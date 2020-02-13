@@ -45,6 +45,7 @@ module InfluxDB2
       @time = time
       @precision = precision
     end
+    attr_reader :precision
 
     # Create DataPoint instance from specified data.
     #
