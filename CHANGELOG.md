@@ -1,4 +1,4 @@
-## 1.1.0 [unreleased]
+## 1.1.0 [2020-02-14]
 
 ### Features
 1. [#14](https://github.com/influxdata/influxdb-client-ruby/issues/14): Added QueryApi
