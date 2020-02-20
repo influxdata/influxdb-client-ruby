@@ -1,5 +1,8 @@
 ## 1.2.0 [unreleased]
 
+### Bugs
+1. [#22](https://github.com/influxdata/influxdb-client-ruby/pull/22): Fixed batch write
+
 ## 1.1.0 [2020-02-14]
 
 ### Features

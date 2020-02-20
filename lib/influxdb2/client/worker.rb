@@ -50,7 +50,7 @@ module InfluxDB2
       @queue.push(payload)
     end
 
-    def check_background_queue(size: false, flush_all: false)
+    def check_background_queue(size: false)
       @queue_event.pop
       data = {}
       points = 0
@@ -60,7 +60,7 @@ module InfluxDB2
         return
       end
 
-      while (flush_all || points < @write_options.batch_size) && !@queue.empty?
+      while (points < @write_options.batch_size) && !@queue.empty?
         begin
           item = @queue.pop(true)
           key = item.key
@@ -68,16 +68,20 @@ module InfluxDB2
           data[key] << item.data
           points += 1
         rescue ThreadError
+          @queue_event.push(true)
           return
         end
       end
 
-      write(data) unless data.values.flatten.empty?
-      @queue_event.push(true)
+      begin
+        write(data) unless data.values.flatten.empty?
+      ensure
+        @queue_event.push(true)
+      end
     end
 
     def flush_all
-      check_background_queue(flush_all: true) unless @queue.empty?
+      check_background_queue until @queue.empty?
     end
 
     def write(data)
