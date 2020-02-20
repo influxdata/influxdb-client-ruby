@@ -19,6 +19,7 @@
 # THE SOFTWARE.
 require 'csv'
 require 'base64'
+require 'time'
 
 module InfluxDB2
   # This class represents Flux query error

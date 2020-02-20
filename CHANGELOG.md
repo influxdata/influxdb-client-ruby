@@ -6,6 +6,9 @@
 1. [#14](https://github.com/influxdata/influxdb-client-ruby/issues/14): Added QueryApi
 2. [#17](https://github.com/influxdata/influxdb-client-ruby/issues/17): Added possibility to stream query result
 3. [#19](https://github.com/influxdata/influxdb-client-ruby/issues/19): Added WriteOptions and possibility to batch write
+
+### Bugs
+1. [](https://github.com/influxdata/influxdb-client-ruby/issues/): Fixed batch write
  
 ## 1.0.0.beta [2020-01-17]
 
