@@ -136,6 +136,19 @@ class WriteApiBatchingTest < MiniTest::Test
     stub_request(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
 
+    @client.close!
+
+    @write_options = InfluxDB2::WriteOptions.new(write_type: InfluxDB2::WriteType::BATCHING,
+                                                 batch_size: 10, flush_interval: 5_000)
+    @client = InfluxDB2::Client.new('http://localhost:9999',
+                                    'my-token',
+                                    bucket: 'my-bucket',
+                                    org: 'my-org',
+                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
+                                    use_ssl: false)
+
+    @write_client = @client.create_write_api(write_options: @write_options)
+
     @write_client.write(data: 'h2o_feet,location=coyote_creek level\\ water_level=1.0 1')
     @write_client.write(data: 'h2o_feet,location=coyote_creek level\\ water_level=2.0 2')
     @write_client.write(data: 'h2o_feet,location=coyote_creek level\\ water_level=3.0 3')
