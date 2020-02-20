@@ -81,9 +81,7 @@ module InfluxDB2
     end
 
     def flush_all
-      until @queue.empty?
-        check_background_queue
-      end
+      check_background_queue until @queue.empty?
     end
 
     def write(data)
