@@ -32,7 +32,12 @@ module InfluxDB2
     # Delete time series data from InfluxDB.
     #
     # @example
-    # ???
+    # delete('2019-02-03T04:05:06+07:00', '2019-04-03T04:05:06+07:00',
+    #        predicate: 'key1="value1" AND key2="value"', bucket: 'my-bucket', org: 'my-org')
+    #
+    # @example
+    # delete(DateTime.rfc3339('2019-02-03T04:05:06+07:00'), DateTime.rfc3339('2019-03-03T04:05:06+07:00'),
+    #        predicate: 'key1="value1" AND key2="value"', bucket: 'my-bucket', org: 'my-org')
     #
     # @param [Object] start Start time of interval to delete data.
     #   The start could be represent by [Time], [DateTime] or [String] formatted as RFC3339.
@@ -41,7 +46,7 @@ module InfluxDB2
     # @param [String] predicate InfluxQL-like predicate Stop time of interval to delete data
     # @param [String] bucket specifies the bucket to remove data from
     # @param [String] org specifies the organization to remove data from
-    def delete(start: nil, stop: nil, predicate: nil, bucket: nil, org: nil)
+    def delete(start, stop, predicate: nil, bucket: nil, org: nil)
       delete_request = InfluxDB2::DeletePredicateRequest.new(start: _to_rfc3339(start), stop: _to_rfc3339(stop),
                                                              predicate: predicate)
 

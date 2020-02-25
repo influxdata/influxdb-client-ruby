@@ -33,7 +33,7 @@ class QueryApiIntegrationTest < MiniTest::Test
 
   def test_query
     now = Time.now.utc
-    measurement = 'h2o_query_' + now.to_i.to_s
+    measurement = 'h2o_query_' + now.to_i.to_s + now.nsec.to_s
 
     @client.create_write_api.write(data: InfluxDB2::Point.new(name: measurement)
                                                          .add_tag('location', 'europe')

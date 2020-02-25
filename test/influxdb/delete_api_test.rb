@@ -34,7 +34,7 @@ class DeleteApiTest < MiniTest::Test
                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
                                    use_ssl: false)
 
-    client.create_delete_api.delete(start: Time.utc(2019, 10, 15, 8, 20, 15), stop: Time.utc(2019, 11, 15, 8, 20, 15),
+    client.create_delete_api.delete(Time.utc(2019, 10, 15, 8, 20, 15), Time.utc(2019, 11, 15, 8, 20, 15),
                                     predicate: 'key1="value1" AND key2="value"', bucket: 'my-bucket', org: 'my-org')
 
     body = '{"start":"2019-10-15T08:20:15+00:00","stop":"2019-11-15T08:20:15+00:00","predicate":"key1=\"value1\" ' \
@@ -52,8 +52,8 @@ class DeleteApiTest < MiniTest::Test
                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
                                    use_ssl: false)
 
-    client.create_delete_api.delete(start: DateTime.rfc3339('2019-02-03T04:05:06+07:00'),
-                                    stop: DateTime.rfc3339('2019-03-03T04:05:06+07:00'),
+    client.create_delete_api.delete(DateTime.rfc3339('2019-02-03T04:05:06+07:00'),
+                                    DateTime.rfc3339('2019-03-03T04:05:06+07:00'),
                                     predicate: 'key1="value1" AND key2="value"', bucket: 'my-bucket', org: 'my-org')
 
     body = '{"start":"2019-02-03T04:05:06+07:00","stop":"2019-03-03T04:05:06+07:00","predicate":"key1=\"value1\" ' \
@@ -71,7 +71,7 @@ class DeleteApiTest < MiniTest::Test
                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
                                    use_ssl: false)
 
-    client.create_delete_api.delete(start: '2019-02-03T04:05:06+07:00', stop: '2019-04-03T04:05:06+07:00',
+    client.create_delete_api.delete('2019-02-03T04:05:06+07:00',  '2019-04-03T04:05:06+07:00',
                                     predicate: 'key1="value1" AND key2="value"', bucket: 'my-bucket', org: 'my-org')
 
     body = '{"start":"2019-02-03T04:05:06+07:00","stop":"2019-04-03T04:05:06+07:00","predicate":"key1=\"value1\" ' \
@@ -89,26 +89,10 @@ class DeleteApiTest < MiniTest::Test
                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
                                    use_ssl: false)
 
-    client.create_delete_api.delete(start: '2019-02-03T04:05:06+07:00', stop: '2019-04-03T04:05:06+07:00',
+    client.create_delete_api.delete('2019-02-03T04:05:06+07:00', '2019-04-03T04:05:06+07:00',
                                     bucket: 'my-bucket', org: 'my-org')
 
     body = '{"start":"2019-02-03T04:05:06+07:00","stop":"2019-04-03T04:05:06+07:00"}'
-
-    assert_requested(:post, 'http://localhost:9999/api/v2/delete?bucket=my-bucket&org=my-org', times: 1, body: body)
-  end
-
-  def test_without_time_interval
-    stub_request(:any, 'http://localhost:9999/api/v2/delete?bucket=my-bucket&org=my-org')
-      .to_return(status: 204)
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
-                                   bucket: 'my-bucket',
-                                   org: 'my-org',
-                                   precision: InfluxDB2::WritePrecision::NANOSECOND,
-                                   use_ssl: false)
-
-    client.create_delete_api.delete(predicate: 'key1="value1" AND key2="value"', bucket: 'my-bucket', org: 'my-org')
-
-    body = '{"predicate":"key1=\"value1\" AND key2=\"value\""}'
 
     assert_requested(:post, 'http://localhost:9999/api/v2/delete?bucket=my-bucket&org=my-org', times: 1, body: body)
   end
