@@ -208,6 +208,27 @@ write_api = client.create_write_api
 write_api.write(data: ['h2o,location=west value=33i 15', point, hash])
 ```
 
+### Delete data
+
+The [DeleteApi](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb2/client/delete_api.rb) supports deletes [points](https://v2.docs.influxdata.com/v2.0/reference/glossary/#point) from an InfluxDB bucket.
+
+```ruby
+client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+                               bucket: 'my-bucket',
+                               org: 'my-org',
+                               precision: InfluxDB2::WritePrecision::NANOSECOND)
+
+client.create_delete_api.delete(DateTime.rfc3339('2019-02-03T04:05:06+07:00'),
+                                DateTime.rfc3339('2019-03-03T04:05:06+07:00'),
+                                predicate: 'key1="value1" AND key2="value"')
+```
+
+The time range could be specified as:
+
+1. String - `"2019-02-03T04:05:06+07:00"`
+1. DateTime - `DateTime.rfc3339('2019-03-03T04:05:06+07:00')`
+1. Time - `Time.utc(2015, 10, 16, 8, 20, 15)`
+
 ## Local tests
 
 ```

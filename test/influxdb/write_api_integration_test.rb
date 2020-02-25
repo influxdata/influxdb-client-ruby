@@ -35,7 +35,7 @@ class WriteApiIntegrationTest < MiniTest::Test
 
     now = Time.now.utc
 
-    measurement = 'h2o_' + now.to_i.to_s
+    measurement = 'h2o_' + now.to_i.to_s + now.nsec.to_s
     point = InfluxDB2::Point.new(name: measurement)
                             .add_tag('location', 'europe')
                             .add_field('level', 2)

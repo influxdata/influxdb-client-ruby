@@ -70,6 +70,13 @@ module InfluxDB2
       QueryApi.new(options: @options)
     end
 
+    # Get the Delete API to delete time series data from InfluxDB.
+    #
+    # @return [DeleteApi] New instance of DeleteApi.
+    def create_delete_api
+      DeleteApi.new(options: @options)
+    end
+
     # Close all connections into InfluxDB 2.
     #
     # @return [ true ] Always true.
