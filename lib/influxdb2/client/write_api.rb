@@ -27,14 +27,21 @@ module InfluxDB2
 
   # Creates write api configuration.
   #
-  # @param write_type: methods of write (batching, asynchronous, synchronous)
-  # @param batch_size: the number of data point to collect in batch
-  # @param flush_interval: flush data at least in this interval
   class WriteOptions
-    def initialize(write_type: WriteType::SYNCHRONOUS, batch_size: 1_000, flush_interval: 1_000)
+    # @param [WriteType] write_type: methods of write (batching, synchronous)
+    # @param [Integer] batch_size: the number of data point to collect in batch
+    # @param [Integer] flush_interval: flush data at least in this interval
+    # @param [Integer] retry_interval: number of milliseconds to retry unsuccessful write.
+    #   The retry interval is used when the InfluxDB server does not specify "Retry-After" header.
+    # @param [Integer] jitter_interval: the number of milliseconds to increase the batch flush interval
+    #   by a random amount
+    def initialize(write_type: WriteType::SYNCHRONOUS, batch_size: 1_000, flush_interval: 1_000, retry_interval: 1_000,
+                   jitter_interval: 0)
       @write_type = write_type
       @batch_size = batch_size
       @flush_interval = flush_interval
+      @retry_interval = retry_interval
+      @jitter_interval = jitter_interval
     end
 
     attr_reader :write_type, :batch_size, :flush_interval
