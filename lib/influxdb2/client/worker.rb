@@ -33,24 +33,36 @@ module InfluxDB2
 
       @thread_flush = Thread.new do
         until api_client.closed
-          sleep @write_options.flush_interval / 1_000
-          check_background_queue
+          sleep @write_options.flush_interval.to_f / 1_000
+          _check_background_queue
         end
       end
 
       @thread_size = Thread.new do
         until api_client.closed
-          check_background_queue(size: true) if @queue.length >= @write_options.batch_size
+          _check_background_queue(size: true) if @queue.length >= @write_options.batch_size
           sleep 0.01
         end
       end
     end
 
     def push(payload)
-      @queue.push(payload)
+      if payload.respond_to? :each
+        payload.each do |item|
+          push(item)
+        end
+      else
+        @queue.push(payload)
+      end
     end
 
-    def check_background_queue(size: false)
+    def flush_all
+      _check_background_queue until @queue.empty?
+    end
+
+    private
+
+    def _check_background_queue(size: false)
       @queue_event.pop
       data = {}
       points = 0
@@ -74,20 +86,30 @@ module InfluxDB2
       end
 
       begin
-        write(data) unless data.values.flatten.empty?
+        _write(data) unless data.values.flatten.empty?
       ensure
         @queue_event.push(true)
       end
     end
 
-    def flush_all
-      check_background_queue until @queue.empty?
+    def _write(data)
+      data.each do |key, points|
+        _write_raw(key, points)
+      end
     end
 
-    def write(data)
-      data.each do |key, points|
-        @api_client.write_raw(points.join("\n"), precision: key.precision, bucket: key.bucket, org: key.org)
+    def _write_raw(key, points)
+      if @write_options.jitter_interval.positive?
+        jitter_delay = (@write_options.jitter_interval.to_f / 1_000) * rand
+        sleep jitter_delay
       end
+      @api_client.write_raw(points.join("\n"), precision: key.precision, bucket: key.bucket, org: key.org)
+    rescue InfluxError => e
+      raise e if e.code.nil? || !(%w[429 503].include? e.code)
+
+      timeout = e.retry_after.empty? ? @write_options.retry_interval.to_f / 1_000 : e.retry_after.to_f
+      sleep timeout
+      _write_raw(key, points)
     end
   end
 end

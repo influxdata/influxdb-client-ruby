@@ -27,17 +27,36 @@ module InfluxDB2
 
   # Creates write api configuration.
   #
-  # @param write_type: methods of write (batching, asynchronous, synchronous)
-  # @param batch_size: the number of data point to collect in batch
-  # @param flush_interval: flush data at least in this interval
   class WriteOptions
-    def initialize(write_type: WriteType::SYNCHRONOUS, batch_size: 1_000, flush_interval: 1_000)
+    # @param [WriteType] write_type: methods of write (batching, synchronous)
+    # @param [Integer] batch_size: the number of data point to collect in batch
+    # @param [Integer] flush_interval: flush data at least in this interval
+    # @param [Integer] retry_interval: number of milliseconds to retry unsuccessful write.
+    #   The retry interval is used when the InfluxDB server does not specify "Retry-After" header.
+    # @param [Integer] jitter_interval: the number of milliseconds to increase the batch flush interval
+    #   by a random amount
+    def initialize(write_type: WriteType::SYNCHRONOUS, batch_size: 1_000, flush_interval: 1_000, retry_interval: 1_000,
+                   jitter_interval: 0)
+      _check_not_negative('batch_size', batch_size)
+      _check_not_negative('flush_interval', flush_interval)
+      _check_not_negative('retry_interval', retry_interval)
+      _check_positive('jitter_interval', jitter_interval)
       @write_type = write_type
       @batch_size = batch_size
       @flush_interval = flush_interval
+      @retry_interval = retry_interval
+      @jitter_interval = jitter_interval
     end
 
-    attr_reader :write_type, :batch_size, :flush_interval
+    attr_reader :write_type, :batch_size, :flush_interval, :retry_interval, :jitter_interval
+
+    def _check_not_negative(key, value)
+      raise ArgumentError, "The '#{key}' should be positive or zero, but is: #{value}" if value <= 0
+    end
+
+    def _check_positive(key, value)
+      raise ArgumentError, "The '#{key}' should be positive number, but is: #{value}" if value < 0
+    end
   end
 
   SYNCHRONOUS = InfluxDB2::WriteOptions.new(write_type: WriteType::SYNCHRONOUS)
@@ -210,9 +229,14 @@ module InfluxDB2
       elsif data.is_a?(Hash)
         _generate_payload(Point.from_hash(data), bucket: bucket, org: org, precision: precision)
       elsif data.respond_to? :map
-        data.map do |item|
+        payloads = data.map do |item|
           _generate_payload(item, bucket: bucket, org: org, precision: precision)
-        end.reject(&:nil?).join("\n".freeze)
+        end.reject(&:nil?)
+        if @write_options.write_type == WriteType::BATCHING
+          payloads
+        else
+          payloads.join("\n".freeze)
+        end
       end
     end
   end

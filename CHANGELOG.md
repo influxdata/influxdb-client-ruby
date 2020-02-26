@@ -2,6 +2,7 @@
 
 ### Features
 1. [#23](https://github.com/influxdata/influxdb-client-ruby/issues/23): Added DeleteApi to delete time series data from InfluxDB.
+1. [#24](https://github.com/influxdata/influxdb-client-ruby/issues/24): Added jitter_interval and retry_interval to WriteApi
 
 ### Bugs
 1. [#22](https://github.com/influxdata/influxdb-client-ruby/pull/22): Fixed batch write
