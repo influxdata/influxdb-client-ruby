@@ -129,6 +129,25 @@ class WriteApiTest < MiniTest::Test
                      times: 1, body: expected)
   end
 
+  def test_array_of_array
+    stub_request(:any, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 204)
+    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+                                   bucket: 'my-bucket',
+                                   org: 'my-org',
+                                   precision: InfluxDB2::WritePrecision::NANOSECOND,
+                                   use_ssl: false)
+
+    client.create_write_api.write(data: ['h2o,location=west value=33i 15', ['h2o,location=west value=34i 16',
+                                                                            'h2o,location=west value=35i 17']])
+
+    expected = "h2o,location=west value=33i 15\nh2o,location=west value=34i 16"\
+               "\nh2o,location=west value=35i 17"
+
+    assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: expected)
+  end
+
   def test_authorization_header
     stub_request(:any, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
