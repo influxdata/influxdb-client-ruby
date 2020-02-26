@@ -99,6 +99,10 @@ module InfluxDB2
     end
 
     def _write_raw(key, points)
+      if @write_options.jitter_interval.positive?
+        jitter_delay = (@write_options.jitter_interval.to_f / 1_000) * rand
+        sleep jitter_delay
+      end
       @api_client.write_raw(points.join("\n"), precision: key.precision, bucket: key.bucket, org: key.org)
     rescue InfluxError => e
       raise e if e.code.nil? || !(%w[429 503].include? e.code)

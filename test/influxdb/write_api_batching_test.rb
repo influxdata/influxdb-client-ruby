@@ -255,4 +255,38 @@ class WriteApiBatchingTest < MiniTest::Test
     assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 2, body: request)
   end
+
+  def test_jitter_interval
+    @client.close!
+
+    @client = InfluxDB2::Client.new('http://localhost:9999',
+                                    'my-token',
+                                    bucket: 'my-bucket',
+                                    org: 'my-org',
+                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
+                                    use_ssl: false)
+
+    @write_options = InfluxDB2::WriteOptions.new(write_type: InfluxDB2::WriteType::BATCHING,
+                                                 batch_size: 2, flush_interval: 5_000, jitter_interval: 2_000)
+    @write_client = @client.create_write_api(write_options: @write_options)
+
+    stub_request(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 204)
+
+    request = "h2o_feet,location=coyote_creek water_level=1.0 1\n" \
+               'h2o_feet,location=coyote_creek water_level=2.0 2'
+
+    @write_client.write(data: ['h2o_feet,location=coyote_creek water_level=1.0 1',
+                               'h2o_feet,location=coyote_creek water_level=2.0 2'])
+
+    sleep(0.1)
+
+    assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 0, body: request)
+
+    sleep(2)
+
+    assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: request)
+  end
 end
