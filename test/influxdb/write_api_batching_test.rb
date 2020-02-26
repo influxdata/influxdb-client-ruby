@@ -279,7 +279,7 @@ class WriteApiBatchingTest < MiniTest::Test
     @write_client.write(data: ['h2o_feet,location=coyote_creek water_level=1.0 1',
                                'h2o_feet,location=coyote_creek water_level=2.0 2'])
 
-    sleep(0.1)
+    sleep(0.05)
 
     assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 0, body: request)
