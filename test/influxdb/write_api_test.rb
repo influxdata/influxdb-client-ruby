@@ -251,4 +251,24 @@ class WriteApiTest < MiniTest::Test
 
     assert_equal 'The time precision not_supported is not supported.', error.message
   end
+
+  def test_user_agent_header
+    stub_request(:any, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 204)
+
+    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+                                   bucket: 'my-bucket',
+                                   org: 'my-org',
+                                   precision: InfluxDB2::WritePrecision::NANOSECOND,
+                                   use_ssl: false)
+
+    client.create_write_api.write(data: 'h2o,location=west value=33i 15')
+
+    headers = {
+      'Authorization' => 'Token my-token',
+      'User-Agent' => "influxdb-client-ruby/#{InfluxDB2::VERSION}"
+    }
+    assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: 'h2o,location=west value=33i 15', headers: headers)
+  end
 end

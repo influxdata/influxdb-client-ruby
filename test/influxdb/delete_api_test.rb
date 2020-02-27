@@ -96,4 +96,25 @@ class DeleteApiTest < MiniTest::Test
 
     assert_requested(:post, 'http://localhost:9999/api/v2/delete?bucket=my-bucket&org=my-org', times: 1, body: body)
   end
+
+  def test_user_agent_header
+    stub_request(:any, 'http://localhost:9999/api/v2/delete?bucket=my-bucket&org=my-org')
+      .to_return(status: 204)
+    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+                                   bucket: 'my-bucket',
+                                   org: 'my-org',
+                                   precision: InfluxDB2::WritePrecision::NANOSECOND,
+                                   use_ssl: false)
+
+    client.create_delete_api.delete('2019-02-03T04:05:06+07:00', '2019-04-03T04:05:06+07:00',
+                                    bucket: 'my-bucket', org: 'my-org')
+
+    body = '{"start":"2019-02-03T04:05:06+07:00","stop":"2019-04-03T04:05:06+07:00"}'
+    headers = {
+      'Authorization' => 'Token my-token',
+      'User-Agent' => "influxdb-client-ruby/#{InfluxDB2::VERSION}"
+    }
+    assert_requested(:post, 'http://localhost:9999/api/v2/delete?bucket=my-bucket&org=my-org',
+                     times: 1, body: body, headers: headers)
+  end
 end

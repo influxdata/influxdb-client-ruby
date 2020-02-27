@@ -43,6 +43,7 @@ module InfluxDB2
 
       request = Net::HTTP::Post.new(uri.request_uri)
       request['Authorization'] = "Token #{@options[:token]}"
+      request['User-Agent'] = "influxdb-client-ruby/#{InfluxDB2::VERSION}"
       request.body = payload
 
       begin
