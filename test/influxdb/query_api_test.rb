@@ -72,4 +72,24 @@ class QueryApiTest < MiniTest::Test
     assert_equal 10, record1.value
     assert_equal 'free', record1.field
   end
+
+  def test_user_agent_header
+    stub_request(:post, 'http://localhost:9999/api/v2/query?org=my-org')
+      .to_return(body: SUCCESS_DATA)
+
+    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+                                   bucket: 'my-bucket',
+                                   org: 'my-org',
+                                   use_ssl: false)
+
+    client.create_query_api
+          .query(query: 'from(bucket:"my-bucket") |> range(start: 1970-01-01T00:00:00.000000001Z) |> last()')
+
+    headers = {
+      'Authorization' => 'Token my-token',
+      'User-Agent' => "influxdb-client-ruby/#{InfluxDB2::VERSION}"
+    }
+    assert_requested(:post, 'http://localhost:9999/api/v2/query?org=my-org',
+                     times: 1, headers: headers)
+  end
 end
