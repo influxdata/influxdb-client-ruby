@@ -51,6 +51,7 @@ module InfluxDB2
       @tables = {}
 
       @table_index = 0
+      @table_id = -1
       @start_new_table = false
       @table = nil
       @parsing_state_error = false
@@ -113,6 +114,7 @@ module InfluxDB2
         @tables[@table_index] = @table unless @stream
 
         @table_index += 1
+        @table_id = -1
       elsif @table.nil?
         raise FluxCsvParserError, 'Unable to parse CSV response. FluxTable definition was not found.'
       end
@@ -173,9 +175,10 @@ module InfluxDB2
         return
       end
 
-      @current_index = csv[2].to_i
+      current_id = csv[2].to_i
+      @table_id = current_id if @table_id == -1
 
-      if @current_index > (@table_index - 1)
+      if @table_id != current_id
         # create new table with previous column headers settings
         @flux_columns = @table.columns
         @table = InfluxDB2::FluxTable.new
@@ -186,6 +189,7 @@ module InfluxDB2
 
         @tables[@table_index] = @table unless @stream
         @table_index += 1
+        @table_id = current_id
       end
 
       flux_record = _parse_record(@table_index - 1, @table, csv)
