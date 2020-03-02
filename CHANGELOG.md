@@ -5,6 +5,9 @@
 1. [#24](https://github.com/influxdata/influxdb-client-ruby/issues/24): Added jitter_interval and retry_interval to WriteApi
 1. [#26](https://github.com/influxdata/influxdb-client-ruby/issues/26): Set User-Agent to influxdb-client-ruby/VERSION for all requests
 
+### Security
+1. [#29](https://github.com/influxdata/influxdb-client-ruby/pull/29): Upgrade rake to version 12.3.3 - [CVE-2020-8130](https://github.com/advisories/GHSA-jppv-gw3r-w3q8)
+
 ### Bugs
 1. [#22](https://github.com/influxdata/influxdb-client-ruby/pull/22): Fixed batch write
 1. [#28](https://github.com/influxdata/influxdb-client-ruby/pull/28): Correctly parse CSV where multiple results include multiple tables
