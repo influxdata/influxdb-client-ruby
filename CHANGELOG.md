@@ -11,6 +11,7 @@
 ### Bugs
 1. [#22](https://github.com/influxdata/influxdb-client-ruby/pull/22): Fixed batch write
 1. [#28](https://github.com/influxdata/influxdb-client-ruby/pull/28): Correctly parse CSV where multiple results include multiple tables
+1. [#30](https://github.com/influxdata/influxdb-client-ruby/pull/30): Send Content-Type headers
 
 ## 1.1.0 [2020-02-14]
 
