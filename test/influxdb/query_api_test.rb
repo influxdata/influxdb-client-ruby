@@ -73,7 +73,7 @@ class QueryApiTest < MiniTest::Test
     assert_equal 'free', record1.field
   end
 
-  def test_user_agent_header
+  def test_headers
     stub_request(:post, 'http://localhost:9999/api/v2/query?org=my-org')
       .to_return(body: SUCCESS_DATA)
 
@@ -87,7 +87,8 @@ class QueryApiTest < MiniTest::Test
 
     headers = {
       'Authorization' => 'Token my-token',
-      'User-Agent' => "influxdb-client-ruby/#{InfluxDB2::VERSION}"
+      'User-Agent' => "influxdb-client-ruby/#{InfluxDB2::VERSION}",
+      'Content-Type' => 'application/json'
     }
     assert_requested(:post, 'http://localhost:9999/api/v2/query?org=my-org',
                      times: 1, headers: headers)
