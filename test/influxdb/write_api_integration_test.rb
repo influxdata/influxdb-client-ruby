@@ -61,6 +61,7 @@ class WriteApiIntegrationTest < MiniTest::Test
     uri = URI.parse('http://localhost:9999/api/v2/query?org=my-org')
     request = Net::HTTP::Post.new(uri.request_uri)
     request['Authorization'] = 'Token my-token'
+    request[InfluxDB2::DefaultApi::HEADER_CONTENT_TYPE] = 'application/json'
     request.body = query.to_json
 
     http = Net::HTTP.new(uri.host, uri.port)
