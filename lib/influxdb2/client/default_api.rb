@@ -36,12 +36,12 @@ module InfluxDB2
 
     def _post_json(payload, uri, headers: {})
       _check_arg_type(:headers, headers, Hash)
-      _post(payload, uri, headers: headers.merge({HEADER_CONTENT_TYPE => 'application/json'}))
+      _post(payload, uri, headers: headers.merge(HEADER_CONTENT_TYPE => 'application/json'))
     end
 
     def _post_text(payload, uri, headers: {})
       _check_arg_type(:headers, headers, Hash)
-      _post(payload, uri, headers: headers.merge({HEADER_CONTENT_TYPE => 'text/plain'}))
+      _post(payload, uri, headers: headers.merge(HEADER_CONTENT_TYPE => 'text/plain'))
     end
 
     def _post(payload, uri, limit: @max_redirect_count, headers: {})
@@ -56,7 +56,7 @@ module InfluxDB2
       request = Net::HTTP::Post.new(uri.request_uri)
       request['Authorization'] = "Token #{@options[:token]}"
       request['User-Agent'] = "influxdb-client-ruby/#{InfluxDB2::VERSION}"
-      headers.each { |k,v| request[k] = v }
+      headers.each { |k, v| request[k] = v }
 
       request.body = payload
 
