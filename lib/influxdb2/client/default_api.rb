@@ -24,6 +24,8 @@ module InfluxDB2
     DEFAULT_TIMEOUT = 10
     DEFAULT_REDIRECT_COUNT = 10
 
+    HEADER_CONTENT_TYPE = 'Content-Type'.freeze
+
     # @param [Hash] options The options to be used by the client.
     def initialize(options:)
       @options = options
@@ -32,7 +34,17 @@ module InfluxDB2
 
     private
 
-    def _post(payload, uri, limit = @max_redirect_count)
+    def _post_json(payload, uri, headers: {})
+      _check_arg_type(:headers, headers, Hash)
+      _post(payload, uri, headers: headers.merge({HEADER_CONTENT_TYPE => 'application/json'}))
+    end
+
+    def _post_text(payload, uri, headers: {})
+      _check_arg_type(:headers, headers, Hash)
+      _post(payload, uri, headers: headers.merge({HEADER_CONTENT_TYPE => 'text/plain'}))
+    end
+
+    def _post(payload, uri, limit: @max_redirect_count, headers: {})
       raise InfluxError.from_message("Too many HTTP redirects. Exceeded limit: #{@max_redirect_count}") if limit.zero?
 
       http = Net::HTTP.new(uri.host, uri.port)
@@ -44,6 +56,8 @@ module InfluxDB2
       request = Net::HTTP::Post.new(uri.request_uri)
       request['Authorization'] = "Token #{@options[:token]}"
       request['User-Agent'] = "influxdb-client-ruby/#{InfluxDB2::VERSION}"
+      headers.each { |k,v| request[k] = v }
+
       request.body = payload
 
       begin
@@ -53,13 +67,17 @@ module InfluxDB2
           response
         when Net::HTTPRedirection then
           location = response['location']
-          _post(payload, URI.parse(location), limit - 1)
+          _post(payload, URI.parse(location), limit: limit - 1, headers: headers)
         else
           raise InfluxError.from_response(response)
         end
       ensure
         http.finish if http.started?
       end
+    end
+
+    def _check_arg_type(name, value, klass)
+      raise TypeError, "expected a #{klass.name} for #{name}; got #{value.class.name}" unless value.is_a?(klass)
     end
 
     def _check(key, value)

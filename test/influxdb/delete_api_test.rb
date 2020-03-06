@@ -112,7 +112,8 @@ class DeleteApiTest < MiniTest::Test
     body = '{"start":"2019-02-03T04:05:06+07:00","stop":"2019-04-03T04:05:06+07:00"}'
     headers = {
       'Authorization' => 'Token my-token',
-      'User-Agent' => "influxdb-client-ruby/#{InfluxDB2::VERSION}"
+      'User-Agent' => "influxdb-client-ruby/#{InfluxDB2::VERSION}",
+      'Content-Type' => 'application/json'
     }
     assert_requested(:post, 'http://localhost:9999/api/v2/delete?bucket=my-bucket&org=my-org',
                      times: 1, body: body, headers: headers)

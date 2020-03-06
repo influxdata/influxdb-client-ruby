@@ -163,7 +163,7 @@ module InfluxDB2
       uri = URI.parse(File.join(@options[:url], '/api/v2/write'))
       uri.query = URI.encode_www_form(bucket: bucket_param, org: org_param, precision: precision_param.to_s)
 
-      _post(payload, uri)
+      _post_text(payload, uri)
     end
 
     # Item for batching queue
