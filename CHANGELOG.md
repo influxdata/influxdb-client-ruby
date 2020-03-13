@@ -1,4 +1,4 @@
-## 1.2.0 [unreleased]
+## 1.2.0 [2020-03-13]
 
 ### Features
 1. [#23](https://github.com/influxdata/influxdb-client-ruby/issues/23): Added DeleteApi to delete time series data from InfluxDB.
