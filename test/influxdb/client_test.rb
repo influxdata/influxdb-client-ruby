@@ -85,7 +85,7 @@ class ClientTest < Minitest::Test
     client_not_running = InfluxDB2::Client.new('http://localhost:8099', 'my-token', use_ssl: false)
     health = client_not_running.health
 
-    assert_match 'Connection refused', health.message
+    assert_match 'Failed to open TCP connection to localhost:8099', health.message
     assert_equal 'influxdb', health.name
     assert_equal 'fail', health.status
   end
