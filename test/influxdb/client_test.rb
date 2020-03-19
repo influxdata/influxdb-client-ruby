@@ -21,6 +21,10 @@
 require 'test_helper'
 
 class ClientTest < Minitest::Test
+  def setup
+    WebMock.allow_net_connect!
+  end
+
   def test_defined_version_number
     refute_nil ::InfluxDB2::VERSION
   end
@@ -66,5 +70,23 @@ class ClientTest < Minitest::Test
 
     refute_nil write_api
     assert_instance_of InfluxDB2::WriteApi, write_api
+  end
+
+  def test_health
+    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token', use_ssl: false)
+
+    health = client.health
+    assert_equal 'ready for queries and writes', health.message
+    assert_equal 'influxdb', health.name
+    assert_equal 'pass', health.status
+  end
+
+  def test_health_not_running
+    client_not_running = InfluxDB2::Client.new('http://localhost:8099', 'my-token', use_ssl: false)
+    health = client_not_running.health
+
+    assert_match 'Failed to open TCP connection to localhost:8099', health.message
+    assert_equal 'influxdb', health.name
+    assert_equal 'fail', health.status
   end
 end
