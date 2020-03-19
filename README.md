@@ -231,6 +231,12 @@ The time range could be specified as:
 1. DateTime - `DateTime.rfc3339('2019-03-03T04:05:06+07:00')`
 1. Time - `Time.utc(2015, 10, 16, 8, 20, 15)`
 
+## Advanced Usage
+
+### Check the server status 
+
+Server availability can be checked using the `client.health` method. That is equivalent of the [influx ping](https://v2.docs.influxdata.com/v2.0/reference/cli/influx/ping/).
+
 ## Local tests
 
 ```

@@ -16,7 +16,7 @@ mkdir -p "${SCRIPT_PATH}"/../lib/influxdb2/client/models
 mv "${SCRIPT_PATH}"/../lib/influx_db2/models/* "${SCRIPT_PATH}"/../lib/influxdb2/client/models
 
 cd "${SCRIPT_PATH}"/../lib/influxdb2/client/models || exit
-rm -r $(ls | grep -v "\<dialect.rb\>\|\<query.rb\>\|\<delete_predicate_request.rb\>")
+rm -r $(ls | grep -v "\<health_check.rb\>\|\<dialect.rb\>\|\<query.rb\>\|\<delete_predicate_request.rb\>")
 
 # Clean
 rmdir "${SCRIPT_PATH}"/../lib/influx_db2/models

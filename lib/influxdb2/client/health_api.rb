@@ -17,14 +17,33 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+require_relative 'models/health_check'
 
-require 'influxdb2/client/default_api'
-require 'influxdb2/client/version'
-require 'influxdb2/client/client'
-require 'influxdb2/client/influx_error'
-require 'influxdb2/client/write_api'
-require 'influxdb2/client/query_api'
-require 'influxdb2/client/delete_api'
-require 'influxdb2/client/health_api'
-require 'influxdb2/client/point'
-require 'influxdb2/client/flux_table'
+module InfluxDB2
+  # The client of the InfluxDB 2.0 that implement Health HTTP API endpoint.
+  #
+  class HealthApi < DefaultApi
+    # @param [Hash] options The options to be used by the client.
+    def initialize(options:)
+      super(options: options)
+    end
+
+    # Get the health of an instance.
+    #
+    # @return [HealthCheck]
+    def health
+      uri = URI.parse(File.join(@options[:url], '/health'))
+      body = _get(uri).body
+      data = JSON.parse("[#{body}]", symbolize_names: true)[0]
+      HealthCheck.new.tap do |model|
+        model.build_from_hash data
+      end
+    rescue StandardError => e
+      HealthCheck.new.tap do |model|
+        model.name = 'influxdb'
+        model.status = 'fail'
+        model.message = e.message
+      end
+    end
+  end
+end

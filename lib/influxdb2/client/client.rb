@@ -77,6 +77,13 @@ module InfluxDB2
       DeleteApi.new(options: @options)
     end
 
+    # Get the health of an instance.
+    #
+    # @return [HealthCheck]
+    def health
+      HealthApi.new(options: @options).health
+    end
+
     # Close all connections into InfluxDB 2.
     #
     # @return [ true ] Always true.

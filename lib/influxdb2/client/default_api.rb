@@ -45,6 +45,14 @@ module InfluxDB2
     end
 
     def _post(payload, uri, limit: @max_redirect_count, headers: {})
+      _request(payload, uri, limit: limit, headers: headers, request: Net::HTTP::Post)
+    end
+
+    def _get(uri, limit: @max_redirect_count, headers: {})
+      _request(nil, uri, limit: limit, headers: headers.merge('Accept' => 'application/json'), request: Net::HTTP::Get)
+    end
+
+    def _request(payload, uri, limit: @max_redirect_count, headers: {}, request: Net::HTTP::Post)
       raise InfluxError.from_message("Too many HTTP redirects. Exceeded limit: #{@max_redirect_count}") if limit.zero?
 
       http = Net::HTTP.new(uri.host, uri.port)
@@ -53,7 +61,7 @@ module InfluxDB2
       http.read_timeout = @options[:read_timeout] || DEFAULT_TIMEOUT
       http.use_ssl = @options[:use_ssl].nil? ? true : @options[:use_ssl]
 
-      request = Net::HTTP::Post.new(uri.request_uri)
+      request = request.new(uri.request_uri)
       request['Authorization'] = "Token #{@options[:token]}"
       request['User-Agent'] = "influxdb-client-ruby/#{InfluxDB2::VERSION}"
       headers.each { |k, v| request[k] = v }
