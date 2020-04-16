@@ -1,7 +1,12 @@
 ## 1.3.0 [unreleased]
 
 ### Features
+
 1. [#32](https://github.com/influxdata/influxdb-client-ruby/pull/32): Checks the health of a running InfluxDB instance by querying the /health
+
+### Documentation
+
+1. [#35](https://github.com/influxdata/influxdb-client-ruby/pull/35): Clarify how to use a client with InfluxDB 1.8
 
 ## 1.2.0 [2020-03-13]
 
@@ -13,7 +18,7 @@
 ### Security
 1. [#29](https://github.com/influxdata/influxdb-client-ruby/pull/29): Upgrade rake to version 12.3.3 - [CVE-2020-8130](https://github.com/advisories/GHSA-jppv-gw3r-w3q8)
 
-### Bugs
+### Bug Fixes
 1. [#22](https://github.com/influxdata/influxdb-client-ruby/pull/22): Fixed batch write
 1. [#28](https://github.com/influxdata/influxdb-client-ruby/pull/28): Correctly parse CSV where multiple results include multiple tables
 1. [#30](https://github.com/influxdata/influxdb-client-ruby/pull/30): Send Content-Type headers

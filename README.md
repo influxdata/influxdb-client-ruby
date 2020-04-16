@@ -10,7 +10,7 @@
 
 This repository contains the reference Ruby client for the InfluxDB 2.0.
 
-#### Note: Use this client library with InfluxDB 2.x and InfluxDB 1.8+. For connecting to InfluxDB 1.7 or earlier instances, use the [influxdb-ruby](https://github.com/influxdata/influxdb-ruby) client library.
+#### Note: Use this client library with InfluxDB 2.x and InfluxDB 1.8+ ([see details](#influxdb-18-api-compatibility)). For connecting to InfluxDB 1.7 or earlier instances, use the [influxdb-ruby](https://github.com/influxdata/influxdb-ruby) client library.
 
 ## Installation
 
@@ -236,6 +236,20 @@ The time range could be specified as:
 ### Check the server status 
 
 Server availability can be checked using the `client.health` method. That is equivalent of the [influx ping](https://v2.docs.influxdata.com/v2.0/reference/cli/influx/ping/).
+
+### InfluxDB 1.8 API compatibility
+
+[InfluxDB 1.8.0 introduced forward compatibility APIs](https://docs.influxdata.com/influxdb/latest/tools/api/#influxdb-2-0-api-compatibility-endpoints) for InfluxDB 2.0. This allow you to easily move from InfluxDB 1.x to InfluxDB 2.0 Cloud or open source.
+
+The following forward compatible APIs are available:
+
+| API | Endpoint | Description |
+|:----------|:----------|:----------|
+| [query_api.rb](lib/influxdb2/client/query_api.rb) | [/api/v2/query](https://docs.influxdata.com/influxdb/latest/tools/api/#api-v2-query-http-endpoint) | Query data in InfluxDB 1.8.0+ using the InfluxDB 2.0 API and [Flux](https://docs.influxdata.com/flux/latest/) _(endpoint should be enabled by [`flux-enabled` option](https://docs.influxdata.com/influxdb/latest/administration/config/#flux-enabled-false))_  |
+| [write_api.rb](lib/influxdb2/client/write_api.rb) | [/api/v2/write](https://docs.influxdata.com/influxdb/latest/tools/api/#api-v2-write-http-endpoint) | Write data to InfluxDB 1.8.0+ using the InfluxDB 2.0 API |
+| [health_api.rb](lib/influxdb2/client/health_api.rb) | [/health](https://docs.influxdata.com/influxdb/latest/tools/api/#health-http-endpoint) | Check the health of your InfluxDB instance |    
+
+For detail info see [InfluxDB 1.8 example](examples/influxdb_18_example.rb).
 
 ## Local tests
 
