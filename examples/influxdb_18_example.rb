@@ -31,3 +31,5 @@ query_api = client.create_query_api
 query = "from(bucket: \"#{bucket}\") |> range(start: -1h)"
 result = query_api.query(query: query)
 result[0].records.each { |record| puts "#{record.time} #{record.measurement}: #{record.field} #{record.value}" }
+
+client.close!
