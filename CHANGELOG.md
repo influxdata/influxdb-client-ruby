@@ -1,7 +1,12 @@
 ## 1.3.0 [unreleased]
 
 ### Features
+
 1. [#32](https://github.com/influxdata/influxdb-client-ruby/pull/32): Checks the health of a running InfluxDB instance by querying the /health
+
+### Documentation
+
+1. [#35](https://github.com/influxdata/influxdb-client-ruby/pull/35): Clarify how to use a client with InfluxDB 1.8
 
 ## 1.2.0 [2020-03-13]
 
