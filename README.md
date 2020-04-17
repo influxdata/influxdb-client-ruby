@@ -23,7 +23,7 @@ The client can be installed manually or with bundler.
 To install the client gem manually:
 
 ```
-gem install influxdb-client -v 1.2.0
+gem install influxdb-client -v 1.3.0
 ```
 
 ## Usage
