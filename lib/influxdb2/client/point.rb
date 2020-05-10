@@ -28,7 +28,7 @@ module InfluxDB2
   class Point
     # Create DataPoint instance for specified measurement name.
     #
-    # @example InfluxDB::Point.new(name: "h2o",
+    # @example InfluxDB2::Point.new(name: "h2o",
     #   tags: {host: 'aws', region: 'us'},
     #   fields: {level: 5, saturation: "99%"},
     #   time: 123)
@@ -64,7 +64,7 @@ module InfluxDB2
 
     # Adds or replaces a tag value for a point.
     #
-    # @example InfluxDB::Point.new(name: "h2o")
+    # @example InfluxDB2::Point.new(name: "h2o")
     #   .add_tag("location", "europe")
     #   .add_field("level", 2)
     #
@@ -77,7 +77,7 @@ module InfluxDB2
 
     # Adds or replaces a field value for a point.
     #
-    # @example InfluxDB::Point.new(name: "h2o")
+    # @example InfluxDB2::Point.new(name: "h2o")
     #   .add_tag("location", "europe")
     #   .add_field("level", 2)
     #
@@ -90,15 +90,15 @@ module InfluxDB2
 
     # Updates the timestamp for the point.
     #
-    # @example InfluxDB::Point.new(name: "h2o")
+    # @example InfluxDB2::Point.new(name: "h2o")
     #   .add_tag("location", "europe")
     #   .add_field("level", 2)
-    #   .time(Time.new(2015, 10, 15, 8, 20, 15), InfluxDB::WritePrecision::MILLISECOND)
+    #   .time(Time.new(2015, 10, 15, 8, 20, 15), InfluxDB2::WritePrecision::MILLISECOND)
     #
-    # @example InfluxDB::Point.new(name: "h2o")
+    # @example InfluxDB2::Point.new(name: "h2o")
     #   .add_tag("location", "europe")
     #   .add_field("level", 2)
-    #   .time(123, InfluxDB::WritePrecision::NANOSECOND)
+    #   .time(123, InfluxDB2::WritePrecision::NANOSECOND)
     #
     # @param [Object] time the timestamp
     # @param [WritePrecision] precision the timestamp precision

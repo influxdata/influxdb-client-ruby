@@ -101,14 +101,14 @@ module InfluxDB2
     #     },
     #     {name: 'gpu', fields: {value: 0.9999}}
     #   ],
-    #   precision: InfluxDB::WritePrecision::NANOSECOND,
+    #   precision: InfluxDB2::WritePrecision::NANOSECOND,
     #   bucket: 'my-bucket',
     #   org: 'my-org'
     # )
     #
     # @example write(data: 'h2o,location=west value=33i 15')
     #
-    # @example point = InfluxDB::Point.new(name: 'h2o')
+    # @example point = InfluxDB2::Point.new(name: 'h2o')
     #   .add_tag('location', 'europe')
     #   .add_field('level', 2)
     #
