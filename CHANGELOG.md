@@ -4,6 +4,10 @@
 
 1. [#38](https://github.com/influxdata/influxdb-client-ruby/pull/38): Remove trailing slash from connection URL
 
+### Documentation
+
+1. [#37](https://github.com/influxdata/influxdb-client-ruby/pull/37): Fix documentation: replace references to InfluxDB module by InfluxDB2. Allow `require 'influxdb-client'`
+
 ## 1.3.0 [2020-04-17]
 
 ### Features
