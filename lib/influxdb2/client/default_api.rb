@@ -34,6 +34,10 @@ module InfluxDB2
 
     private
 
+    def _parse_uri(api_path)
+      URI.parse(File.join(@options[:url], api_path))
+    end
+
     def _post_json(payload, uri, headers: {})
       _check_arg_type(:headers, headers, Hash)
       _post(payload, uri, headers: headers.merge(HEADER_CONTENT_TYPE => 'application/json'))

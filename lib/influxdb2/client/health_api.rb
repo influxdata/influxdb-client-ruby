@@ -32,7 +32,7 @@ module InfluxDB2
     #
     # @return [HealthCheck]
     def health
-      uri = URI.parse(File.join(@options[:url], '/health'))
+      uri = _parse_uri('/health')
       body = _get(uri).body
       data = JSON.parse("[#{body}]", symbolize_names: true)[0]
       HealthCheck.new.tap do |model|

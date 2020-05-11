@@ -1,5 +1,9 @@
 ## 1.4.0 [unreleased]
 
+### Features
+
+1. [#38](https://github.com/influxdata/influxdb-client-ruby/pull/38): Remove trailing slash from connection URL
+
 ## 1.3.0 [2020-04-17]
 
 ### Features
