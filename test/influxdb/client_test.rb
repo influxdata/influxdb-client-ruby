@@ -89,4 +89,11 @@ class ClientTest < Minitest::Test
     assert_equal 'influxdb', health.name
     assert_equal 'fail', health.status
   end
+
+  def test_trailing_slash_in_url
+    uri = URI.parse(File.join('http://localhost:8099', '/api/v2/write'))
+    assert_equal 'http://localhost:8099/api/v2/write', uri.to_s
+    uri = URI.parse(File.join('http://localhost:8099/', '/api/v2/write'))
+    assert_equal 'http://localhost:8099/api/v2/write', uri.to_s
+  end
 end

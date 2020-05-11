@@ -70,7 +70,7 @@ module InfluxDB2
       payload = _generate_payload(query, dialect)
       return nil if payload.nil?
 
-      uri = URI.parse(File.join(@options[:url], '/api/v2/query'))
+      uri = _parse_uri('/api/v2/query')
       uri.query = URI.encode_www_form(org: org_param)
 
       _post_json(payload.to_body.to_json, uri)

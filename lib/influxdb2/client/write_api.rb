@@ -160,7 +160,7 @@ module InfluxDB2
 
       return nil unless payload.instance_of?(String) || payload.empty?
 
-      uri = URI.parse(File.join(@options[:url], '/api/v2/write'))
+      uri = _parse_uri('/api/v2/write')
       uri.query = URI.encode_www_form(bucket: bucket_param, org: org_param, precision: precision_param.to_s)
 
       _post_text(payload, uri)

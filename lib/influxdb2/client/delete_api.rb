@@ -61,7 +61,7 @@ module InfluxDB2
       _check('bucket', bucket_param)
       _check('org', org_param)
 
-      uri = URI.parse(File.join(@options[:url], '/api/v2/delete'))
+      uri = _parse_uri('/api/v2/delete')
       uri.query = URI.encode_www_form(org: org_param, bucket: bucket_param)
 
       _post_json(delete_request.to_body.to_json, uri)
