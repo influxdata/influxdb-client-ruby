@@ -1,5 +1,5 @@
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
-require 'influxdb2/client'
+require 'influxdb-client'
 
 username = 'username'
 password = 'password'

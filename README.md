@@ -160,10 +160,10 @@ write_api = client.create_write_api
 write_api.write(data: 'h2o,location=west value=33i 15', precision: InfluxDB2::WritePrecision::SECOND)
 ```
 Allowed values for precision are:
-- `InfluxDB::WritePrecision::NANOSECOND` for nanosecond
-- `InfluxDB::WritePrecision::MICROSECOND` for microsecond
-- `InfluxDB::WritePrecision::MILLISECOND` for millisecond
-- `InfluxDB::WritePrecision::SECOND` for second
+- `InfluxDB2::WritePrecision::NANOSECOND` for nanosecond
+- `InfluxDB2::WritePrecision::MICROSECOND` for microsecond
+- `InfluxDB2::WritePrecision::MILLISECOND` for millisecond
+- `InfluxDB2::WritePrecision::SECOND` for second
 
 #### Configure destination
 

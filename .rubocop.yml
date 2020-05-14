@@ -24,6 +24,9 @@ AllCops:
   Exclude:
     - 'lib/influxdb2/client/models/**/*'
     - 'vendor/**/*'
+Naming/FileName:
+  Exclude:
+    - 'lib/influxdb-client.rb'
 Metrics/LineLength:
   Max: 120
 Metrics/MethodLength:
