@@ -22,6 +22,10 @@ module InfluxDB2
 
     attr_accessor :status
 
+    attr_accessor :version
+
+    attr_accessor :commit
+
     class EnumAttributeValidator
       attr_reader :datatype
       attr_reader :allowable_values
@@ -50,7 +54,9 @@ module InfluxDB2
         :'name' => :'name',
         :'message' => :'message',
         :'checks' => :'checks',
-        :'status' => :'status'
+        :'status' => :'status',
+        :'version' => :'version',
+        :'commit' => :'commit'
       }
     end
 
@@ -60,7 +66,9 @@ module InfluxDB2
         :'name' => :'String',
         :'message' => :'String',
         :'checks' => :'Array<HealthCheck>',
-        :'status' => :'String'
+        :'status' => :'String',
+        :'version' => :'String',
+        :'commit' => :'String'
       }
     end
 
@@ -88,6 +96,14 @@ module InfluxDB2
 
       if attributes.has_key?(:'status')
         self.status = attributes[:'status']
+      end
+
+      if attributes.has_key?(:'version')
+        self.version = attributes[:'version']
+      end
+
+      if attributes.has_key?(:'commit')
+        self.commit = attributes[:'commit']
       end
     end
 
@@ -134,7 +150,9 @@ module InfluxDB2
           name == o.name &&
           message == o.message &&
           checks == o.checks &&
-          status == o.status
+          status == o.status &&
+          version == o.version &&
+          commit == o.commit
     end
 
     # @see the `==` method
@@ -146,7 +164,7 @@ module InfluxDB2
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [name, message, checks, status].hash
+      [name, message, checks, status, version, commit].hash
     end
 
     # Builds the object from hash

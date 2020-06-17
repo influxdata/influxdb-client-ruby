@@ -13,26 +13,20 @@ OpenAPI Generator version: 3.3.4
 require 'date'
 
 module InfluxDB2
-  # Query influx with specific return formatting.
+  # Query influx using the Flux language
   class Query
     attr_accessor :extern
 
     # Query script to execute.
     attr_accessor :query
 
-    # The type of query.
+    # The type of query. Must be \"flux\".
     attr_accessor :type
 
-    # Required for `influxql` type queries.
-    attr_accessor :db
-
-    # Required for `influxql` type queries.
-    attr_accessor :rp
-
-    # Required for `influxql` type queries.
-    attr_accessor :cluster
-
     attr_accessor :dialect
+
+    # Specifies the time that should be reported as \"now\" in the query. Default is the server's now time.
+    attr_accessor :now
 
     class EnumAttributeValidator
       attr_reader :datatype
@@ -62,10 +56,8 @@ module InfluxDB2
         :'extern' => :'extern',
         :'query' => :'query',
         :'type' => :'type',
-        :'db' => :'db',
-        :'rp' => :'rp',
-        :'cluster' => :'cluster',
-        :'dialect' => :'dialect'
+        :'dialect' => :'dialect',
+        :'now' => :'now'
       }
     end
 
@@ -75,10 +67,8 @@ module InfluxDB2
         :'extern' => :'File',
         :'query' => :'String',
         :'type' => :'String',
-        :'db' => :'String',
-        :'rp' => :'String',
-        :'cluster' => :'String',
-        :'dialect' => :'Dialect'
+        :'dialect' => :'Dialect',
+        :'now' => :'DateTime'
       }
     end
 
@@ -100,24 +90,14 @@ module InfluxDB2
 
       if attributes.has_key?(:'type')
         self.type = attributes[:'type']
-      else
-        self.type = 'flux'
-      end
-
-      if attributes.has_key?(:'db')
-        self.db = attributes[:'db']
-      end
-
-      if attributes.has_key?(:'rp')
-        self.rp = attributes[:'rp']
-      end
-
-      if attributes.has_key?(:'cluster')
-        self.cluster = attributes[:'cluster']
       end
 
       if attributes.has_key?(:'dialect')
         self.dialect = attributes[:'dialect']
+      end
+
+      if attributes.has_key?(:'now')
+        self.now = attributes[:'now']
       end
     end
 
@@ -136,7 +116,7 @@ module InfluxDB2
     # @return true if the model is valid
     def valid?
       return false if @query.nil?
-      type_validator = EnumAttributeValidator.new('String', ['flux', 'influxql'])
+      type_validator = EnumAttributeValidator.new('String', ['flux'])
       return false unless type_validator.valid?(@type)
       true
     end
@@ -144,7 +124,7 @@ module InfluxDB2
     # Custom attribute writer method checking allowed values (enum).
     # @param [Object] type Object to be assigned
     def type=(type)
-      validator = EnumAttributeValidator.new('String', ['flux', 'influxql'])
+      validator = EnumAttributeValidator.new('String', ['flux'])
       unless validator.valid?(type)
         fail ArgumentError, 'invalid value for "type", must be one of #{validator.allowable_values}.'
       end
@@ -159,10 +139,8 @@ module InfluxDB2
           extern == o.extern &&
           query == o.query &&
           type == o.type &&
-          db == o.db &&
-          rp == o.rp &&
-          cluster == o.cluster &&
-          dialect == o.dialect
+          dialect == o.dialect &&
+          now == o.now
     end
 
     # @see the `==` method
@@ -174,7 +152,7 @@ module InfluxDB2
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [extern, query, type, db, rp, cluster, dialect].hash
+      [extern, query, type, dialect, now].hash
     end
 
     # Builds the object from hash
