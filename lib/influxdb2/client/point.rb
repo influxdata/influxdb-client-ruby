@@ -21,6 +21,7 @@
 module InfluxDB2
   DEFAULT_WRITE_PRECISION = WritePrecision::NANOSECOND
   ESCAPE_KEY_LIST = ['\\'.freeze, ','.freeze, ' '.freeze, '='.freeze].freeze
+  REPLACE_KEY_LIST = { "\n".freeze => '\n'.freeze, "\r".freeze => '\r'.freeze, "\t".freeze => '\t'.freeze }.freeze
   ESCAPE_VALUE_LIST = ['\\'.freeze, '"'.freeze].freeze
 
   # Point defines the values that will be written to the database.
@@ -165,6 +166,9 @@ module InfluxDB2
       result = value.dup
       ESCAPE_KEY_LIST.each do |ch|
         result = result.gsub(ch) { "\\#{ch}" }
+      end
+      REPLACE_KEY_LIST.keys.each do |ch|
+        result = result.gsub(ch) { REPLACE_KEY_LIST[ch] }
       end
       result
     end

@@ -1,5 +1,8 @@
 ## 1.6.0 [unreleased]
 
+### Bug Fixes
+1. [#42](https://github.com/influxdata/influxdb-client-ruby/pull/42): Fixed serialization of `\n`, `\r` and `\t` to Line Protocol 
+
 ## 1.5.0 [2020-06-19]
 
 ### API
