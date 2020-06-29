@@ -218,4 +218,25 @@ class PointTest < MiniTest::Test
 
     assert_equal 'h2o level=2i 123', point.to_line_protocol
   end
+
+  def test_tag_escaping
+    point = InfluxDB2::Point.new(name: "h\n2\ro\t_data")
+                            .add_tag("new\nline", "new\nline")
+                            .add_tag("carriage\rreturn", "carriage\nreturn")
+                            .add_tag("t\tab", "t\tab")
+                            .add_field('level', 2)
+
+    puts point.to_line_protocol
+
+    assert_equal 'h\\n2\\ro\\t_data,carriage\\rreturn=carriage\\nreturn,new\\nline=new\\nline,t\\tab=t\\tab level=2i',
+                 point.to_line_protocol
+  end
+
+  def test_equal_sign_escaping
+    point = InfluxDB2::Point.new(name: 'h=2o')
+                            .add_tag('l=ocation', 'e=urope')
+                            .add_field('l=evel', 2)
+
+    assert_equal 'h=2o,l\\=ocation=e\\=urope l\\=evel=2i', point.to_line_protocol
+  end
 end

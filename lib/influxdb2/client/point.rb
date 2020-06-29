@@ -21,6 +21,8 @@
 module InfluxDB2
   DEFAULT_WRITE_PRECISION = WritePrecision::NANOSECOND
   ESCAPE_KEY_LIST = ['\\'.freeze, ','.freeze, ' '.freeze, '='.freeze].freeze
+  ESCAPE_MEASUREMENT_LIST = ['\\'.freeze, ','.freeze, ' '.freeze].freeze
+  REPLACE_KEY_LIST = { "\n".freeze => '\n'.freeze, "\r".freeze => '\r'.freeze, "\t".freeze => '\t'.freeze }.freeze
   ESCAPE_VALUE_LIST = ['\\'.freeze, '"'.freeze].freeze
 
   # Point defines the values that will be written to the database.
@@ -113,7 +115,7 @@ module InfluxDB2
     # @return a string representation of the point
     def to_line_protocol
       line_protocol = ''
-      measurement = _escape_key(@name || '')
+      measurement = _escape_key(@name || '', ESCAPE_MEASUREMENT_LIST)
 
       line_protocol << measurement
 
@@ -161,10 +163,13 @@ module InfluxDB2
       end.reject(&:nil?).join(','.freeze)
     end
 
-    def _escape_key(value)
+    def _escape_key(value, escape_list = ESCAPE_KEY_LIST)
       result = value.dup
-      ESCAPE_KEY_LIST.each do |ch|
+      escape_list.each do |ch|
         result = result.gsub(ch) { "\\#{ch}" }
+      end
+      REPLACE_KEY_LIST.keys.each do |ch|
+        result = result.gsub(ch) { REPLACE_KEY_LIST[ch] }
       end
       result
     end
