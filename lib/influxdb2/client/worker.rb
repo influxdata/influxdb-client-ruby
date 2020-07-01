@@ -99,7 +99,7 @@ module InfluxDB2
     end
 
     def _write_raw(key, points)
-      if @write_options.jitter_interval.positive?
+      if @write_options.jitter_interval > 0
         jitter_delay = (@write_options.jitter_interval.to_f / 1_000) * rand
         sleep jitter_delay
       end
