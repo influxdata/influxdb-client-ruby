@@ -1,4 +1,4 @@
-## 1.6.0 [unreleased]
+## 1.6.0 [2020-07-17]
 
 ### Bug Fixes
 1. [#42](https://github.com/influxdata/influxdb-client-ruby/pull/42): Fixed serialization of `\n`, `\r` and `\t` to Line Protocol, `=` is valid sign for measurement name  
