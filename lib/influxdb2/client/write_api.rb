@@ -34,21 +34,28 @@ module InfluxDB2
     # @param [Integer] retry_interval: number of milliseconds to retry unsuccessful write.
     #   The retry interval is used when the InfluxDB server does not specify "Retry-After" header.
     # @param [Integer] jitter_interval: the number of milliseconds to increase the batch flush interval
+    # @param [Integer] max_retries: max number of retries when write fails
+    # @param [Integer] max_retry_delay: maximum delay when retrying write in milliseconds
     #   by a random amount
     def initialize(write_type: WriteType::SYNCHRONOUS, batch_size: 1_000, flush_interval: 1_000, retry_interval: 1_000,
-                   jitter_interval: 0)
+                   jitter_interval: 0, max_retries: 3, max_retry_delay: 15_000)
       _check_not_negative('batch_size', batch_size)
       _check_not_negative('flush_interval', flush_interval)
       _check_not_negative('retry_interval', retry_interval)
       _check_positive('jitter_interval', jitter_interval)
+      _check_positive('max_retries', jitter_interval)
+      _check_positive('max_retry_delay', jitter_interval)
       @write_type = write_type
       @batch_size = batch_size
       @flush_interval = flush_interval
       @retry_interval = retry_interval
       @jitter_interval = jitter_interval
+      @max_retries = max_retries
+      @max_retry_delay = max_retry_delay
     end
 
-    attr_reader :write_type, :batch_size, :flush_interval, :retry_interval, :jitter_interval
+    attr_reader :write_type, :batch_size, :flush_interval, :retry_interval, :jitter_interval,
+                :max_retries, :max_retry_delay
 
     def _check_not_negative(key, value)
       raise ArgumentError, "The '#{key}' should be positive or zero, but is: #{value}" if value <= 0
