@@ -211,7 +211,7 @@ class WriteApiBatchingTest < MiniTest::Test
     assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: request)
 
-    sleep(1)
+    sleep(5)
 
     assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 2, body: request)
@@ -311,7 +311,7 @@ class WriteApiBatchingTest < MiniTest::Test
 
     write_options = InfluxDB2::WriteOptions.new(write_type: InfluxDB2::WriteType::BATCHING,
                                                 batch_size: 1, retry_interval: 2_000, max_retries: 3,
-                                                max_retry_delay: 5_000)
+                                                max_retry_delay: 5_000, exponential_base: 2)
 
     error = assert_raises InfluxDB2::InfluxError do
       @client.create_write_api(write_options: write_options).write(data: point)
@@ -359,7 +359,7 @@ class WriteApiBatchingTest < MiniTest::Test
 
     write_options = InfluxDB2::WriteOptions.new(write_type: InfluxDB2::WriteType::BATCHING,
                                                 batch_size: 1, retry_interval: 2_000, max_retries: 3,
-                                                max_retry_delay: 5_000)
+                                                max_retry_delay: 5_000, exponential_base: 2)
 
     error = assert_raises InfluxDB2::InfluxError do
       @client.create_write_api(write_options: write_options).write(data: 'h2o,location=west value=33i 15')
@@ -393,7 +393,7 @@ class WriteApiBatchingTest < MiniTest::Test
 
     write_options = InfluxDB2::WriteOptions.new(write_type: InfluxDB2::WriteType::BATCHING,
                                                 batch_size: 1, retry_interval: 2_000, max_retries: 3,
-                                                max_retry_delay: 5_000)
+                                                max_retry_delay: 5_000, exponential_base: 2)
 
     error = assert_raises InfluxDB2::InfluxError do
       @client.create_write_api(write_options: write_options).write(data: point)
