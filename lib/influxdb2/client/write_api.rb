@@ -38,9 +38,9 @@ module InfluxDB2
     # @param [Integer] max_retry_delay: maximum delay when retrying write in milliseconds
     #   by a random amount
     # @param [Integer] exponential_base: base for the exponential retry delay, the next delay is computed as
-    #   "backoff_factor * exponential_base^(attempts-1) + random(jitter_interval)"
-    def initialize(write_type: WriteType::SYNCHRONOUS, batch_size: 1_000, flush_interval: 1_000, retry_interval: 1_000,
-                   jitter_interval: 0, max_retries: 3, max_retry_delay: 180_000, exponential_base: 5)
+    #   "exponential_base^(attempts-1) + random(jitter_interval)"
+    def initialize(write_type: WriteType::SYNCHRONOUS, batch_size: 1_000, flush_interval: 1_000, retry_interval: 5_000,
+                   jitter_interval: 0, max_retries: 5, max_retry_delay: 180_000, exponential_base: 5)
       _check_not_negative('batch_size', batch_size)
       _check_not_negative('flush_interval', flush_interval)
       _check_not_negative('retry_interval', retry_interval)
