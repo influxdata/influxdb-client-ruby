@@ -47,6 +47,7 @@ module InfluxDB2
       _check_positive('jitter_interval', jitter_interval)
       _check_positive('max_retries', jitter_interval)
       _check_positive('max_retry_delay', jitter_interval)
+      _check_positive('exponential_base', exponential_base)
       @write_type = write_type
       @batch_size = batch_size
       @flush_interval = flush_interval
