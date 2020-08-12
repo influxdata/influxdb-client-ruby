@@ -202,7 +202,7 @@ class WriteApiBatchingTest < MiniTest::Test
     @write_client = @client.create_write_api(write_options: @write_options)
 
     stub_request(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
-        .to_return(status: 204)
+      .to_return(status: 204)
 
     request = "h2o_feet,location=coyote_creek water_level=1.0 1\n" \
                'h2o_feet,location=coyote_creek water_level=2.0 2'
