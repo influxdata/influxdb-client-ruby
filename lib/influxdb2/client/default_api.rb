@@ -83,8 +83,8 @@ module InfluxDB2
         else
           raise InfluxError.from_response(response)
         end
-      rescue Errno::ECONNREFUSED => e
-        raise InfluxError.from_error(e)
+      rescue *InfluxError::HTTP_ERRORS => error
+        raise InfluxError.from_error(error)
       ensure
         http.finish if http.started?
       end

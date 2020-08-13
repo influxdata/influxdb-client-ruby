@@ -107,7 +107,8 @@ module InfluxDB2
       end
       @api_client.write_raw(points.join("\n"), precision: key.precision, bucket: key.bucket, org: key.org)
     rescue InfluxError => e
-      raise e if ((e.code.nil? || e.code.to_i < 429) && !e.connection_error) || attempts > @write_options.max_retries
+      raise e if attempts > @write_options.max_retries
+      raise e if (e.code.nil? || e.code.to_i < 429) && !_connection_error(e.original)
 
       timeout = if e.retry_after.empty?
                   [retry_interval.to_f, @write_options.max_retry_delay.to_f].min / 1_000
@@ -117,6 +118,10 @@ module InfluxDB2
 
       sleep timeout
       _write_raw(key, points, attempts + 1, retry_interval * @write_options.exponential_base)
+    end
+
+    def _connection_error(error)
+      InfluxError::HTTP_ERRORS.any? {|c| error.instance_of? c}
     end
   end
 end
