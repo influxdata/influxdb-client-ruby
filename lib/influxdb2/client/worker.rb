@@ -31,6 +31,8 @@ module InfluxDB2
 
       @queue_event.push(true)
 
+      Thread.abort_on_exception = true
+
       @thread_flush = Thread.new do
         until api_client.closed
           sleep @write_options.flush_interval.to_f / 1_000
@@ -94,22 +96,32 @@ module InfluxDB2
 
     def _write(data)
       data.each do |key, points|
-        _write_raw(key, points)
+        _write_raw(key, points, 1, @write_options.retry_interval)
       end
     end
 
-    def _write_raw(key, points)
+    def _write_raw(key, points, attempts, retry_interval)
       if @write_options.jitter_interval > 0
         jitter_delay = (@write_options.jitter_interval.to_f / 1_000) * rand
         sleep jitter_delay
       end
       @api_client.write_raw(points.join("\n"), precision: key.precision, bucket: key.bucket, org: key.org)
     rescue InfluxError => e
-      raise e if e.code.nil? || !(%w[429 503].include? e.code)
+      raise e if attempts > @write_options.max_retries
+      raise e if (e.code.nil? || e.code.to_i < 429) && !_connection_error(e.original)
 
-      timeout = e.retry_after.empty? ? @write_options.retry_interval.to_f / 1_000 : e.retry_after.to_f
+      timeout = if e.retry_after.empty?
+                  [retry_interval.to_f, @write_options.max_retry_delay.to_f].min / 1_000
+                else
+                  e.retry_after.to_f
+                end
+
       sleep timeout
-      _write_raw(key, points)
+      _write_raw(key, points, attempts + 1, retry_interval * @write_options.exponential_base)
+    end
+
+    def _connection_error(error)
+      InfluxError::HTTP_ERRORS.any? { |c| error.instance_of? c }
     end
   end
 end

@@ -123,12 +123,16 @@ The writes are processed in batches which are configurable by `WriteOptions`:
 | --- | --- | --- |
 | batchSize | the number of data point to collect in batch | 1000 |
 | flush_interval | the number of milliseconds before the batch is written | 1000 |
-| retry_interval | the number of milliseconds to retry unsuccessful write. The retry interval is used when the InfluxDB server does not specify "Retry-After" header. | 1000 |
+| retry_interval | the number of milliseconds to retry unsuccessful write. The retry interval is used when the InfluxDB server does not specify "Retry-After" header. | 5000 |
 | jitter_interval | the number of milliseconds to increase the batch flush interval by a random amount | 0 |
-
+| max_retries | the number of max retries when write fails | 5 |
+| max_retry_delay | maximum delay when retrying write in milliseconds | 180000 |
+| exponential_base | the base for the exponential retry delay, the next delay is computed as `retry_interval * exponential_base^(attempts - 1) + random(jitter_interval)` | 5 |
 ```ruby
 write_options = InfluxDB2::WriteOptions.new(write_type: InfluxDB2::WriteType::BATCHING,
-                                            batch_size: 10, flush_interval: 5_000)
+                                            batch_size: 10, flush_interval: 5_000, 
+                                            max_retries: 3, max_retry_delay: 15_000,
+                                            exponential_base: 2)
 client = InfluxDB2::Client.new('http://localhost:9999',
                                'my-token',
                                bucket: 'my-bucket',

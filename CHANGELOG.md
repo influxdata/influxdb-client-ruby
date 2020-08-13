@@ -1,5 +1,8 @@
 ## 1.7.0 [unreleased]
 
+### Features
+1. [#47](https://github.com/influxdata/influxdb-client-ruby/pull/47): Added max_retries, max_retry_delay and exponential_base to WriteApi
+
 ## 1.6.0 [2020-07-17]
 
 ### Bug Fixes
