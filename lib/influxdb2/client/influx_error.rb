@@ -1,17 +1,16 @@
 module InfluxDB2
   # InfluxError that is raised during HTTP communication.
   class InfluxError < StandardError
-
     HTTP_ERRORS = [
-        EOFError,
-        Errno::ECONNREFUSED,
-        Errno::ECONNRESET,
-        Errno::EINVAL,
-        Net::HTTPBadResponse,
-        Net::HTTPHeaderSyntaxError,
-        Net::ProtocolError,
-        Timeout::Error
-    ]
+      EOFError,
+      Errno::ECONNREFUSED,
+      Errno::ECONNRESET,
+      Errno::EINVAL,
+      Net::HTTPBadResponse,
+      Net::HTTPHeaderSyntaxError,
+      Net::ProtocolError,
+      Timeout::Error
+    ].freeze
 
     # HTTP status code
     attr_reader :code

@@ -121,7 +121,7 @@ module InfluxDB2
     end
 
     def _connection_error(error)
-      InfluxError::HTTP_ERRORS.any? {|c| error.instance_of? c}
+      InfluxError::HTTP_ERRORS.any? { |c| error.instance_of? c }
     end
   end
 end
