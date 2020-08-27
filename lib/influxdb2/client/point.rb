@@ -138,6 +138,8 @@ module InfluxDB2
     def _escape_tags
       return if @tags.nil?
 
+      @tags = @tags.each_with_object({}) { |(k, v), tag| tag[k.to_s] = v }
+
       @tags.sort.to_h.map do |k, v|
         key = _escape_key(k.to_s)
         value = _escape_key(v.to_s)

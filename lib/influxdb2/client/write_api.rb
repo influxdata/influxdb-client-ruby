@@ -72,6 +72,28 @@ module InfluxDB2
 
   SYNCHRONOUS = InfluxDB2::WriteOptions.new(write_type: WriteType::SYNCHRONOUS)
 
+  # Settings to store default tags.
+  #
+  class PointSettings
+    # @param [Hash] default_tags Default tags which will be added to each point written by api.
+    def initialize(default_tags: nil)
+      @default_tags = default_tags || {}
+    end
+    attr_reader :default_tags
+
+    def add_default_tag(key, expression)
+      @default_tags[key] = expression
+    end
+
+    def self.get_value(value)
+      if value.start_with?('${env.')
+        ENV[value[6..-2]]
+      else
+        value
+      end
+    end
+  end
+
   # Precision constants.
   #
   class WritePrecision
@@ -93,12 +115,15 @@ module InfluxDB2
   class WriteApi < DefaultApi
     # @param [Hash] options The options to be used by the client.
     # @param [WriteOptions] write_options Write api configuration.
-    def initialize(options:, write_options: SYNCHRONOUS)
+    # @param [PointSettings] point_settings Default tags configuration
+    def initialize(options:, write_options: SYNCHRONOUS, point_settings: InfluxDB2::PointSettings.new)
       super(options: options)
       @write_options = write_options
+      @point_settings = point_settings
       @closed = false
+      @options[:tags].each { |key, value| point_settings.add_default_tag(key, value) } if @options.key?(:tags)
     end
-    attr_reader :closed
+    attr_reader :closed, :point_settings
 
     # Write data into specified Bucket.
     #
@@ -139,6 +164,8 @@ module InfluxDB2
       _check('precision', precision_param)
       _check('bucket', bucket_param)
       _check('org', org_param)
+
+      _add_default_tags(data)
 
       payload = _generate_payload(data, bucket: bucket_param, org: org_param, precision: precision_param)
       return nil if payload.nil?
@@ -220,6 +247,23 @@ module InfluxDB2
         return @worker if @worker
 
         @worker = Worker.new(self, @write_options)
+      end
+    end
+
+    def _add_default_tags(data)
+      default_tags = @point_settings.default_tags
+
+      default_tags.each do |key, expression|
+        value = PointSettings.get_value(expression)
+        if data.is_a?(Point)
+          data.add_tag(key, value)
+        elsif data.is_a?(Hash)
+          data[:tags][key] = value
+        elsif data.respond_to? :map
+          data.map do |item|
+            _add_default_tags(item)
+          end.reject(&:nil?)
+        end
       end
     end
 
