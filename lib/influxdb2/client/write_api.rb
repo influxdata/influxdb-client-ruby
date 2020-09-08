@@ -94,6 +94,8 @@ module InfluxDB2
     end
   end
 
+  DEFAULT_POINT_SETTINGS = InfluxDB2::PointSettings.new
+
   # Precision constants.
   #
   class WritePrecision
@@ -123,7 +125,7 @@ module InfluxDB2
       @closed = false
       @options[:tags].each { |key, value| point_settings.add_default_tag(key, value) } if @options.key?(:tags)
     end
-    attr_reader :closed, :point_settings
+    attr_reader :closed
 
     # Write data into specified Bucket.
     #
@@ -255,15 +257,19 @@ module InfluxDB2
 
       default_tags.each do |key, expression|
         value = PointSettings.get_value(expression)
-        if data.is_a?(Point)
-          data.add_tag(key, value)
-        elsif data.is_a?(Hash)
-          data[:tags][key] = value
-        elsif data.respond_to? :map
-          data.map do |item|
-            _add_default_tags(item)
-          end.reject(&:nil?)
-        end
+        _add_default_tag(data, key, value)
+      end
+    end
+
+    def _add_default_tag(data, key, value)
+      if data.is_a?(Point)
+        data.add_tag(key, value)
+      elsif data.is_a?(Hash)
+        data[:tags][key] = value
+      elsif data.respond_to? :map
+        data.map do |item|
+          _add_default_tag(item, key, value)
+        end.reject(&:nil?)
       end
     end
 

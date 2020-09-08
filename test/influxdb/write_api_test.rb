@@ -307,9 +307,8 @@ class PointSettingsTest < MiniTest::Test
     point_settings = InfluxDB2::PointSettings.new(default_tags:
                                                       { id: @id_tag,
                                                         customer: @customer_tag })
-    write_client = @client.create_write_api(write_options: InfluxDB2::SYNCHRONOUS,
-                                            point_settings: point_settings)
-    default_tags = write_client.point_settings.default_tags
+
+    default_tags = point_settings.default_tags
 
     assert_equal @id_tag, default_tags[:id]
     assert_equal @customer_tag, default_tags[:customer]
@@ -320,9 +319,7 @@ class PointSettingsTest < MiniTest::Test
     point_settings.add_default_tag('id', @id_tag)
     point_settings.add_default_tag('customer', @customer_tag)
 
-    write_client = @client.create_write_api(write_options: InfluxDB2::SYNCHRONOUS,
-                                            point_settings: point_settings)
-    default_tags = write_client.point_settings.default_tags
+    default_tags = point_settings.default_tags
 
     assert_equal @id_tag, default_tags['id']
     assert_equal @customer_tag, default_tags['customer']
