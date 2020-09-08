@@ -82,6 +82,8 @@ jobs:
     docker:
       - image: << parameters.ruby-image >>
       - image: &influx-image quay.io/influxdb/<< parameters.influxdb-image >>
+        environment:
+          INFLUXD_HTTP_BIND_ADDRESS: :9999
     steps:
       - prepare
       - test:
@@ -89,13 +91,8 @@ jobs:
       - storing-test-results
 
   deploy-preview:
-    parameters:
-      influxdb-image:
-        type: string
-        default: *default-influxdb-image
     docker:
       - image: *default-ruby-image
-      - image: *influx-image
     steps:
       - run:
           name: Early return if this build is from a forked repository

@@ -214,6 +214,36 @@ write_api = client.create_write_api
 write_api.write(data: ['h2o,location=west value=33i 15', point, hash])
 ```
 
+#### Default Tags
+
+Sometimes is useful to store same information in every measurement e.g. `hostname`, `location`, `customer`. 
+The client is able to use static value, app settings or env variable as a tag value.
+
+The expressions:
+- `California Miner` - static value
+- `${env.hostname}` - environment property
+
+##### Via API
+
+```ruby
+client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+                               bucket: 'my-bucket',
+                               org: 'my-org',
+                               precision: InfluxDB2::WritePrecision::NANOSECOND,
+                               use_ssl: false,
+                               tags: { id: '132-987-655' })
+
+point_settings = InfluxDB2::PointSettings.new(default_tags: { customer: 'California Miner' })
+point_settings.add_default_tag('data_center', '${env.data_center}')
+
+write_api = client.create_write_api(write_options: InfluxDB2::SYNCHRONOUS,
+                                    point_settings: point_settings)
+
+write_api.write(data: InfluxDB2::Point.new(name: 'h2o')
+                                      .add_tag('location', 'europe')
+                                      .add_field('level', 2))
+```
+
 ### Delete data
 
 The [DeleteApi](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb2/client/delete_api.rb) supports deletes [points](https://v2.docs.influxdata.com/v2.0/reference/glossary/#point) from an InfluxDB bucket.

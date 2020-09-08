@@ -96,7 +96,7 @@ class WriteApiTest < MiniTest::Test
                                    use_ssl: false)
 
     client.create_write_api.write(data: { name: 'h2o',
-                                          tags: { host: 'aws', region: 'us' },
+                                          tags: { region: 'us', host: 'aws' },
                                           fields: { level: 5, saturation: '99%' }, time: 123 })
 
     expected = 'h2o,host=aws,region=us level=5i,saturation="99%" 123'
@@ -286,5 +286,102 @@ class WriteApiTest < MiniTest::Test
 
     assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: 'h2o,location=west value=33i 15')
+  end
+end
+
+class PointSettingsTest < MiniTest::Test
+  def setup
+    WebMock.disable_net_connect!
+
+    @client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+                                    bucket: 'my-bucket',
+                                    org: 'my-org',
+                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
+                                    use_ssl: false)
+
+    @id_tag = '132-987-655'
+    @customer_tag = 'California Miner'
+  end
+
+  def test_point_settings
+    point_settings = InfluxDB2::PointSettings.new(default_tags:
+                                                      { id: @id_tag,
+                                                        customer: @customer_tag })
+
+    default_tags = point_settings.default_tags
+
+    assert_equal @id_tag, default_tags[:id]
+    assert_equal @customer_tag, default_tags[:customer]
+  end
+
+  def test_point_settings_with_add
+    point_settings = InfluxDB2::PointSettings.new
+    point_settings.add_default_tag('id', @id_tag)
+    point_settings.add_default_tag('customer', @customer_tag)
+
+    default_tags = point_settings.default_tags
+
+    assert_equal @id_tag, default_tags['id']
+    assert_equal @customer_tag, default_tags['customer']
+  end
+end
+
+class WriteApiDefaultTagsTest < MiniTest::Test
+  def setup
+    WebMock.disable_net_connect!
+
+    @id_tag = '132-987-655'
+    @customer_tag = 'California Miner'
+    @data_center_tag = '${env.data_center}'
+
+    ENV['data_center'] = 'LA'
+
+    @client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+                                    bucket: 'my-bucket',
+                                    org: 'my-org',
+                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
+                                    use_ssl: false,
+                                    tags: { id: @id_tag })
+
+    point_settings = InfluxDB2::PointSettings.new(default_tags: { customer: @customer_tag })
+    point_settings.add_default_tag('data_center', @data_center_tag)
+
+    @write_api = @client.create_write_api(write_options: InfluxDB2::SYNCHRONOUS,
+                                          point_settings: point_settings)
+  end
+
+  def test_write_using_default_tags
+    stub_request(:any, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 204)
+
+    @write_api.write(data: InfluxDB2::Point.new(name: 'h2o')
+                               .add_tag('location', 'europe')
+                               .add_field('level', 2))
+
+    assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: 'h2o,customer=California\ Miner,data_center=LA,id=132-987-655,location=europe '\
+                                      'level=2i')
+  end
+
+  def test_write_collection
+    stub_request(:any, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 204)
+
+    point = InfluxDB2::Point.new(name: 'h2o')
+                            .add_tag('location', 'europe')
+                            .add_field('level', 2)
+
+    hash = { name: 'h2o',
+             tags: { host: 'aws', region: 'us' },
+             fields: { level: 5, saturation: '99%' }, time: 123 }
+
+    @write_api.write(data: ['h2o,location=west value=33i 15', nil, '', point, hash])
+
+    expected = 'h2o,location=west value=33i 15'\
+               "\nh2o,customer=California\\ Miner,data_center=LA,id=132-987-655,location=europe level=2i"\
+               "\nh2o,customer=California\\ Miner,data_center=LA,host=aws,id=132-987-655,region=us "\
+               'level=5i,saturation="99%" 123'
+    assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: expected)
   end
 end

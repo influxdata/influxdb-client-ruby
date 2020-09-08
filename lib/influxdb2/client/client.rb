@@ -43,6 +43,7 @@ module InfluxDB2
     # @option options [Integer] :read_timeout Number of seconds to wait for one block of data to be read
     # @option options [Integer] :max_redirect_count Maximal number of followed HTTP redirects
     # @option options [bool] :use_ssl Turn on/off SSL for HTTP communication
+    # @option options [Hash] :tags Default tags which will be added to each point written by api.
     #   the body line-protocol
     def initialize(url, token, options = nil)
       @auto_closeable = []
@@ -57,8 +58,8 @@ module InfluxDB2
     # Write time series data into InfluxDB thought WriteApi.
     #
     # @return [WriteApi] New instance of WriteApi.
-    def create_write_api(write_options: InfluxDB2::SYNCHRONOUS)
-      write_api = WriteApi.new(options: @options, write_options: write_options)
+    def create_write_api(write_options: InfluxDB2::SYNCHRONOUS, point_settings: InfluxDB2::DEFAULT_POINT_SETTINGS)
+      write_api = WriteApi.new(options: @options, write_options: write_options, point_settings: point_settings)
       @auto_closeable.push(write_api)
       write_api
     end
