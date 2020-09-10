@@ -26,9 +26,9 @@ class DeleteApiTest < MiniTest::Test
   end
 
   def test_delete
-    stub_request(:any, 'http://localhost:9999/api/v2/delete?bucket=my-bucket&org=my-org')
+    stub_request(:any, 'http://localhost:8086/api/v2/delete?bucket=my-bucket&org=my-org')
       .to_return(status: 204)
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
                                    org: 'my-org',
                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
@@ -40,13 +40,13 @@ class DeleteApiTest < MiniTest::Test
     body = '{"start":"2019-10-15T08:20:15+00:00","stop":"2019-11-15T08:20:15+00:00","predicate":"key1=\"value1\" ' \
            'AND key2=\"value\""}'
 
-    assert_requested(:post, 'http://localhost:9999/api/v2/delete?bucket=my-bucket&org=my-org', times: 1, body: body)
+    assert_requested(:post, 'http://localhost:8086/api/v2/delete?bucket=my-bucket&org=my-org', times: 1, body: body)
   end
 
   def test_delete_time_as_date_time
-    stub_request(:any, 'http://localhost:9999/api/v2/delete?bucket=my-bucket&org=my-org')
+    stub_request(:any, 'http://localhost:8086/api/v2/delete?bucket=my-bucket&org=my-org')
       .to_return(status: 204)
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
                                    org: 'my-org',
                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
@@ -59,13 +59,13 @@ class DeleteApiTest < MiniTest::Test
     body = '{"start":"2019-02-03T04:05:06+07:00","stop":"2019-03-03T04:05:06+07:00","predicate":"key1=\"value1\" ' \
            'AND key2=\"value\""}'
 
-    assert_requested(:post, 'http://localhost:9999/api/v2/delete?bucket=my-bucket&org=my-org', times: 1, body: body)
+    assert_requested(:post, 'http://localhost:8086/api/v2/delete?bucket=my-bucket&org=my-org', times: 1, body: body)
   end
 
   def test_delete_time_as_string
-    stub_request(:any, 'http://localhost:9999/api/v2/delete?bucket=my-bucket&org=my-org')
+    stub_request(:any, 'http://localhost:8086/api/v2/delete?bucket=my-bucket&org=my-org')
       .to_return(status: 204)
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
                                    org: 'my-org',
                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
@@ -77,13 +77,13 @@ class DeleteApiTest < MiniTest::Test
     body = '{"start":"2019-02-03T04:05:06+07:00","stop":"2019-04-03T04:05:06+07:00","predicate":"key1=\"value1\" ' \
            'AND key2=\"value\""}'
 
-    assert_requested(:post, 'http://localhost:9999/api/v2/delete?bucket=my-bucket&org=my-org', times: 1, body: body)
+    assert_requested(:post, 'http://localhost:8086/api/v2/delete?bucket=my-bucket&org=my-org', times: 1, body: body)
   end
 
   def test_without_predicate
-    stub_request(:any, 'http://localhost:9999/api/v2/delete?bucket=my-bucket&org=my-org')
+    stub_request(:any, 'http://localhost:8086/api/v2/delete?bucket=my-bucket&org=my-org')
       .to_return(status: 204)
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
                                    org: 'my-org',
                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
@@ -94,13 +94,13 @@ class DeleteApiTest < MiniTest::Test
 
     body = '{"start":"2019-02-03T04:05:06+07:00","stop":"2019-04-03T04:05:06+07:00"}'
 
-    assert_requested(:post, 'http://localhost:9999/api/v2/delete?bucket=my-bucket&org=my-org', times: 1, body: body)
+    assert_requested(:post, 'http://localhost:8086/api/v2/delete?bucket=my-bucket&org=my-org', times: 1, body: body)
   end
 
   def test_user_agent_header
-    stub_request(:any, 'http://localhost:9999/api/v2/delete?bucket=my-bucket&org=my-org')
+    stub_request(:any, 'http://localhost:8086/api/v2/delete?bucket=my-bucket&org=my-org')
       .to_return(status: 204)
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
                                    org: 'my-org',
                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
@@ -115,7 +115,7 @@ class DeleteApiTest < MiniTest::Test
       'User-Agent' => "influxdb-client-ruby/#{InfluxDB2::VERSION}",
       'Content-Type' => 'application/json'
     }
-    assert_requested(:post, 'http://localhost:9999/api/v2/delete?bucket=my-bucket&org=my-org',
+    assert_requested(:post, 'http://localhost:8086/api/v2/delete?bucket=my-bucket&org=my-org',
                      times: 1, body: body, headers: headers)
   end
 end

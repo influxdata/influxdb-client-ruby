@@ -27,7 +27,7 @@ class WriteApiIntegrationTest < MiniTest::Test
   end
 
   def test_write_into_influx_db
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
                                    org: 'my-org',
                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
@@ -58,7 +58,7 @@ class WriteApiIntegrationTest < MiniTest::Test
     query = { 'query': 'from(bucket: "my-bucket") |> range(start: -15m, stop: now()) '\
           "|> filter(fn: (r) => r._measurement == \"#{measurement}\")", 'type': 'flux' }
 
-    uri = URI.parse('http://localhost:9999/api/v2/query?org=my-org')
+    uri = URI.parse('http://localhost:8086/api/v2/query?org=my-org')
     request = Net::HTTP::Post.new(uri.request_uri)
     request['Authorization'] = 'Token my-token'
     request[InfluxDB2::DefaultApi::HEADER_CONTENT_TYPE] = 'application/json'

@@ -33,7 +33,7 @@ gem install influxdb-client -v 1.7.0
 Use **InfluxDB::Client** to create a client connected to a running InfluxDB 2 instance.
 
 ```ruby
-client = InfluxDB2::Client.new('https://localhost:9999', 'my-token')
+client = InfluxDB2::Client.new('https://localhost:8086', 'my-token')
 ```
 
 #### Client Options
@@ -50,7 +50,7 @@ client = InfluxDB2::Client.new('https://localhost:9999', 'my-token')
 | use_ssl | Turn on/off SSL for HTTP communication | bool | true |
 
 ```ruby
-client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
+client = InfluxDB2::Client.new('https://localhost:8086', 'my-token',
   bucket: 'my-bucket',
   org: 'my-org',
   precision: InfluxDB2::WritePrecision::NANOSECOND)
@@ -68,7 +68,7 @@ The result retrieved by [QueryApi](https://github.com/influxdata/influxdb-client
 
 Synchronously executes the Flux query and return result as unprocessed String
 ```ruby
-client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
+client = InfluxDB2::Client.new('https://localhost:8086', 'my-token',
                               bucket: 'my-bucket',
                               org: 'my-org')
 
@@ -78,7 +78,7 @@ result = query_api.query_raw(query: 'from(bucket:"' + bucket + '") |> range(star
 #### Synchronous query
 Synchronously executes the Flux query and return result as a Array of [FluxTables](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb2/client/flux_table.rb)
 ```ruby
-client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
+client = InfluxDB2::Client.new('https://localhost:8086', 'my-token',
                               bucket: 'my-bucket',
                               org: 'my-org')
 
@@ -89,7 +89,7 @@ result = query_api.query(query: 'from(bucket:"' + bucket + '") |> range(start: 1
 #### Query stream
 Synchronously executes the Flux query and return stream of [FluxRecord](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb2/client/flux_table.rb)
 ```ruby
-client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
+client = InfluxDB2::Client.new('https://localhost:8086', 'my-token',
                               bucket: 'my-bucket',
                               org: 'my-org')
 
@@ -107,7 +107,7 @@ end
 The [WriteApi](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb2/client/write_api.rb) supports synchronous and batching writes into InfluxDB 2.0. In default api uses synchronous write. To enable batching you can use WriteOption.
 
 ```ruby
-client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
+client = InfluxDB2::Client.new('https://localhost:8086', 'my-token',
                               bucket: 'my-bucket',
                               org: 'my-org',
                               precision: InfluxDB2::WritePrecision::NANOSECOND)
@@ -133,7 +133,7 @@ write_options = InfluxDB2::WriteOptions.new(write_type: InfluxDB2::WriteType::BA
                                             batch_size: 10, flush_interval: 5_000, 
                                             max_retries: 3, max_retry_delay: 15_000,
                                             exponential_base: 2)
-client = InfluxDB2::Client.new('http://localhost:9999',
+client = InfluxDB2::Client.new('http://localhost:8086',
                                'my-token',
                                bucket: 'my-bucket',
                                org: 'my-org',
@@ -148,7 +148,7 @@ write_api.write(data: 'h2o,location=west value=33i 15')
 
 Configure default time precision:
 ```ruby
-client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
+client = InfluxDB2::Client.new('https://localhost:8086', 'my-token',
                               bucket: 'my-bucket',
                               org: 'my-org',
                               precision: InfluxDB2::WritePrecision::NANOSECOND)
@@ -156,7 +156,7 @@ client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
 
 Configure precision per write:
 ```ruby
-client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
+client = InfluxDB2::Client.new('https://localhost:8086', 'my-token',
                                   bucket: 'my-bucket',
                                   org: 'my-org')
 
@@ -173,7 +173,7 @@ Allowed values for precision are:
 
 Default `bucket` and `organization` destination are configured via `InfluxDB::Client`:
 ```ruby
-client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
+client = InfluxDB2::Client.new('https://localhost:8086', 'my-token',
                               bucket: 'my-bucket',
                               org: 'my-org')
 ```
@@ -181,7 +181,7 @@ client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
 but there is also possibility to override configuration per write:
 
 ```ruby
-client = InfluxDB2::Client.new('https://localhost:9999', 'my-token')
+client = InfluxDB2::Client.new('https://localhost:8086', 'my-token')
 
 write_api = client.create_write_api
 write_api.write(data: 'h2o,location=west value=33i 15', bucket: 'production-data', org: 'customer-1')
@@ -197,7 +197,7 @@ The data could be written as:
 1. `Array` of above items
 
 ```ruby
-client = InfluxDB2::Client.new('https://localhost:9999', 'my-token',
+client = InfluxDB2::Client.new('https://localhost:8086', 'my-token',
                               bucket: 'my-bucket',
                               org: 'my-org',
                               precision: InfluxDB2::WritePrecision::NANOSECOND)
@@ -226,7 +226,7 @@ The expressions:
 ##### Via API
 
 ```ruby
-client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                bucket: 'my-bucket',
                                org: 'my-org',
                                precision: InfluxDB2::WritePrecision::NANOSECOND,
@@ -249,7 +249,7 @@ write_api.write(data: InfluxDB2::Point.new(name: 'h2o')
 The [DeleteApi](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb2/client/delete_api.rb) supports deletes [points](https://v2.docs.influxdata.com/v2.0/reference/glossary/#point) from an InfluxDB bucket.
 
 ```ruby
-client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                bucket: 'my-bucket',
                                org: 'my-org',
                                precision: InfluxDB2::WritePrecision::NANOSECOND)

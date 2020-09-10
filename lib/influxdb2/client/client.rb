@@ -29,10 +29,10 @@ module InfluxDB2
     # Instantiate a new InfluxDB client.
     #
     # @example Instantiate a client.
-    #   InfluxDBClient::Client.new(url: 'https://localhost:9999', token: 'my-token')
+    #   InfluxDBClient::Client.new(url: 'https://localhost:8086', token: 'my-token')
     #
     # @param [Hash] options The options to be used by the client.
-    # @param [String] url InfluxDB URL to connect to (ex. https://localhost:9999).
+    # @param [String] url InfluxDB URL to connect to (ex. https://localhost:8086).
     # @param [String] token Access Token used for authenticating/authorizing the InfluxDB request sent by client.
     #
     # @option options [String] :bucket the default destination bucket for writes

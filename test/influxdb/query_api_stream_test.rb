@@ -24,7 +24,7 @@ class QueryApiStreamTest < MiniTest::Test
   def setup
     WebMock.allow_net_connect!
 
-    @client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    @client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                     bucket: 'my-bucket',
                                     org: 'my-org',
                                     precision: InfluxDB2::WritePrecision::NANOSECOND,

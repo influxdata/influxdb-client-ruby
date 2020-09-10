@@ -35,9 +35,9 @@ class QueryApiTest < MiniTest::Test
     ',,0,1970-01-01T00:00:20Z,1970-01-01T00:00:30Z,1970-01-01T00:00:20Z,22,free,mem,B,west'
 
   def test_query_raw
-    stub_request(:post, 'http://localhost:9999/api/v2/query?org=my-org')
+    stub_request(:post, 'http://localhost:8086/api/v2/query?org=my-org')
       .to_return(body: SUCCESS_DATA)
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
                                    org: 'my-org',
                                    use_ssl: false)
@@ -50,10 +50,10 @@ class QueryApiTest < MiniTest::Test
   end
 
   def test_query
-    stub_request(:post, 'http://localhost:9999/api/v2/query?org=my-org')
+    stub_request(:post, 'http://localhost:8086/api/v2/query?org=my-org')
       .to_return(body: SUCCESS_DATA)
 
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
                                    org: 'my-org',
                                    use_ssl: false)
@@ -74,10 +74,10 @@ class QueryApiTest < MiniTest::Test
   end
 
   def test_headers
-    stub_request(:post, 'http://localhost:9999/api/v2/query?org=my-org')
+    stub_request(:post, 'http://localhost:8086/api/v2/query?org=my-org')
       .to_return(body: SUCCESS_DATA)
 
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
                                    org: 'my-org',
                                    use_ssl: false)
@@ -90,7 +90,7 @@ class QueryApiTest < MiniTest::Test
       'User-Agent' => "influxdb-client-ruby/#{InfluxDB2::VERSION}",
       'Content-Type' => 'application/json'
     }
-    assert_requested(:post, 'http://localhost:9999/api/v2/query?org=my-org',
+    assert_requested(:post, 'http://localhost:8086/api/v2/query?org=my-org',
                      times: 1, headers: headers)
   end
 end
