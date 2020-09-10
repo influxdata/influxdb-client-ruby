@@ -3,6 +3,9 @@
 ### Features
 1. [#36](https://github.com/influxdata/influxdb-client-ruby/issues/36): Added support for default tags
 
+### API
+1. [#50](https://github.com/influxdata/influxdb-client-ruby/pull/50): Default port changed from 9999 -> 8086
+ 
 ## 1.7.0 [2020-08-14]
 
 ### Features
