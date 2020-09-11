@@ -26,7 +26,7 @@ class WriteApiTest < MiniTest::Test
   end
 
   def test_required_arguments
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token')
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token')
     write_api = client.create_write_api
 
     # precision
@@ -44,7 +44,7 @@ class WriteApiTest < MiniTest::Test
   end
 
   def test_default_arguments_
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
                                    org: 'my-org',
                                    precision: InfluxDB2::WritePrecision::NANOSECOND)
@@ -55,9 +55,9 @@ class WriteApiTest < MiniTest::Test
   end
 
   def test_write_line_protocol
-    stub_request(:any, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
                                    org: 'my-org',
                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
@@ -65,14 +65,14 @@ class WriteApiTest < MiniTest::Test
 
     client.create_write_api.write(data: 'h2o,location=west value=33i 15')
 
-    assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: 'h2o,location=west value=33i 15')
   end
 
   def test_write_point
-    stub_request(:any, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
                                    org: 'my-org',
                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
@@ -82,14 +82,14 @@ class WriteApiTest < MiniTest::Test
                                             .add_tag('location', 'europe')
                                             .add_field('level', 2))
 
-    assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: 'h2o,location=europe level=2i')
   end
 
   def test_write_hash
-    stub_request(:any, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
                                    org: 'my-org',
                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
@@ -100,14 +100,14 @@ class WriteApiTest < MiniTest::Test
                                           fields: { level: 5, saturation: '99%' }, time: 123 })
 
     expected = 'h2o,host=aws,region=us level=5i,saturation="99%" 123'
-    assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: expected)
   end
 
   def test_write_collection
-    stub_request(:any, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
                                    org: 'my-org',
                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
@@ -125,14 +125,14 @@ class WriteApiTest < MiniTest::Test
 
     expected = "h2o,location=west value=33i 15\nh2o,location=europe level=2i"\
                "\nh2o,host=aws,region=us level=5i,saturation=\"99%\" 123"
-    assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: expected)
   end
 
   def test_array_of_array
-    stub_request(:any, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
                                    org: 'my-org',
                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
@@ -144,14 +144,14 @@ class WriteApiTest < MiniTest::Test
     expected = "h2o,location=west value=33i 15\nh2o,location=west value=34i 16"\
                "\nh2o,location=west value=35i 17"
 
-    assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: expected)
   end
 
   def test_authorization_header
-    stub_request(:any, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
                                    org: 'my-org',
                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
@@ -159,31 +159,31 @@ class WriteApiTest < MiniTest::Test
 
     client.create_write_api.write(data: 'h2o,location=west value=33i 15')
 
-    assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, headers: { 'Authorization' => 'Token my-token' })
   end
 
   def test_without_data
-    stub_request(:any, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
                                    org: 'my-org',
                                    precision: InfluxDB2::WritePrecision::NANOSECOND)
 
     client.create_write_api.write(data: '')
 
-    assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns', times: 0)
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns', times: 0)
   end
 
   def test_influx_exception
     error_body = '{"code":"invalid","message":"unable to parse '\
                  '\'h2o_feet, location=coyote_creek water_level=1.0 1\': missing tag key"}'
 
-    stub_request(:any, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 400, headers: { 'X-Platform-Error-Code' => 'invalid' }, body: error_body)
 
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
                                    org: 'my-org',
                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
@@ -199,14 +199,14 @@ class WriteApiTest < MiniTest::Test
   end
 
   def test_follow_redirect
-    stub_request(:any, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 307, headers:
           { 'location' => 'http://localhost:9090/api/v2/write?bucket=my-bucket&org=my-org&precision=ns' })
       .then.to_return(status: 204)
     stub_request(:any, 'http://localhost:9090/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
 
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
                                    org: 'my-org',
                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
@@ -214,18 +214,18 @@ class WriteApiTest < MiniTest::Test
 
     client.create_write_api.write(data: 'h2o,location=west value=33i 15')
 
-    assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: 'h2o,location=west value=33i 15')
     assert_requested(:post, 'http://localhost:9090/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: 'h2o,location=west value=33i 15')
   end
 
   def test_follow_redirect_max
-    stub_request(:any, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 307, headers:
-          { 'location' => 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns' })
+          { 'location' => 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns' })
 
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
                                    org: 'my-org',
                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
@@ -253,10 +253,10 @@ class WriteApiTest < MiniTest::Test
   end
 
   def test_headers
-    stub_request(:any, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
 
-    client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
                                    org: 'my-org',
                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
@@ -269,14 +269,14 @@ class WriteApiTest < MiniTest::Test
       'User-Agent' => "influxdb-client-ruby/#{InfluxDB2::VERSION}",
       'Content-Type' => 'text/plain'
     }
-    assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: 'h2o,location=west value=33i 15', headers: headers)
   end
 
   def test_trailing_slash_in_url
-    stub_request(:any, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
-    client = InfluxDB2::Client.new('http://localhost:9999/', 'my-token',
+    client = InfluxDB2::Client.new('http://localhost:8086/', 'my-token',
                                    bucket: 'my-bucket',
                                    org: 'my-org',
                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
@@ -284,7 +284,7 @@ class WriteApiTest < MiniTest::Test
 
     client.create_write_api.write(data: 'h2o,location=west value=33i 15')
 
-    assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: 'h2o,location=west value=33i 15')
   end
 end
@@ -293,7 +293,7 @@ class PointSettingsTest < MiniTest::Test
   def setup
     WebMock.disable_net_connect!
 
-    @client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    @client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                     bucket: 'my-bucket',
                                     org: 'my-org',
                                     precision: InfluxDB2::WritePrecision::NANOSECOND,
@@ -336,7 +336,7 @@ class WriteApiDefaultTagsTest < MiniTest::Test
 
     ENV['data_center'] = 'LA'
 
-    @client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    @client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                     bucket: 'my-bucket',
                                     org: 'my-org',
                                     precision: InfluxDB2::WritePrecision::NANOSECOND,
@@ -351,20 +351,20 @@ class WriteApiDefaultTagsTest < MiniTest::Test
   end
 
   def test_write_using_default_tags
-    stub_request(:any, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
 
     @write_api.write(data: InfluxDB2::Point.new(name: 'h2o')
                                .add_tag('location', 'europe')
                                .add_field('level', 2))
 
-    assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: 'h2o,customer=California\ Miner,data_center=LA,id=132-987-655,location=europe '\
                                       'level=2i')
   end
 
   def test_write_collection
-    stub_request(:any, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
 
     point = InfluxDB2::Point.new(name: 'h2o')
@@ -381,7 +381,7 @@ class WriteApiDefaultTagsTest < MiniTest::Test
                "\nh2o,customer=California\\ Miner,data_center=LA,id=132-987-655,location=europe level=2i"\
                "\nh2o,customer=California\\ Miner,data_center=LA,host=aws,id=132-987-655,region=us "\
                'level=5i,saturation="99%" 123'
-    assert_requested(:post, 'http://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: expected)
   end
 end

@@ -49,10 +49,10 @@ echo
 docker pull "${INFLUXDB_V2_IMAGE}" || true
 docker run \
        --detach \
-       --env INFLUXD_HTTP_BIND_ADDRESS=:9999 \
+       --env INFLUXD_HTTP_BIND_ADDRESS=:8086 \
        --name influxdb_v2 \
        --network influx_network \
-       --publish 9999:9999 \
+       --publish 8086:8086 \
        "${INFLUXDB_V2_IMAGE}"
 
 #

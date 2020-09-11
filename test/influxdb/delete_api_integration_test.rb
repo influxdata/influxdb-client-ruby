@@ -24,7 +24,7 @@ class DeleteApiIntegrationTest < MiniTest::Test
   def setup
     WebMock.allow_net_connect!
 
-    @client = InfluxDB2::Client.new('http://localhost:9999', 'my-token',
+    @client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                     bucket: 'my-bucket',
                                     org: 'my-org',
                                     precision: InfluxDB2::WritePrecision::NANOSECOND,
@@ -56,6 +56,8 @@ class DeleteApiIntegrationTest < MiniTest::Test
   end
 
   def test_delete
+    # TODO: https://github.com/influxdata/influxdb/issues/19545
+    skip
     @client.create_delete_api.delete(Time.utc(2015, 10, 16, 8, 20, 15), Time.utc(2020, 10, 16, 8, 20, 15),
                                      predicate: 'location="europe"')
 
@@ -63,6 +65,8 @@ class DeleteApiIntegrationTest < MiniTest::Test
   end
 
   def test_delete_without_predicate
+    # TODO: https://github.com/influxdata/influxdb/issues/19545
+    skip
     @client.create_delete_api.delete(Time.utc(2016, 10, 15, 7, 20, 15), Time.utc(2018, 10, 14, 8, 20, 15))
 
     assert_equal 2, _query_count
