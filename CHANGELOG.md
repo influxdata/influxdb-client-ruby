@@ -6,6 +6,9 @@
 ### API
 1. [#50](https://github.com/influxdata/influxdb-client-ruby/pull/50): Default port changed from 9999 -> 8086
  
+### Bug Fixes
+1. [#52](https://github.com/influxdata/influxdb-client-ruby/pull/52): Fixed aborting of background threads
+
 ## 1.7.0 [2020-08-14]
 
 ### Features
