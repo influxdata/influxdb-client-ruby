@@ -37,7 +37,7 @@ module InfluxDB2
           _check_background_queue
         end
       end
-      @thread_flush.abort_on_exception = true
+      @thread_flush.abort_on_exception = @write_options.batch_abort_on_exception
 
       @thread_size = Thread.new do
         until api_client.closed
@@ -45,7 +45,7 @@ module InfluxDB2
           sleep 0.01
         end
       end
-      @thread_size.abort_on_exception = true
+      @thread_size.abort_on_exception = @write_options.batch_abort_on_exception
     end
 
     def push(payload)

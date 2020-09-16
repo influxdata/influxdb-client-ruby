@@ -39,8 +39,10 @@ module InfluxDB2
     #   by a random amount
     # @param [Integer] exponential_base: base for the exponential retry delay, the next delay is computed as
     #   "exponential_base^(attempts-1) + random(jitter_interval)"
+    # @param [Boolean] batch_abort_on_exception: batching worker will be aborted after failed retry strategy
     def initialize(write_type: WriteType::SYNCHRONOUS, batch_size: 1_000, flush_interval: 1_000, retry_interval: 5_000,
-                   jitter_interval: 0, max_retries: 5, max_retry_delay: 180_000, exponential_base: 5)
+                   jitter_interval: 0, max_retries: 5, max_retry_delay: 180_000, exponential_base: 5,
+                   batch_abort_on_exception: false)
       _check_not_negative('batch_size', batch_size)
       _check_not_negative('flush_interval', flush_interval)
       _check_not_negative('retry_interval', retry_interval)
@@ -56,10 +58,11 @@ module InfluxDB2
       @max_retries = max_retries
       @max_retry_delay = max_retry_delay
       @exponential_base = exponential_base
+      @batch_abort_on_exception = batch_abort_on_exception
     end
 
     attr_reader :write_type, :batch_size, :flush_interval, :retry_interval, :jitter_interval,
-                :max_retries, :max_retry_delay, :exponential_base
+                :max_retries, :max_retry_delay, :exponential_base, :batch_abort_on_exception
 
     def _check_not_negative(key, value)
       raise ArgumentError, "The '#{key}' should be positive or zero, but is: #{value}" if value <= 0
