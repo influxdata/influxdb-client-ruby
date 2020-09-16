@@ -568,4 +568,30 @@ class WriteApiRetryStrategyTest < MiniTest::Test
     assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 0, body: 'h2o,location=europe level=2.0 1')
   end
+
+  def test_abort_on_exception_next_batch
+    error_body = '{"code":"invalid","message":"unable to parse '\
+                 '\'h2o,location=europe 1\'"}'
+
+    stub_request(:any, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 400, headers: { 'X-Platform-Error-Code' => 'invalid' }, body: error_body)
+      .to_return(status: 204)
+
+    write_options = InfluxDB2::WriteOptions.new(write_type: InfluxDB2::WriteType::BATCHING,
+                                                batch_size: 1, retry_interval: 500, max_retries: 1,
+                                                max_retry_delay: 5_000, exponential_base: 1)
+
+    write_api = @client.create_write_api(write_options: write_options)
+
+    write_api.write(data: 'h2o,location=europe 1')
+    write_api.write(data: 'h2o,location=europe level=2.0 1')
+
+    sleep(2)
+
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: 'h2o,location=europe 1')
+
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: 'h2o,location=europe level=2.0 1')
+  end
 end
