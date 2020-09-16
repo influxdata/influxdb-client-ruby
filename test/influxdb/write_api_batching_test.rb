@@ -338,38 +338,34 @@ class WriteApiRetryStrategyTest < MiniTest::Test
                                                 batch_size: 1, retry_interval: 2_000, max_retries: 3,
                                                 max_retry_delay: 5_000, exponential_base: 2)
 
-    error = assert_raises InfluxDB2::InfluxError do
-      @client.create_write_api(write_options: write_options).write(data: point)
+    @client.create_write_api(write_options: write_options).write(data: point)
 
-      sleep(0.5)
+    sleep(0.5)
 
-      assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                       times: 1, body: request)
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: request)
 
-      sleep(2)
+    sleep(2)
 
-      assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                       times: 2, body: request)
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 2, body: request)
 
-      sleep(4)
+    sleep(4)
 
-      assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                       times: 3, body: request)
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 3, body: request)
 
-      sleep(5)
+    sleep(5)
 
-      assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                       times: 4, body: request)
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 4, body: request)
 
-      sleep(5)
+    sleep(5)
 
-      assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                       times: 4, body: request)
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 4, body: request)
 
-      sleep(5)
-    end
-
-    assert_equal('429', error.code)
+    sleep(5)
 
     assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 4, body: request)
@@ -384,7 +380,8 @@ class WriteApiRetryStrategyTest < MiniTest::Test
 
     write_options = InfluxDB2::WriteOptions.new(write_type: InfluxDB2::WriteType::BATCHING,
                                                 batch_size: 1, retry_interval: 2_000, max_retries: 3,
-                                                max_retry_delay: 5_000, exponential_base: 2)
+                                                max_retry_delay: 5_000, exponential_base: 2,
+                                                batch_abort_on_exception: true)
 
     error = assert_raises InfluxDB2::InfluxError do
       @client.create_write_api(write_options: write_options).write(data: 'h2o,location=west value=33i 15')
@@ -420,33 +417,29 @@ class WriteApiRetryStrategyTest < MiniTest::Test
                                                 batch_size: 1, retry_interval: 2_000, max_retries: 3,
                                                 max_retry_delay: 5_000, exponential_base: 2)
 
-    error = assert_raises InfluxDB2::InfluxError do
-      @client.create_write_api(write_options: write_options).write(data: point)
+    @client.create_write_api(write_options: write_options).write(data: point)
 
-      sleep(0.5)
+    sleep(0.5)
 
-      assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                       times: 1, body: request)
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: request)
 
-      sleep(3)
+    sleep(3)
 
-      assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                       times: 2, body: request)
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 2, body: request)
 
-      sleep(3)
+    sleep(3)
 
-      assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                       times: 3, body: request)
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 3, body: request)
 
-      sleep(3)
+    sleep(3)
 
-      assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                       times: 4, body: request)
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 4, body: request)
 
-      sleep(3)
-    end
-
-    assert_equal('429', error.code)
+    sleep(3)
 
     assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 4, body: request)
@@ -473,38 +466,37 @@ class WriteApiRetryStrategyTest < MiniTest::Test
                                                 batch_size: 1, retry_interval: 2_000, max_retries: 3,
                                                 max_retry_delay: 5_000, exponential_base: 2)
 
-    error = assert_raises InfluxDB2::InfluxError do
-      @client.create_write_api(write_options: write_options).write(data: point)
+    @client.create_write_api(write_options: write_options).write(data: point)
 
-      sleep(0.5)
+    sleep(0.5)
 
-      assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                       times: 1, body: request)
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: request)
 
-      sleep(2)
+    sleep(2)
 
-      assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                       times: 2, body: request)
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 2, body: request)
 
-      sleep(4)
+    sleep(4)
 
-      assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                       times: 3, body: request)
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 3, body: request)
 
-      sleep(5)
+    sleep(5)
 
-      assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                       times: 4, body: request)
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 4, body: request)
 
-      sleep(5)
+    sleep(5)
 
-      assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                       times: 4, body: request)
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 4, body: request)
 
-      sleep(5)
-    end
+    sleep(5)
 
-    assert_equal('Connection refused - ' + error_message, error.message)
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 4, body: request)
   end
 
   def test_write_connection_error
@@ -544,5 +536,62 @@ class WriteApiRetryStrategyTest < MiniTest::Test
 
     assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 3, body: request)
+  end
+
+  def test_abort_on_exception
+    error_body = '{"code":"invalid","message":"unable to parse '\
+                 '\'h2o,location=europe 1\'"}'
+
+    stub_request(:any, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 400, headers: { 'X-Platform-Error-Code' => 'invalid' }, body: error_body)
+      .to_return(status: 204)
+
+    write_options = InfluxDB2::WriteOptions.new(write_type: InfluxDB2::WriteType::BATCHING,
+                                                batch_size: 1, retry_interval: 500, max_retries: 1,
+                                                max_retry_delay: 5_000, exponential_base: 1,
+                                                batch_abort_on_exception: true)
+
+    write_api = @client.create_write_api(write_options: write_options)
+
+    error = assert_raises InfluxDB2::InfluxError do
+      write_api.write(data: 'h2o,location=europe 1')
+      write_api.write(data: 'h2o,location=europe level=2.0 1')
+
+      sleep(2)
+    end
+
+    assert_equal("unable to parse 'h2o,location=europe 1'", error.message)
+
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: 'h2o,location=europe 1')
+
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 0, body: 'h2o,location=europe level=2.0 1')
+  end
+
+  def test_abort_on_exception_next_batch
+    error_body = '{"code":"invalid","message":"unable to parse '\
+                 '\'h2o,location=europe 1\'"}'
+
+    stub_request(:any, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 400, headers: { 'X-Platform-Error-Code' => 'invalid' }, body: error_body)
+      .to_return(status: 204)
+
+    write_options = InfluxDB2::WriteOptions.new(write_type: InfluxDB2::WriteType::BATCHING,
+                                                batch_size: 1, retry_interval: 500, max_retries: 1,
+                                                max_retry_delay: 5_000, exponential_base: 1)
+
+    write_api = @client.create_write_api(write_options: write_options)
+
+    write_api.write(data: 'h2o,location=europe 1')
+    write_api.write(data: 'h2o,location=europe level=2.0 1')
+
+    sleep(2)
+
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: 'h2o,location=europe 1')
+
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: 'h2o,location=europe level=2.0 1')
   end
 end

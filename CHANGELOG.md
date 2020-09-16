@@ -2,6 +2,7 @@
 
 ### Features
 1. [#36](https://github.com/influxdata/influxdb-client-ruby/issues/36): Added support for default tags
+1. [#53](https://github.com/influxdata/influxdb-client-ruby/pull/53): Default strategy for batching worker is best-effort
 
 ### API
 1. [#50](https://github.com/influxdata/influxdb-client-ruby/pull/50): Default port changed from 9999 -> 8086

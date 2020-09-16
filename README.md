@@ -128,6 +128,7 @@ The writes are processed in batches which are configurable by `WriteOptions`:
 | max_retries | the number of max retries when write fails | 5 |
 | max_retry_delay | maximum delay when retrying write in milliseconds | 180000 |
 | exponential_base | the base for the exponential retry delay, the next delay is computed as `retry_interval * exponential_base^(attempts - 1) + random(jitter_interval)` | 5 |
+| batch_abort_on_exception | the batching worker will be aborted after failed retry strategy | false |
 ```ruby
 write_options = InfluxDB2::WriteOptions.new(write_type: InfluxDB2::WriteType::BATCHING,
                                             batch_size: 10, flush_interval: 5_000, 
