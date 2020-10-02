@@ -1,4 +1,4 @@
-## 1.8.0 [unreleased]
+## 1.8.0 [2020-10-02]
 
 ### Features
 1. [#36](https://github.com/influxdata/influxdb-client-ruby/issues/36): Added support for default tags
