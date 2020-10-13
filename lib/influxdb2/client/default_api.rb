@@ -18,6 +18,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+require 'logger'
+
 module InfluxDB2
   # default api
   class DefaultApi
@@ -30,6 +32,29 @@ module InfluxDB2
     def initialize(options:)
       @options = options
       @max_redirect_count = @options[:max_redirect_count] || DEFAULT_REDIRECT_COUNT
+    end
+
+    def log(level, message)
+      return unless @options[:logger]
+
+      log_level = case level
+                  when :debug then
+                    Logger::DEBUG
+                  when :warn then
+                    Logger::WARN
+                  when :error then
+                    Logger::ERROR
+                  when :fatal then
+                    Logger::FATAL
+                  else
+                    Logger::INFO
+                  end
+
+      @options[:logger].add(log_level) { message }
+    end
+
+    def self.create_logger
+      Logger.new(STDOUT)
     end
 
     private

@@ -37,3 +37,15 @@ require 'minitest/reporters'
 Minitest::Reporters.use!
 
 require 'webmock/minitest'
+
+class MockLogger
+  attr_accessor :messages
+
+  def initialize
+    @messages = []
+  end
+
+  def add(level, &block)
+    @messages << [level, yield(block)]
+  end
+end

@@ -226,6 +226,7 @@ class WriteApiRetryStrategyTest < MiniTest::Test
   def setup
     WebMock.disable_net_connect!
 
+    @logger = MockLogger.new
     @write_options = InfluxDB2::WriteOptions.new(write_type: InfluxDB2::WriteType::BATCHING,
                                                  batch_size: 2, flush_interval: 5_000, retry_interval: 2_000)
     @client = InfluxDB2::Client.new('http://localhost:8086',
@@ -233,7 +234,8 @@ class WriteApiRetryStrategyTest < MiniTest::Test
                                     bucket: 'my-bucket',
                                     org: 'my-org',
                                     precision: InfluxDB2::WritePrecision::NANOSECOND,
-                                    use_ssl: false)
+                                    use_ssl: false,
+                                    logger: @logger)
 
     @write_client = @client.create_write_api(write_options: @write_options)
   end
@@ -593,5 +595,33 @@ class WriteApiRetryStrategyTest < MiniTest::Test
 
     assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: 'h2o,location=europe level=2.0 1')
+  end
+
+  def test_retry_contains_message
+    error_body = '{"code":"temporarily unavailable","message":"Server is temporarily unavailable to accept writes."}'
+
+    stub_request(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 429, headers: { 'X-Platform-Error-Code' => 'temporarily unavailable', 'Retry-After' => '3' },
+                 body: error_body).then
+      .to_return(status: 204)
+
+    request = "h2o_feet,location=coyote_creek water_level=1.0 1\n" \
+               'h2o_feet,location=coyote_creek water_level=2.0 2'
+
+    @write_client.write(data: ['h2o_feet,location=coyote_creek water_level=1.0 1',
+                               InfluxDB2::Point.new(name: 'h2o_feet')
+                                   .add_tag('location', 'coyote_creek')
+                                   .add_field('water_level', 2.0)
+                                   .time(2, InfluxDB2::WritePrecision::NANOSECOND)])
+
+    sleep(5)
+
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 2, body: request)
+
+    message = 'The retriable error occurred during writing of data. '\
+"Reason: 'Server is temporarily unavailable to accept writes.'. Retry in: 3.0s."
+
+    assert_equal(message, @logger.messages[0][1])
   end
 end
