@@ -1,5 +1,8 @@
 ## 1.9.0 [unreleased]
 
+### Features
+1. [#55](https://github.com/influxdata/influxdb-client-runy/pull/55): Improved logging message for retries
+
 ## 1.8.0 [2020-10-02]
 
 ### Features
