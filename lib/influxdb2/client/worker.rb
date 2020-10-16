@@ -116,6 +116,10 @@ module InfluxDB2
                   e.retry_after.to_f
                 end
 
+      message = 'The retriable error occurred during writing of data. '\
+"Reason: '#{e.message}'. Retry in: #{timeout}s."
+
+      @api_client.log(:warn, message)
       sleep timeout
       _write_raw(key, points, attempts + 1, retry_interval * @write_options.exponential_base)
     end

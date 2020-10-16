@@ -43,6 +43,7 @@ module InfluxDB2
     # @option options [Integer] :read_timeout Number of seconds to wait for one block of data to be read
     # @option options [Integer] :max_redirect_count Maximal number of followed HTTP redirects
     # @option options [bool] :use_ssl Turn on/off SSL for HTTP communication
+    # @option options [Logger] :logger Logger used for logging. Disable logging by set to false.
     # @option options [Hash] :tags Default tags which will be added to each point written by api.
     #   the body line-protocol
     def initialize(url, token, options = nil)
@@ -50,6 +51,7 @@ module InfluxDB2
       @options = options ? options.dup : {}
       @options[:url] = url if url.is_a? String
       @options[:token] = token if token.is_a? String
+      @options[:logger] = @options[:logger].nil? ? DefaultApi.create_logger : @options[:logger]
       @closed = false
 
       at_exit { close! }
