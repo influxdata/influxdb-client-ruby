@@ -424,4 +424,21 @@ class FluxCsvParserErrorTest < MiniTest::Test
     assert_equal 7, tables[0].records.size
     assert_equal 7, tables[1].records.size
   end
+
+  def test_parse_export_from_ui
+    data = "#group,false,false,true,true,true,true,true,true,false,false\n" \
+   "#datatype,string,long,dateTime:RFC3339,dateTime:RFC3339,string,string,string,string,double,dateTime:RFC3339\n" \
+   "#default,mean,,,,,,,,,\n" \
+   ",result,table,_start,_stop,_field,_measurement,city,location,_value,_time\n" \
+   ",,0,1754-06-26T11:30:27.613654848Z,2040-10-27T12:13:46.485Z,temp,weather,Lon,us,30,1975-09-01T16:59:54.5Z\n" \
+   ",,1,1754-06-26T11:30:27.613654848Z,2040-10-27T12:13:46.485Z,temp,weather,Lon,us,86,1975-09-01T16:59:54.5Z\n"
+
+    tables = InfluxDB2::FluxCsvParser.new(data).parse.tables
+    assert_equal 2, tables.size
+    assert_equal 1, tables[0].records.size
+    assert_equal false, tables[0].columns[0].group
+    assert_equal false, tables[0].columns[1].group
+    assert_equal true, tables[0].columns[2].group
+    assert_equal 1, tables[1].records.size
+  end
 end
