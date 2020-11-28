@@ -54,6 +54,7 @@ module InfluxDB2
       @table_id = -1
       @start_new_table = false
       @table = nil
+      @groups = []
       @parsing_state_error = false
 
       @closed = false
@@ -102,14 +103,20 @@ module InfluxDB2
 
     private
 
+    ANNOTATION_DATATYPE = '#datatype'.freeze
+    ANNOTATION_GROUP = '#group'.freeze
+    ANNOTATION_DEFAULT = '#default'.freeze
+    ANNOTATIONS = [ANNOTATION_DATATYPE, ANNOTATION_GROUP, ANNOTATION_DEFAULT].freeze
+
     def _parse_line(csv)
       token = csv[0]
 
       # start new table
-      if token == '#datatype'
+      if (ANNOTATIONS.include? token) && !@start_new_table
         # Return already parsed DataFrame
         @start_new_table = true
         @table = InfluxDB2::FluxTable.new
+        @groups = []
 
         @tables[@table_index] = @table unless @stream
 
@@ -120,13 +127,13 @@ module InfluxDB2
       end
 
       #  # datatype,string,long,dateTime:RFC3339,dateTime:RFC3339,dateTime:RFC3339,double,string,string,string
-      if token == '#datatype'
+      if token == ANNOTATION_DATATYPE
         _add_data_types(@table, csv)
 
-      elsif token == '#group'
-        _add_groups(@table, csv)
+      elsif token == ANNOTATION_GROUP
+        @groups = csv
 
-      elsif token == '#default'
+      elsif token == ANNOTATION_DEFAULT
         _add_default_empty_values(@table, csv)
       else
         _parse_values(csv)
@@ -170,6 +177,7 @@ module InfluxDB2
     def _parse_values(csv)
       # parse column names
       if @start_new_table
+        _add_groups(@table, @groups)
         _add_column_names_and_tags(@table, csv)
         @start_new_table = false
         return
