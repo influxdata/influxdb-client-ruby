@@ -67,7 +67,7 @@ class QueryApiTest < MiniTest::Test
 
     record1 = result[0].records[0]
 
-    assert_equal Time.parse('1970-01-01T00:00:10Z').to_datetime.rfc3339, record1.time
+    assert_equal Time.parse('1970-01-01T00:00:10Z').to_datetime.rfc3339(9), record1.time
     assert_equal 'mem', record1.measurement
     assert_equal 10, record1.value
     assert_equal 'free', record1.field

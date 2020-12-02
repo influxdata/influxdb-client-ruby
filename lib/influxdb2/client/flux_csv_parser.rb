@@ -244,7 +244,7 @@ module InfluxDB2
       when 'base64Binary'
         Base64.decode64(str_val)
       when 'dateTime:RFC3339', 'dateTime:RFC3339Nano'
-        Time.parse(str_val).to_datetime.rfc3339
+        Time.parse(str_val).to_datetime.rfc3339(9)
       else
         str_val
       end

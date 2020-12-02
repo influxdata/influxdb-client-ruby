@@ -55,4 +55,25 @@ class QueryApiIntegrationTest < MiniTest::Test
     assert_equal 2, record.value
     assert_equal 'level', record.field
   end
+
+  def test_parsed_time_precision
+    now = Time.now.utc
+    measurement = 'h2o_query_' + now.to_i.to_s + now.nsec.to_s
+
+    @client.create_write_api.write(data: InfluxDB2::Point.new(name: measurement)
+                                             .add_field('value', 10)
+                                             .time(123_456, InfluxDB2::WritePrecision::NANOSECOND))
+
+    result = @client.create_query_api.query(query: 'from(bucket: "my-bucket") |> range(start: 0, stop: now()) '\
+          "|> filter(fn: (r) => r._measurement == \"#{measurement}\")")
+
+    assert_equal 1, result.size
+
+    records = result[0].records
+    assert_equal 1, records.size
+
+    record = records[0]
+    assert_equal 10, record.value
+    assert_equal '1970-01-01T00:00:00.000123456+00:00', record.values['_time']
+  end
 end
