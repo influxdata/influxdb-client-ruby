@@ -1,7 +1,10 @@
 ## 1.10.0 [unreleased]
 
 ### Features
- 1. [#59](https://github.com/influxdata/influxdb-client-ruby/pull/59): CSV parser is able to parse export from UI
+1. [#59](https://github.com/influxdata/influxdb-client-ruby/pull/59): CSV parser is able to parse export from UI
+
+### CI
+1. [#62](https://github.com/influxdata/influxdb-client-ruby/pull/62): Updated default docker image to v2.0.2
 
 ## 1.9.0 [2020-10-30]
 
