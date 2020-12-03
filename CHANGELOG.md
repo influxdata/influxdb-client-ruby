@@ -2,7 +2,10 @@
 
 ### Features
 1. [#59](https://github.com/influxdata/influxdb-client-ruby/pull/59): CSV parser is able to parse export from UI
- 
+
+### CI
+1. [#62](https://github.com/influxdata/influxdb-client-ruby/pull/62): Updated default docker image to v2.0.2
+
 ### Bug Fixes
 1. [#61](https://github.com/influxdata/influxdb-client-ruby/pull/61): Query results has precision with nanosecond, e.g. '1970-01-01T00:00:00.000123456+00:00'
 
