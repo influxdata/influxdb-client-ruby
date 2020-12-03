@@ -155,8 +155,31 @@ class FluxCsvParserTest < MiniTest::Test
     tables = InfluxDB2::FluxCsvParser.new(data).parse.tables
     records = tables[0].records
 
-    assert_equal Time.parse('1970-01-01T00:00:10Z').to_datetime.rfc3339, records[0].values['value']
+    assert_equal _parse_time('1970-01-01T00:00:10Z'), records[0].values['value']
     assert_nil records[1].values['value']
+  end
+
+  def test_mapping_rfc3339_nano
+    data = "#group,false,false,true,true,false,false,true,true,true,true,true,true\n" \
+      '#datatype,string,long,dateTime:RFC3339,dateTime:RFC3339,dateTime:RFC3339,double,' \
+      "string,string,string,string,string,string\n" \
+      "#default,mean,,,,,,,,,,,\n" \
+      ",result,table,_start,_stop,_time,_value,_field,_measurement,language,license,name,owner\n" \
+      ',,0,2020-11-02T07:29:49.55050738Z,2020-12-02T07:29:49.55050738Z,2020-11-02T09:00:00Z,9,' \
+      "stars,github_repository,Ruby,MIT License,influxdb-client-ruby,influxdata\n"
+
+    tables = InfluxDB2::FluxCsvParser.new(data).parse.tables
+    records = tables[0].records
+
+    assert_equal 9, records[0].values['_value']
+    start = Time.parse(records[0].values['_start'])
+    assert_equal 2020, start.year
+    assert_equal 11, start.month
+    assert_equal 2, start.day
+    assert_equal 7, start.hour
+    assert_equal 29, start.min
+    assert_equal 49, start.sec
+    assert_equal '55050738', start.strftime('%8N')
   end
 
   def test_mapping_duration
@@ -209,7 +232,7 @@ class FluxCsvParserTest < MiniTest::Test
   private
 
   def _parse_time(time)
-    Time.parse(time).to_datetime.rfc3339
+    Time.parse(time).to_datetime.rfc3339(9)
   end
 
   def _assert_record(flux_record, values: nil, size: 0, value: nil)

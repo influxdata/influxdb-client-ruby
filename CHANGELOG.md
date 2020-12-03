@@ -1,7 +1,10 @@
 ## 1.10.0 [unreleased]
 
 ### Features
- 1. [#59](https://github.com/influxdata/influxdb-client-ruby/pull/59): CSV parser is able to parse export from UI
+1. [#59](https://github.com/influxdata/influxdb-client-ruby/pull/59): CSV parser is able to parse export from UI
+ 
+### Bug Fixes
+1. [#61](https://github.com/influxdata/influxdb-client-ruby/pull/61): Query results has precision with nanosecond, e.g. '1970-01-01T00:00:00.000123456+00:00'
 
 ## 1.9.0 [2020-10-30]
 

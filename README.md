@@ -194,7 +194,7 @@ The data could be written as:
 
 1. `String` that is formatted as a InfluxDB's line protocol
 1. `Hash` with keys: name, tags, fields and time
-1. [Data Point](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb/client/point.rb#L28) structure
+1. [Data Point](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb2/client/point.rb#L28) structure
 1. `Array` of above items
 
 ```ruby
@@ -274,7 +274,7 @@ Server availability can be checked using the `client.health` method. That is equ
 
 ### InfluxDB 1.8 API compatibility
 
-[InfluxDB 1.8.0 introduced forward compatibility APIs](https://docs.influxdata.com/influxdb/latest/tools/api/#influxdb-2-0-api-compatibility-endpoints) for InfluxDB 2.0. This allow you to easily move from InfluxDB 1.x to InfluxDB 2.0 Cloud or open source.
+[InfluxDB 1.8.0 introduced forward compatibility APIs](https://docs.influxdata.com/influxdb/v1.8/tools/api/#influxdb-2-0-api-compatibility-endpoints) for InfluxDB 2.0. This allow you to easily move from InfluxDB 1.x to InfluxDB 2.0 Cloud or open source.
 
 The following forward compatible APIs are available:
 
