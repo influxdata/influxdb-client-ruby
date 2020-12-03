@@ -194,7 +194,7 @@ The data could be written as:
 
 1. `String` that is formatted as a InfluxDB's line protocol
 1. `Hash` with keys: name, tags, fields and time
-1. [Data Point](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb/client/point.rb#L28) structure
+1. [Data Point](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb2/client/point.rb#L28) structure
 1. `Array` of above items
 
 ```ruby
