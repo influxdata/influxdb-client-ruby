@@ -1,4 +1,4 @@
-## 1.10.0 [unreleased]
+## 1.10.0 [2020-12-04]
 
 ### Features
 1. [#59](https://github.com/influxdata/influxdb-client-ruby/pull/59): CSV parser is able to parse export from UI
