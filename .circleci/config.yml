@@ -78,7 +78,7 @@ jobs:
         default: &default-ruby-image "circleci/ruby:2.6-stretch"
       influxdb-image:
         type: string
-        default: &default-influxdb-image "influxdb:v2.0.2"
+        default: &default-influxdb-image "influxdb:v2.0.3"
     docker:
       - image: << parameters.ruby-image >>
       - image: &influx-image quay.io/influxdb/<< parameters.influxdb-image >>
@@ -124,7 +124,7 @@ workflows:
           name: ruby-2.6
       - tests-ruby:
           name: ruby-2.6-nightly
-          influxdb-image: "influx:nightly"
+          influxdb-image: "influxdb2:nightly"
       - tests-ruby:
           name: ruby-2.5
           ruby-image: "circleci/ruby:2.5-stretch"

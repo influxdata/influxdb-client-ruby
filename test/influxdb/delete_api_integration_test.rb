@@ -56,8 +56,6 @@ class DeleteApiIntegrationTest < MiniTest::Test
   end
 
   def test_delete
-    # TODO: https://github.com/influxdata/influxdb/issues/19545
-    skip
     @client.create_delete_api.delete(Time.utc(2015, 10, 16, 8, 20, 15), Time.utc(2020, 10, 16, 8, 20, 15),
                                      predicate: 'location="europe"')
 
@@ -65,24 +63,18 @@ class DeleteApiIntegrationTest < MiniTest::Test
   end
 
   def test_delete_without_predicate
-    # TODO: https://github.com/influxdata/influxdb/issues/19545
-    skip
     @client.create_delete_api.delete(Time.utc(2016, 10, 15, 7, 20, 15), Time.utc(2018, 10, 14, 8, 20, 15))
 
     assert_equal 2, _query_count
   end
 
   def test_delete_all
-    # TODO: https://github.com/influxdata/influxdb/issues/19545
-    skip
     @client.create_delete_api.delete(Time.utc(2010, 10, 15, 7, 20, 15), Time.utc(2020, 10, 14, 8, 20, 15))
 
     assert_equal 0, _query_count
   end
 
   def test_delete_without_interval
-    # TODO: https://github.com/influxdata/influxdb/issues/19545
-    skip
     error = assert_raises InfluxDB2::InfluxError do
       @client.create_delete_api.delete(nil, nil)
     end
