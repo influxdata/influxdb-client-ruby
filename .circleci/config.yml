@@ -118,6 +118,9 @@ workflows:
   build:
     jobs:
       - tests-ruby:
+          name: ruby-3.0
+          ruby-image: "circleci/ruby:3.0-buster"
+      - tests-ruby:
           name: ruby-2.7
           ruby-image: "circleci/ruby:2.7-buster"
       - tests-ruby:
@@ -133,6 +136,7 @@ workflows:
           ruby-image: "circleci/ruby:2.4-stretch"
       - deploy-preview:
           requires:
+            - ruby-3.0
             - ruby-2.7
             - ruby-2.6
             - ruby-2.6-nightly
