@@ -2,6 +2,7 @@
 
 ### CI
 1. [#63](https://github.com/influxdata/influxdb-client-ruby/pull/63): Updated default docker image to v2.0.3
+1. [#65](https://github.com/influxdata/influxdb-client-ruby/pull/65): Added Ruby 3.0 into CI
 
 ## 1.10.0 [2020-12-04]
 
