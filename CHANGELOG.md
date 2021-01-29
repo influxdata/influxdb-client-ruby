@@ -1,4 +1,4 @@
-## 1.11.0 [unreleased]
+## 1.11.0 [2021-01-29]
 
 ### CI
 1. [#63](https://github.com/influxdata/influxdb-client-ruby/pull/63): Updated default docker image to v2.0.3
