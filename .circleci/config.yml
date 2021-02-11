@@ -34,6 +34,7 @@ commands:
       - checkout
       - influxdb-onboarding
   test:
+    description: Run tests for << parameters.gemspec-file >>
     parameters:
       ruby-image:
         type: string

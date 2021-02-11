@@ -44,7 +44,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
   spec.required_ruby_version = '>= 2.2.0'
 
-  # spec.add_runtime_dependency 'influxdb-client', spec.version
+  spec.add_runtime_dependency 'influxdb-client', spec.version
 
   spec.add_development_dependency 'bundler', '~> 2.0'
   spec.add_development_dependency 'codecov', '~> 0.1.16'
