@@ -20,9 +20,21 @@
 # THE SOFTWARE.
 #
 
-AllCops:
+Naming/FileName:
   Exclude:
-  - 'lib/influxdb2/client/models/**/*'
-  - 'vendor/**/*'
-  - 'apis/**/*'
-inherit_from: ./.rubocop-cops.yml
+    - 'lib/influxdb-client.rb'
+    - 'apis/lib/influxdb-client-apis.rb'
+Metrics/LineLength:
+  Max: 120
+Metrics/MethodLength:
+  Max: 50
+Metrics/ClassLength:
+  Max: 300
+Metrics/AbcSize:
+  Max: 50
+Metrics/CyclomaticComplexity:
+  Max: 15
+Metrics/PerceivedComplexity:
+  Max: 15
+Metrics/ParameterLists:
+  Max: 10

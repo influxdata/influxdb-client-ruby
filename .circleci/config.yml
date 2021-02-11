@@ -37,38 +37,50 @@ commands:
     parameters:
       ruby-image:
         type: string
+      gemspec-file:
+        type: string
+      path:
+        type: string
     steps:
       - restore_cache:
           name: Restoring Gem Cache
           keys:
-            - &cache-key gem-cache-{{ checksum "influxdb-client.gemspec" }}-<< parameters.ruby-image >>
-            - gem-cache-{{ checksum "influxdb-client.gemspec" }}
+            - &cache-key gem-cache-{{ checksum "<< parameters.path >>/<< parameters.gemspec-file >>" }}-<< parameters.ruby-image >>
+            - gem-cache-{{ checksum "<< parameters.path >>/<< parameters.gemspec-file >>" }}
             - gem-cache-
       - run:
           name: Install dependencies
           command: |
+            cd << parameters.path >>
             gem install bundler
             bundle config set path 'vendor/bundle'
             bundle install --jobs=4 --retry=3
       - run:
           name: Static code analyze
           command: |
+            cd << parameters.path >>
             bundle exec rake rubocop
       - run:
           name: Run tests
           command: |
+            cd << parameters.path >>
             export MINITEST_REPORTER=JUnitReporter
             bundle exec rake test
       - save_cache:
           name: Saving Gem Cache
           key: *cache-key
           paths:
-            - ./vendor/bundle
+            - << parameters.path >>/vendor/bundle
           when: always
+      - storing-test-results:
+          path: << parameters.path >>
   storing-test-results:
+    parameters:
+      path:
+        type: string
     steps:
       - store_test_results:
-          path: test/reports
+          path: << parameters.path >>/test/reports
 
 jobs:
   tests-ruby:
@@ -88,7 +100,12 @@ jobs:
       - prepare
       - test:
           ruby-image: << parameters.ruby-image >>
-      - storing-test-results
+          gemspec-file: influxdb-client.gemspec
+          path: .
+      - test:
+          ruby-image: << parameters.ruby-image >>
+          gemspec-file: influxdb-client-apis.gemspec
+          path: ./apis
 
   deploy-preview:
     docker:

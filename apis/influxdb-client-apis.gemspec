@@ -20,17 +20,17 @@
 
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'influxdb2/client/version'
+version_rb = File.read(File.expand_path('../lib/influxdb2/client/version.rb', __dir__)).strip[/'(.*)'/, 1]
 
 # noinspection DuplicatedCode
 Gem::Specification.new do |spec|
-  spec.name          = 'influxdb-client'
-  spec.version       = ENV['CIRCLE_BUILD_NUM'] ? "#{InfluxDB2::VERSION}-#{ENV['CIRCLE_BUILD_NUM']}" : InfluxDB2::VERSION
+  spec.name          = 'influxdb-client-apis'
+  spec.version       = ENV['CIRCLE_BUILD_NUM'] ? "#{version_rb}-#{ENV['CIRCLE_BUILD_NUM']}" : version_rb
   spec.authors       = ['Jakub Bednar']
   spec.email         = ['jakub.bednar@gmail.com']
 
-  spec.summary       = 'Ruby library for InfluxDB 2.'
-  spec.description   = 'This is the official Ruby library for InfluxDB 2.'
+  spec.summary       = 'Contains client APIs for InfluxDB v2.0.'
+  spec.description   = 'This is the official client APIs for for InfluxDB 2.'
   spec.homepage      = 'https://github.com/influxdata/influxdb-client-ruby'
   spec.license       = 'MIT'
 
@@ -39,10 +39,12 @@ Gem::Specification.new do |spec|
   spec.metadata['changelog_uri'] = 'https://raw.githubusercontent.com/influxdata/influxdb-client-ruby/master/CHANGELOG.md'
 
   spec.files = Dir.glob('lib/**/*')
-  spec.files += %w[influxdb-client.gemspec LICENSE README.md CHANGELOG.md Rakefile]
+  spec.files += %w[influxdb-client-apis.gemspec ../LICENSE ../README.md ../CHANGELOG.md Rakefile]
   spec.test_files = Dir.glob('test/**/*')
   spec.require_paths = ['lib']
   spec.required_ruby_version = '>= 2.2.0'
+
+  # spec.add_runtime_dependency 'influxdb-client', spec.version
 
   spec.add_development_dependency 'bundler', '~> 2.0'
   spec.add_development_dependency 'codecov', '~> 0.1.16'

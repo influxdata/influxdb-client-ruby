@@ -1,4 +1,3 @@
-#
 # The MIT License
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,11 +17,9 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-#
 
-AllCops:
-  Exclude:
-  - 'lib/influxdb2/client/models/**/*'
-  - 'vendor/**/*'
-  - 'apis/**/*'
-inherit_from: ./.rubocop-cops.yml
+module InfluxDB2
+  module API
+    PLACEHOLDER = 'placeholder'.freeze
+  end
+end
