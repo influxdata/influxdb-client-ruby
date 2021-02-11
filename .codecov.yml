@@ -1,3 +1,5 @@
 ignore:
   - "lib/influxdb2/client/models/**/*"
   - "test/influxdb/**/*"
+  - "apis/lib/influxdb2/apis/generated/**/*"
+  - "apis/test/influxdb2/**/*"
