@@ -34,7 +34,6 @@ commands:
       - checkout
       - influxdb-onboarding
   test:
-    description: Run tests for << parameters.gemspec-file >>
     parameters:
       ruby-image:
         type: string
@@ -111,6 +110,11 @@ jobs:
   deploy-preview:
     docker:
       - image: *default-ruby-image
+    parameters:
+      gemspec-file:
+        type: string
+      path:
+        type: string
     steps:
       - run:
           name: Early return if this build is from a forked repository
@@ -126,10 +130,12 @@ jobs:
       - run:
           name: Build a Gem bundle
           command: |
-            gem build influxdb-client.gemspec
+            cd << parameters.path >>
+            gem build << parameters.gemspec-file >>
       - run:
           name: Deploy pre-release into https://rubygems.org
           command: |
+            cd << parameters.path >>
             gem push influxdb-client-*.pre.$CIRCLE_BUILD_NUM.gem
 workflows:
   version: 2
@@ -153,6 +159,9 @@ workflows:
           name: ruby-2.4
           ruby-image: "circleci/ruby:2.4-stretch"
       - deploy-preview:
+          name: Deploy Client
+          gemspec-file: influxdb-client.gemspec
+          path: .
           requires:
             - ruby-3.0
             - ruby-2.7
@@ -160,6 +169,15 @@ workflows:
             - ruby-2.6-nightly
             - ruby-2.5
             - ruby-2.4
+          filters:
+            branches:
+              only: master
+      - deploy-preview:
+          name: Deploy APIs
+          gemspec-file: influxdb-client-apis.gemspec
+          path: ./apis
+          requires:
+            - Deploy Client
           filters:
             branches:
               only: master
