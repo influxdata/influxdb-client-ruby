@@ -11,21 +11,21 @@
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>3.3.4</version>
+                <version>5.0.0-beta3</version>
                 <configuration>
-                    <inputSpec>${project.basedir}/swagger.yml</inputSpec>
+                    <inputSpec>https://raw.githubusercontent.com/influxdata/influxdb/master/http/swagger.yml</inputSpec>
                     <generatorName>ruby</generatorName>
                     <configOptions>
                       <moduleName>InfluxDB2</moduleName>
                     </configOptions>
                     <generateModelDocumentation>false</generateModelDocumentation>
                     <generateApiDocumentation>false</generateApiDocumentation>
-                    <generateApis>false</generateApis>
+                    <generateApis>true</generateApis>
                     <generateApiTests>false</generateApiTests>
-                    <generateSupportingFiles>false</generateSupportingFiles>
+                    <generateSupportingFiles>true</generateSupportingFiles>
                     <generateModelTests>false</generateModelTests>
                     <verbose>false</verbose>
-                    <output>${project.basedir}/..</output>
+                    <output>generated</output>
                     <addCompileSourceRoot>false</addCompileSourceRoot>
                 </configuration>
             </plugin>

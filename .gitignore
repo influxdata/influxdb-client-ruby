@@ -14,3 +14,4 @@ influxdb-client-*.gem
 /TAGS
 vendor
 /.openapi-generator/
+bin/generated/

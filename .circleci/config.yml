@@ -147,7 +147,7 @@ workflows:
           name: client-r3.0
           ruby-image: "circleci/ruby:3.0-buster"
       - tests-ruby:
-          name: apis-r3.0
+          name: APIs-r3.0
           ruby-image: "circleci/ruby:3.0-buster"
           gemspec-file: influxdb-client-apis.gemspec
           path: ./apis
@@ -157,7 +157,7 @@ workflows:
           name: client-r2.7
           ruby-image: "circleci/ruby:2.7-buster"
       - tests-ruby:
-          name: apis-r2.7
+          name: APIs-r2.7
           ruby-image: "circleci/ruby:2.7-buster"
           gemspec-file: influxdb-client-apis.gemspec
           path: ./apis
@@ -166,7 +166,7 @@ workflows:
       - tests-ruby:
           name: client-r2.6
       - tests-ruby:
-          name: apis-r2.6
+          name: APIs-r2.6
           gemspec-file: influxdb-client-apis.gemspec
           path: ./apis
           requires:
@@ -175,7 +175,7 @@ workflows:
           name: client-r2.6-nightly
           influxdb-image: "influxdb2:nightly"
       - tests-ruby:
-          name: apis-r2.6-nightly
+          name: APIs-r2.6-nightly
           influxdb-image: "influxdb2:nightly"
           gemspec-file: influxdb-client-apis.gemspec
           path: ./apis
@@ -185,7 +185,7 @@ workflows:
           name: client-r2.5
           ruby-image: "circleci/ruby:2.5-stretch"
       - tests-ruby:
-          name: apis-r2.5
+          name: APIs-r2.5
           ruby-image: "circleci/ruby:2.5-stretch"
           gemspec-file: influxdb-client-apis.gemspec
           path: ./apis
@@ -195,7 +195,7 @@ workflows:
           name: client-r2.4
           ruby-image: "circleci/ruby:2.4-stretch"
       - tests-ruby:
-          name: apis-r2.4
+          name: APIs-r2.4
           ruby-image: "circleci/ruby:2.4-stretch"
           gemspec-file: influxdb-client-apis.gemspec
           path: ./apis
@@ -206,12 +206,12 @@ workflows:
           gemspec-file: influxdb-client.gemspec
           path: .
           requires:
-            - apis-r3.0
-            - apis-r2.7
-            - apis-r2.6
-            - apis-r2.6-nightly
-            - apis-r2.5
-            - apis-r2.4
+            - APIs-r3.0
+            - APIs-r2.7
+            - APIs-r2.6
+            - APIs-r2.6-nightly
+            - APIs-r2.5
+            - APIs-r2.4
           filters:
             branches:
               only: master
