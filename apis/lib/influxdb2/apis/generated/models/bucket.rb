@@ -13,23 +13,30 @@ OpenAPI Generator version: 5.0.0-beta3
 require 'date'
 require 'time'
 
-module InfluxDB2
-  # Dialect are options to change the default CSV output format; https://www.w3.org/TR/2015/REC-tabular-metadata-20151217/#dialect-descriptions
-  class Dialect
-    # If true, the results will contain a header row
-    attr_accessor :header
+module InfluxDB2::API
+  class Bucket
+    attr_accessor :links
 
-    # Separator between cells; the default is ,
-    attr_accessor :delimiter
+    attr_accessor :id
 
-    # https://www.w3.org/TR/2015/REC-tabular-data-model-20151217/#columns
-    attr_reader :annotations
+    attr_reader :type
 
-    # Character prefixed to comment strings
-    attr_accessor :comment_prefix
+    attr_accessor :name
 
-    # Format of timestamps
-    attr_reader :date_time_format
+    attr_accessor :description
+
+    attr_accessor :org_id
+
+    attr_accessor :rp
+
+    attr_accessor :created_at
+
+    attr_accessor :updated_at
+
+    # Rules to expire or retain data.  No rules means data never expires.
+    attr_accessor :retention_rules
+
+    attr_accessor :labels
 
     class EnumAttributeValidator
       attr_reader :datatype
@@ -56,22 +63,34 @@ module InfluxDB2
     # Attribute mapping from ruby-style variable name to JSON key
     def self.attribute_map
       {
-        :'header' => :'header',
-        :'delimiter' => :'delimiter',
-        :'annotations' => :'annotations',
-        :'comment_prefix' => :'commentPrefix',
-        :'date_time_format' => :'dateTimeFormat',
+        :'links' => :'links',
+        :'id' => :'id',
+        :'type' => :'type',
+        :'name' => :'name',
+        :'description' => :'description',
+        :'org_id' => :'orgID',
+        :'rp' => :'rp',
+        :'created_at' => :'createdAt',
+        :'updated_at' => :'updatedAt',
+        :'retention_rules' => :'retentionRules',
+        :'labels' => :'labels',
       }
     end
 
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'header' => :'Boolean',
-        :'delimiter' => :'String',
-        :'annotations' => :'Array<String>',
-        :'comment_prefix' => :'String',
-        :'date_time_format' => :'String',
+        :'links' => :'BucketLinks',
+        :'id' => :'String',
+        :'type' => :'String',
+        :'name' => :'String',
+        :'description' => :'String',
+        :'org_id' => :'String',
+        :'rp' => :'String',
+        :'created_at' => :'Time',
+        :'updated_at' => :'Time',
+        :'retention_rules' => :'Array<RetentionRule>',
+        :'labels' => :'Array<Label>',
       }
     end
 
@@ -85,45 +104,65 @@ module InfluxDB2
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `InfluxDB2::Dialect` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `InfluxDB2::Bucket` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!self.class.attribute_map.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `InfluxDB2::Dialect`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `InfluxDB2::Bucket`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
 
-      if attributes.key?(:'header')
-        self.header = attributes[:'header']
-      else
-        self.header = true
+      if attributes.key?(:'links')
+        self.links = attributes[:'links']
       end
 
-      if attributes.key?(:'delimiter')
-        self.delimiter = attributes[:'delimiter']
-      else
-        self.delimiter = ','
+      if attributes.key?(:'id')
+        self.id = attributes[:'id']
       end
 
-      if attributes.key?(:'annotations')
-        if (value = attributes[:'annotations']).is_a?(Array)
-          self.annotations = value
+      if attributes.key?(:'type')
+        self.type = attributes[:'type']
+      else
+        self.type = 'user'
+      end
+
+      if attributes.key?(:'name')
+        self.name = attributes[:'name']
+      end
+
+      if attributes.key?(:'description')
+        self.description = attributes[:'description']
+      end
+
+      if attributes.key?(:'org_id')
+        self.org_id = attributes[:'org_id']
+      end
+
+      if attributes.key?(:'rp')
+        self.rp = attributes[:'rp']
+      end
+
+      if attributes.key?(:'created_at')
+        self.created_at = attributes[:'created_at']
+      end
+
+      if attributes.key?(:'updated_at')
+        self.updated_at = attributes[:'updated_at']
+      end
+
+      if attributes.key?(:'retention_rules')
+        if (value = attributes[:'retention_rules']).is_a?(Array)
+          self.retention_rules = value
         end
       end
 
-      if attributes.key?(:'comment_prefix')
-        self.comment_prefix = attributes[:'comment_prefix']
-      else
-        self.comment_prefix = '#'
-      end
-
-      if attributes.key?(:'date_time_format')
-        self.date_time_format = attributes[:'date_time_format']
-      else
-        self.date_time_format = 'RFC3339'
+      if attributes.key?(:'labels')
+        if (value = attributes[:'labels']).is_a?(Array)
+          self.labels = value
+        end
       end
     end
 
@@ -131,20 +170,12 @@ module InfluxDB2
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
-      if !@delimiter.nil? && @delimiter.to_s.length > 1
-        invalid_properties.push('invalid value for "delimiter", the character length must be smaller than or equal to 1.')
+      if @name.nil?
+        invalid_properties.push('invalid value for "name", name cannot be nil.')
       end
 
-      if !@delimiter.nil? && @delimiter.to_s.length < 1
-        invalid_properties.push('invalid value for "delimiter", the character length must be great than or equal to 1.')
-      end
-
-      if !@comment_prefix.nil? && @comment_prefix.to_s.length > 1
-        invalid_properties.push('invalid value for "comment_prefix", the character length must be smaller than or equal to 1.')
-      end
-
-      if !@comment_prefix.nil? && @comment_prefix.to_s.length < 0
-        invalid_properties.push('invalid value for "comment_prefix", the character length must be great than or equal to 0.')
+      if @retention_rules.nil?
+        invalid_properties.push('invalid value for "retention_rules", retention_rules cannot be nil.')
       end
 
       invalid_properties
@@ -153,51 +184,21 @@ module InfluxDB2
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
-      return false if !@delimiter.nil? && @delimiter.to_s.length > 1
-      return false if !@delimiter.nil? && @delimiter.to_s.length < 1
-      return false if !@comment_prefix.nil? && @comment_prefix.to_s.length > 1
-      return false if !@comment_prefix.nil? && @comment_prefix.to_s.length < 0
-      date_time_format_validator = EnumAttributeValidator.new('String', ["RFC3339", "RFC3339Nano"])
-      return false unless date_time_format_validator.valid?(@date_time_format)
+      type_validator = EnumAttributeValidator.new('String', ["user", "system"])
+      return false unless type_validator.valid?(@type)
+      return false if @name.nil?
+      return false if @retention_rules.nil?
       true
     end
 
-    # Custom attribute writer method with validation
-    # @param [Object] delimiter Value to be assigned
-    def delimiter=(delimiter)
-      if !delimiter.nil? && delimiter.to_s.length > 1
-        fail ArgumentError, 'invalid value for "delimiter", the character length must be smaller than or equal to 1.'
-      end
-
-      if !delimiter.nil? && delimiter.to_s.length < 1
-        fail ArgumentError, 'invalid value for "delimiter", the character length must be great than or equal to 1.'
-      end
-
-      @delimiter = delimiter
-    end
-
-    # Custom attribute writer method with validation
-    # @param [Object] comment_prefix Value to be assigned
-    def comment_prefix=(comment_prefix)
-      if !comment_prefix.nil? && comment_prefix.to_s.length > 1
-        fail ArgumentError, 'invalid value for "comment_prefix", the character length must be smaller than or equal to 1.'
-      end
-
-      if !comment_prefix.nil? && comment_prefix.to_s.length < 0
-        fail ArgumentError, 'invalid value for "comment_prefix", the character length must be great than or equal to 0.'
-      end
-
-      @comment_prefix = comment_prefix
-    end
-
     # Custom attribute writer method checking allowed values (enum).
-    # @param [Object] date_time_format Object to be assigned
-    def date_time_format=(date_time_format)
-      validator = EnumAttributeValidator.new('String', ["RFC3339", "RFC3339Nano"])
-      unless validator.valid?(date_time_format)
-        fail ArgumentError, "invalid value for \"date_time_format\", must be one of #{validator.allowable_values}."
+    # @param [Object] type Object to be assigned
+    def type=(type)
+      validator = EnumAttributeValidator.new('String', ["user", "system"])
+      unless validator.valid?(type)
+        fail ArgumentError, "invalid value for \"type\", must be one of #{validator.allowable_values}."
       end
-      @date_time_format = date_time_format
+      @type = type
     end
 
     # Checks equality by comparing each attribute.
@@ -205,11 +206,17 @@ module InfluxDB2
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          header == o.header &&
-          delimiter == o.delimiter &&
-          annotations == o.annotations &&
-          comment_prefix == o.comment_prefix &&
-          date_time_format == o.date_time_format
+          links == o.links &&
+          id == o.id &&
+          type == o.type &&
+          name == o.name &&
+          description == o.description &&
+          org_id == o.org_id &&
+          rp == o.rp &&
+          created_at == o.created_at &&
+          updated_at == o.updated_at &&
+          retention_rules == o.retention_rules &&
+          labels == o.labels
     end
 
     # @see the `==` method
@@ -221,7 +228,7 @@ module InfluxDB2
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [header, delimiter, annotations, comment_prefix, date_time_format, ].hash
+      [links, id, type, name, description, org_id, rp, created_at, updated_at, retention_rules, labels, ].hash
     end
 
     # Builds the object from hash

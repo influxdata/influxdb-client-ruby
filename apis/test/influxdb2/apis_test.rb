@@ -25,8 +25,7 @@ class ApisTest < Minitest::Test
     WebMock.allow_net_connect!
   end
 
-  def test_placeholder
-    puts InfluxDB2::API::PLACEHOLDER
-    refute_nil InfluxDB2::API::PLACEHOLDER
+  def test_defined_version_number
+    refute_nil InfluxDB2::API::VERSION
   end
 end

@@ -27,6 +27,7 @@
                     <verbose>false</verbose>
                     <output>generated</output>
                     <addCompileSourceRoot>false</addCompileSourceRoot>
+                    <templateDirectory>templates</templateDirectory>
                 </configuration>
             </plugin>
         </plugins>

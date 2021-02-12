@@ -22,7 +22,7 @@ module InfluxDB2
     attr_accessor :query
 
     # The type of query. Must be \"flux\".
-    attr_accessor :type
+    attr_reader :type
 
     attr_accessor :dialect
 
@@ -51,14 +51,14 @@ module InfluxDB2
       end
     end
 
-    # Attribute mapping from ruby-style variable name to JSON key.
+    # Attribute mapping from ruby-style variable name to JSON key
     def self.attribute_map
       {
         :'extern' => :'extern',
         :'query' => :'query',
         :'type' => :'type',
         :'dialect' => :'dialect',
-        :'now' => :'now'
+        :'now' => :'now',
       }
     end
 
@@ -69,7 +69,7 @@ module InfluxDB2
         :'query' => :'String',
         :'type' => :'String',
         :'dialect' => :'Dialect',
-        :'now' => :'Time'
+        :'now' => :'Time',
       }
     end
 
@@ -166,7 +166,7 @@ module InfluxDB2
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [extern, query, type, dialect, now].hash
+      [extern, query, type, dialect, now, ].hash
     end
 
     # Builds the object from hash
