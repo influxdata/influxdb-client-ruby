@@ -23,7 +23,7 @@ module InfluxDB2
     attr_accessor :delimiter
 
     # https://www.w3.org/TR/2015/REC-tabular-data-model-20151217/#columns
-    attr_reader :annotations
+    attr_accessor :annotations
 
     # Character prefixed to comment strings
     attr_accessor :comment_prefix

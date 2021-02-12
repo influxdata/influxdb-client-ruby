@@ -6,7 +6,7 @@
     {{#description}}
     # {{{description}}}
     {{/description}}
-    {{^isEnum}}attr_accessor{{/isEnum}}{{#isEnum}}attr_reader{{/isEnum}} :{{{name}}}
+    {{^isEnum}}attr_accessor{{/isEnum}}{{#isEnum}}{{^isContainer}}attr_reader{{/isContainer}}{{#isContainer}}attr_accessor{{/isContainer}}{{/isEnum}} :{{{name}}}
 
   {{/vars}}
 {{#hasEnums}}
