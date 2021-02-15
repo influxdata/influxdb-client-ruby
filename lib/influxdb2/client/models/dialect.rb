@@ -20,13 +20,13 @@ module InfluxDB2
     attr_accessor :header
 
     # Separator between cells; the default is ,
-    attr_accessor :delimiter
+    attr_reader :delimiter
 
     # https://www.w3.org/TR/2015/REC-tabular-data-model-20151217/#columns
     attr_accessor :annotations
 
     # Character prefixed to comment strings
-    attr_accessor :comment_prefix
+    attr_reader :comment_prefix
 
     # Format of timestamps
     attr_reader :date_time_format
