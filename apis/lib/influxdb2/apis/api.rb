@@ -62,6 +62,13 @@ module InfluxDB2
       def create_organization_api
         InfluxDB2::OrganizationsApi.new(@api_client)
       end
+
+      # Create a new instance of AuthorizationsApi.
+      #
+      # @return [InfluxDB2::API::AuthorizationsApi] New instance of OrganizationsApi.
+      def create_authorization_api
+        InfluxDB2::AuthorizationsApi.new(@api_client)
+      end
     end
   end
 end
