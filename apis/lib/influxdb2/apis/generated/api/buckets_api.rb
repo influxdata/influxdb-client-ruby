@@ -64,7 +64,7 @@ module InfluxDB2
       return_type = opts[:debug_return_type]
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"BucketsApi.delete_buckets_id",
@@ -134,7 +134,7 @@ module InfluxDB2
       return_type = opts[:debug_return_type]
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"BucketsApi.delete_buckets_id_labels_id",
@@ -204,7 +204,7 @@ module InfluxDB2
       return_type = opts[:debug_return_type]
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"BucketsApi.delete_buckets_id_members_id",
@@ -274,7 +274,7 @@ module InfluxDB2
       return_type = opts[:debug_return_type]
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"BucketsApi.delete_buckets_id_owners_id",
@@ -359,10 +359,10 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'Buckets'
+      return_type = opts[:debug_return_type] || 'API::Buckets'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"BucketsApi.get_buckets",
@@ -423,10 +423,10 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'Bucket'
+      return_type = opts[:debug_return_type] || 'API::Bucket'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"BucketsApi.get_buckets_id",
@@ -487,10 +487,10 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'LabelsResponse'
+      return_type = opts[:debug_return_type] || 'API::LabelsResponse'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"BucketsApi.get_buckets_id_labels",
@@ -551,10 +551,10 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'ResourceMembers'
+      return_type = opts[:debug_return_type] || 'API::ResourceMembers'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"BucketsApi.get_buckets_id_members",
@@ -615,10 +615,10 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'ResourceOwners'
+      return_type = opts[:debug_return_type] || 'API::ResourceOwners'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"BucketsApi.get_buckets_id_owners",
@@ -682,10 +682,10 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'Buckets'
+      return_type = opts[:debug_return_type] || 'API::Buckets'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"BucketsApi.get_sources_id_buckets",
@@ -754,10 +754,10 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(bucket)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'Bucket'
+      return_type = opts[:debug_return_type] || 'API::Bucket'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"BucketsApi.patch_buckets_id",
@@ -820,10 +820,10 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(post_bucket_request)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'Bucket'
+      return_type = opts[:debug_return_type] || 'API::Bucket'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"BucketsApi.post_buckets",
@@ -892,10 +892,10 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(label_mapping)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'LabelResponse'
+      return_type = opts[:debug_return_type] || 'API::LabelResponse'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"BucketsApi.post_buckets_id_labels",
@@ -964,10 +964,10 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(add_resource_member_request_body)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'ResourceMember'
+      return_type = opts[:debug_return_type] || 'API::ResourceMember'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"BucketsApi.post_buckets_id_members",
@@ -1036,10 +1036,10 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(add_resource_member_request_body)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'ResourceOwner'
+      return_type = opts[:debug_return_type] || 'API::ResourceOwner'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"BucketsApi.post_buckets_id_owners",

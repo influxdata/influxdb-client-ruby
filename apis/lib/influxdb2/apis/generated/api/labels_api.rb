@@ -64,7 +64,7 @@ module InfluxDB2
       return_type = opts[:debug_return_type]
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"LabelsApi.delete_labels_id",
@@ -122,10 +122,10 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'LabelsResponse'
+      return_type = opts[:debug_return_type] || 'API::LabelsResponse'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"LabelsApi.get_labels",
@@ -186,10 +186,10 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'LabelResponse'
+      return_type = opts[:debug_return_type] || 'API::LabelResponse'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"LabelsApi.get_labels_id",
@@ -258,10 +258,10 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(label_update)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'LabelResponse'
+      return_type = opts[:debug_return_type] || 'API::LabelResponse'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"LabelsApi.patch_labels_id",
@@ -321,10 +321,10 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(label_create_request)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'LabelResponse'
+      return_type = opts[:debug_return_type] || 'API::LabelResponse'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"LabelsApi.post_labels",

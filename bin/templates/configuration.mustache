@@ -162,7 +162,7 @@ module {{moduleName}}::API
     # Returns base URL for specified operation based on server settings
     def base_url(operation = nil)
       index = server_operation_index.fetch(operation, server_index)
-      return "#{scheme}://#{[host, base_path].join('/').gsub(/\/+/, '/')}".sub(/\/+\z/, '') if index == nil
+      return "#{scheme}://#{[host, base_path].join('/').gsub(/\/+/, '/')}".sub(/\/+\z/, '') if index == nil || index == 0
 
       server_url(index, server_operation_variables.fetch(operation, server_variables), operation_server_settings[operation])
     end
@@ -185,49 +185,13 @@ module {{moduleName}}::API
     # Returns Auth Settings hash for api client.
     def auth_settings
       {
-{{#authMethods}}
-{{#isApiKey}}
-        '{{name}}' =>
+        'header' =>
           {
             type: 'api_key',
-            in: {{#isKeyInHeader}}'header'{{/isKeyInHeader}}{{#isKeyInQuery}}'query'{{/isKeyInQuery}},
-            key: '{{keyParamName}}',
-            value: api_key_with_prefix('{{keyParamName}}')
-          },
-{{/isApiKey}}
-{{#isBasic}}
-{{#isBasicBasic}}
-        '{{name}}' =>
-          {
-            type: 'basic',
             in: 'header',
             key: 'Authorization',
-            value: basic_auth_token
-          },
-{{/isBasicBasic}}
-{{#isBasicBearer}}
-        '{{name}}' =>
-          {
-            type: 'bearer',
-            in: 'header',
-            {{#bearerFormat}}
-            format: '{{{.}}}',
-            {{/bearerFormat}}
-            key: 'Authorization',
-            value: "Bearer #{access_token}"
-          },
-{{/isBasicBearer}}
-{{/isBasic}}
-{{#isOAuth}}
-        '{{name}}' =>
-          {
-            type: 'oauth2',
-            in: 'header',
-            key: 'Authorization',
-            value: "Bearer #{access_token}"
-          },
-{{/isOAuth}}
-{{/authMethods}}
+            value: api_key_with_prefix('api_key')
+          }
       }
     end
 

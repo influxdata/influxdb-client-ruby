@@ -21,11 +21,45 @@
 require 'test_helper'
 
 class ApisTest < Minitest::Test
+  attr_reader :main_client
+
   def setup
-    WebMock.allow_net_connect!
+    WebMock.disable_net_connect!
+    @main_client = InfluxDB2::Client.new('http://localhost:8086', 'my-token')
+  end
+
+  def teardown
+    @main_client.close!
   end
 
   def test_defined_version_number
     refute_nil InfluxDB2::API::VERSION
+  end
+
+  def test_initialize_api_client
+    refute_nil InfluxDB2::API::Client.new(@main_client)
+  end
+
+  def test_create_apis
+    client = InfluxDB2::API::Client.new(@main_client)
+    refute_nil client.create_bucket_api
+  end
+
+  def test_headers
+    stub_request(:get, 'http://localhost:8086/api/v2/buckets')
+      .to_return(body: '{}', headers: { 'Content-Type' => 'application/json' })
+
+    client = InfluxDB2::API::Client.new(@main_client)
+    bucket_api = client.create_bucket_api
+    bucket_api.get_buckets
+
+    headers = {
+      'Accept' => 'application/json',
+      'Authorization' => 'Token my-token',
+      'Content-Type' => 'application/json',
+      'Expect' => '',
+      'User-Agent' => "influxdb-client-ruby/#{InfluxDB2::VERSION}"
+    }
+    assert_requested(:get, 'http://localhost:8086/api/v2/buckets', times: 1, headers: headers)
   end
 end

@@ -19,6 +19,7 @@
 # THE SOFTWARE.
 #
 
+require 'influxdb2/apis/api'
 require 'influxdb2/apis/version'
 
 # Common files

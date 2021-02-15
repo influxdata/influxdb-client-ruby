@@ -64,7 +64,7 @@ module InfluxDB2
       return_type = opts[:debug_return_type]
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"AuthorizationsApi.delete_authorizations_id",
@@ -131,10 +131,10 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'Authorizations'
+      return_type = opts[:debug_return_type] || 'API::Authorizations'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"AuthorizationsApi.get_authorizations",
@@ -195,10 +195,10 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'Authorization'
+      return_type = opts[:debug_return_type] || 'API::Authorization'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"AuthorizationsApi.get_authorizations_id",
@@ -267,10 +267,10 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(authorization_update_request)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'Authorization'
+      return_type = opts[:debug_return_type] || 'API::Authorization'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"AuthorizationsApi.patch_authorizations_id",
@@ -333,10 +333,10 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(authorization)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'Authorization'
+      return_type = opts[:debug_return_type] || 'API::Authorization'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"AuthorizationsApi.post_authorizations",

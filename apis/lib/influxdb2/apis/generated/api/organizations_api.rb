@@ -64,7 +64,7 @@ module InfluxDB2
       return_type = opts[:debug_return_type]
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"OrganizationsApi.delete_orgs_id",
@@ -134,7 +134,7 @@ module InfluxDB2
       return_type = opts[:debug_return_type]
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"OrganizationsApi.delete_orgs_id_members_id",
@@ -204,7 +204,7 @@ module InfluxDB2
       return_type = opts[:debug_return_type]
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"OrganizationsApi.delete_orgs_id_owners_id",
@@ -289,10 +289,10 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'Organizations'
+      return_type = opts[:debug_return_type] || 'API::Organizations'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"OrganizationsApi.get_orgs",
@@ -353,10 +353,10 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'Organization'
+      return_type = opts[:debug_return_type] || 'API::Organization'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"OrganizationsApi.get_orgs_id",
@@ -417,10 +417,10 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'ResourceMembers'
+      return_type = opts[:debug_return_type] || 'API::ResourceMembers'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"OrganizationsApi.get_orgs_id_members",
@@ -481,10 +481,10 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'ResourceOwners'
+      return_type = opts[:debug_return_type] || 'API::ResourceOwners'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"OrganizationsApi.get_orgs_id_owners",
@@ -545,10 +545,10 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'SecretKeysResponse'
+      return_type = opts[:debug_return_type] || 'API::SecretKeysResponse'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"OrganizationsApi.get_orgs_id_secrets",
@@ -617,10 +617,10 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(organization)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'Organization'
+      return_type = opts[:debug_return_type] || 'API::Organization'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"OrganizationsApi.patch_orgs_id",
@@ -692,7 +692,7 @@ module InfluxDB2
       return_type = opts[:debug_return_type]
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"OrganizationsApi.patch_orgs_id_secrets",
@@ -755,10 +755,10 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(organization)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'Organization'
+      return_type = opts[:debug_return_type] || 'API::Organization'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"OrganizationsApi.post_orgs",
@@ -827,10 +827,10 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(add_resource_member_request_body)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'ResourceMember'
+      return_type = opts[:debug_return_type] || 'API::ResourceMember'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"OrganizationsApi.post_orgs_id_members",
@@ -899,10 +899,10 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(add_resource_member_request_body)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'ResourceOwner'
+      return_type = opts[:debug_return_type] || 'API::ResourceOwner'
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"OrganizationsApi.post_orgs_id_owners",
@@ -974,7 +974,7 @@ module InfluxDB2
       return_type = opts[:debug_return_type]
 
       # auth_names
-      auth_names = opts[:debug_auth_names] || []
+      auth_names = opts[:debug_auth_names] || ['header']
 
       new_options = opts.merge(
         :operation => :"OrganizationsApi.post_orgs_id_secrets",

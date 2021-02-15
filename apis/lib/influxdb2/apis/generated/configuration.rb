@@ -190,7 +190,7 @@ module InfluxDB2::API
     # Returns base URL for specified operation based on server settings
     def base_url(operation = nil)
       index = server_operation_index.fetch(operation, server_index)
-      return "#{scheme}://#{[host, base_path].join('/').gsub(/\/+/, '/')}".sub(/\/+\z/, '') if index == nil
+      return "#{scheme}://#{[host, base_path].join('/').gsub(/\/+/, '/')}".sub(/\/+\z/, '') if index == nil || index == 0
 
       server_url(index, server_operation_variables.fetch(operation, server_variables), operation_server_settings[operation])
     end
@@ -213,13 +213,13 @@ module InfluxDB2::API
     # Returns Auth Settings hash for api client.
     def auth_settings
       {
-        'BasicAuth' =>
+        'header' =>
           {
-            type: 'basic',
+            type: 'api_key',
             in: 'header',
             key: 'Authorization',
-            value: basic_auth_token
-          },
+            value: api_key_with_prefix('api_key')
+          }
       }
     end
 
