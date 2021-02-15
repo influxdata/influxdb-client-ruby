@@ -20,41 +20,25 @@
 
 require 'test_helper'
 
-class OrganizationsApiTest < BaseApiTests
+class UsersApiTest < BaseApiTests
   def setup
     super
-    @client.create_organization_api.get_orgs.orgs.each do |org|
-      next unless org.name.end_with?('_TEST')
+    @client.create_user_api.get_users.users.each do |user|
+      next unless user.name.end_with?('_TEST')
 
-      @client.create_organization_api.delete_orgs_id(org.id)
+      @client.create_user_api.delete_users_id(user.id)
     end
   end
 
   def test_create_org
-    name = generate_name('organization')
-    organization = InfluxDB2::API::Organization.new(name: name)
+    name = generate_name('user')
+    user = InfluxDB2::API::User.new(name: name)
 
-    result = @client.create_organization_api.post_orgs(organization)
+    result = @client.create_user_api.post_users(user)
 
     refute_nil result.id
     refute_nil result.links
     assert_equal name, result.name
-  end
-
-  def test_get_members
-    organization = InfluxDB2::API::Organization.new(name: generate_name('organization'))
-    result = @client.create_organization_api.post_orgs(organization)
-
-    members = @client.create_organization_api.get_orgs_id_members(result.id)
-    assert_equal 0, members.users.length
-  end
-
-  def test_get_owners
-    organization = InfluxDB2::API::Organization.new(name: generate_name('organization'))
-    result = @client.create_organization_api.post_orgs(organization)
-
-    owners = @client.create_organization_api.get_orgs_id_owners(result.id)
-    assert_equal 1, owners.users.length
-    assert_equal 'my-user', owners.users[0].name
+    assert_equal 'active', result.status
   end
 end
