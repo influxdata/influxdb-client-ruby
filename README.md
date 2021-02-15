@@ -60,7 +60,7 @@ gem install influxdb-client -v 1.11.0
 For management API:
 
 ```
-gem install influxdb-client-apis -v 1.11.0
+gem install influxdb-client-apis --pre
 ```
 
 ## Usage
