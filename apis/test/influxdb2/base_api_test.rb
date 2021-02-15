@@ -20,47 +20,24 @@
 
 require 'test_helper'
 
-class ApisTest < Minitest::Test
+class BaseApiTests < Minitest::Test
+  attr_reader :client
   attr_reader :main_client
+  attr_reader :my_org
 
   def setup
-    WebMock.disable_net_connect!
-    @main_client = InfluxDB2::Client.new('http://localhost:9086', 'my-token')
+    WebMock.allow_net_connect!
+    @main_client = InfluxDB2::Client.new('http://localhost:8086', 'my-token')
+    @client = InfluxDB2::API::Client.new(@main_client)
+    @my_org = @client.create_organization_api.get_orgs.orgs.select { |org| org.name == 'my-org' }.first
   end
 
   def teardown
     @main_client.close!
   end
 
-  def test_defined_version_number
-    refute_nil InfluxDB2::API::VERSION
-  end
-
-  def test_initialize_api_client
-    refute_nil InfluxDB2::API::Client.new(@main_client)
-  end
-
-  def test_create_apis
-    client = InfluxDB2::API::Client.new(@main_client)
-    refute_nil client.create_bucket_api
-    refute_nil client.create_organization_api
-  end
-
-  def test_headers
-    stub_request(:get, 'http://localhost:9086/api/v2/buckets')
-      .to_return(body: '{}', headers: { 'Content-Type' => 'application/json' })
-
-    client = InfluxDB2::API::Client.new(@main_client)
-    bucket_api = client.create_bucket_api
-    bucket_api.get_buckets
-
-    headers = {
-      'Accept' => 'application/json',
-      'Authorization' => 'Token my-token',
-      'Content-Type' => 'application/json',
-      'Expect' => '',
-      'User-Agent' => "influxdb-client-ruby/#{InfluxDB2::VERSION}"
-    }
-    assert_requested(:get, 'http://localhost:9086/api/v2/buckets', times: 1, headers: headers)
+  def generate_name(prefix)
+    now = Time.now.utc
+    "#{prefix}_#{now.to_i}_TEST"
   end
 end

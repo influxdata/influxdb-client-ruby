@@ -131,7 +131,7 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::Authorizations'
+      return_type = opts[:debug_return_type] || 'Authorizations'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -195,7 +195,7 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::Authorization'
+      return_type = opts[:debug_return_type] || 'Authorization'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -267,7 +267,7 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(authorization_update_request)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::Authorization'
+      return_type = opts[:debug_return_type] || 'Authorization'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -333,7 +333,7 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(authorization)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::Authorization'
+      return_type = opts[:debug_return_type] || 'Authorization'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']

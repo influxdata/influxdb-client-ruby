@@ -359,7 +359,7 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::Buckets'
+      return_type = opts[:debug_return_type] || 'Buckets'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -423,7 +423,7 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::Bucket'
+      return_type = opts[:debug_return_type] || 'Bucket'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -487,7 +487,7 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::LabelsResponse'
+      return_type = opts[:debug_return_type] || 'LabelsResponse'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -551,7 +551,7 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::ResourceMembers'
+      return_type = opts[:debug_return_type] || 'ResourceMembers'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -615,7 +615,7 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::ResourceOwners'
+      return_type = opts[:debug_return_type] || 'ResourceOwners'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -682,7 +682,7 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::Buckets'
+      return_type = opts[:debug_return_type] || 'Buckets'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -754,7 +754,7 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(bucket)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::Bucket'
+      return_type = opts[:debug_return_type] || 'Bucket'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -820,7 +820,7 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(post_bucket_request)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::Bucket'
+      return_type = opts[:debug_return_type] || 'Bucket'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -892,7 +892,7 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(label_mapping)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::LabelResponse'
+      return_type = opts[:debug_return_type] || 'LabelResponse'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -964,7 +964,7 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(add_resource_member_request_body)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::ResourceMember'
+      return_type = opts[:debug_return_type] || 'ResourceMember'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -1036,7 +1036,7 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(add_resource_member_request_body)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::ResourceOwner'
+      return_type = opts[:debug_return_type] || 'ResourceOwner'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']

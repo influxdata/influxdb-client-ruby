@@ -19,48 +19,32 @@
 # THE SOFTWARE.
 
 require 'test_helper'
+# require_relative 'base_api_test'
 
-class ApisTest < Minitest::Test
+class BucketsApiTest < BaseApiTests
+  attr_reader :client
   attr_reader :main_client
 
   def setup
-    WebMock.disable_net_connect!
-    @main_client = InfluxDB2::Client.new('http://localhost:9086', 'my-token')
+    super
+    buckets = @client.create_bucket_api.get_buckets
+    buckets.buckets.each do |bucket|
+      next unless bucket.name.end_with?('_TEST')
+
+      @client.create_bucket_api.delete_buckets_id(bucket.id)
+    end
   end
 
-  def teardown
-    @main_client.close!
-  end
+  def test_create_bucket
+    name = generate_name('bucket')
+    request = InfluxDB2::API::PostBucketRequest.new(org_id: @my_org.id, name: name)
 
-  def test_defined_version_number
-    refute_nil InfluxDB2::API::VERSION
-  end
+    result = @client.create_bucket_api.post_buckets(request)
 
-  def test_initialize_api_client
-    refute_nil InfluxDB2::API::Client.new(@main_client)
-  end
-
-  def test_create_apis
-    client = InfluxDB2::API::Client.new(@main_client)
-    refute_nil client.create_bucket_api
-    refute_nil client.create_organization_api
-  end
-
-  def test_headers
-    stub_request(:get, 'http://localhost:9086/api/v2/buckets')
-      .to_return(body: '{}', headers: { 'Content-Type' => 'application/json' })
-
-    client = InfluxDB2::API::Client.new(@main_client)
-    bucket_api = client.create_bucket_api
-    bucket_api.get_buckets
-
-    headers = {
-      'Accept' => 'application/json',
-      'Authorization' => 'Token my-token',
-      'Content-Type' => 'application/json',
-      'Expect' => '',
-      'User-Agent' => "influxdb-client-ruby/#{InfluxDB2::VERSION}"
-    }
-    assert_requested(:get, 'http://localhost:9086/api/v2/buckets', times: 1, headers: headers)
+    refute_nil result.id
+    refute_nil result.links
+    assert_equal name, result.name
+    assert_equal @my_org.id, result.org_id
+    assert_equal 'user', result.type
   end
 end

@@ -14,46 +14,37 @@ require 'date'
 require 'time'
 
 module InfluxDB2::API
-  class BucketLinks
-    # URI of resource.
-    attr_accessor :labels
+  class PostBucketRequest
+    attr_accessor :org_id
 
-    # URI of resource.
-    attr_accessor :members
+    attr_accessor :name
 
-    # URI of resource.
-    attr_accessor :org
+    attr_accessor :description
 
-    # URI of resource.
-    attr_accessor :owners
+    attr_accessor :rp
 
-    # URI of resource.
-    attr_accessor :_self
-
-    # URI of resource.
-    attr_accessor :write
+    # Rules to expire or retain data.  No rules means data never expires.
+    attr_accessor :retention_rules
 
     # Attribute mapping from ruby-style variable name to JSON key
     def self.attribute_map
       {
-        :'labels' => :'labels',
-        :'members' => :'members',
-        :'org' => :'org',
-        :'owners' => :'owners',
-        :'_self' => :'self',
-        :'write' => :'write',
+        :'org_id' => :'orgID',
+        :'name' => :'name',
+        :'description' => :'description',
+        :'rp' => :'rp',
+        :'retention_rules' => :'retentionRules',
       }
     end
 
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'labels' => :'String',
-        :'members' => :'String',
-        :'org' => :'String',
-        :'owners' => :'String',
-        :'_self' => :'String',
-        :'write' => :'String',
+        :'org_id' => :'String',
+        :'name' => :'String',
+        :'description' => :'String',
+        :'rp' => :'String',
+        :'retention_rules' => :'Array<RetentionRule>',
       }
     end
 
@@ -67,39 +58,37 @@ module InfluxDB2::API
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `InfluxDB2::BucketLinks` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `InfluxDB2::PostBucketRequest` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!self.class.attribute_map.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `InfluxDB2::BucketLinks`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `InfluxDB2::PostBucketRequest`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
 
-      if attributes.key?(:'labels')
-        self.labels = attributes[:'labels']
+      if attributes.key?(:'org_id')
+        self.org_id = attributes[:'org_id']
       end
 
-      if attributes.key?(:'members')
-        self.members = attributes[:'members']
+      if attributes.key?(:'name')
+        self.name = attributes[:'name']
       end
 
-      if attributes.key?(:'org')
-        self.org = attributes[:'org']
+      if attributes.key?(:'description')
+        self.description = attributes[:'description']
       end
 
-      if attributes.key?(:'owners')
-        self.owners = attributes[:'owners']
+      if attributes.key?(:'rp')
+        self.rp = attributes[:'rp']
       end
 
-      if attributes.key?(:'_self')
-        self._self = attributes[:'_self']
-      end
-
-      if attributes.key?(:'write')
-        self.write = attributes[:'write']
+      if attributes.key?(:'retention_rules')
+        if (value = attributes[:'retention_rules']).is_a?(Array)
+          self.retention_rules = value
+        end
       end
     end
 
@@ -107,12 +96,27 @@ module InfluxDB2::API
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
+      if @org_id.nil?
+        invalid_properties.push('invalid value for "org_id", org_id cannot be nil.')
+      end
+
+      if @name.nil?
+        invalid_properties.push('invalid value for "name", name cannot be nil.')
+      end
+
+      if @retention_rules.nil?
+        invalid_properties.push('invalid value for "retention_rules", retention_rules cannot be nil.')
+      end
+
       invalid_properties
     end
 
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
+      return false if @org_id.nil?
+      return false if @name.nil?
+      return false if @retention_rules.nil?
       true
     end
 
@@ -121,12 +125,11 @@ module InfluxDB2::API
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          labels == o.labels &&
-          members == o.members &&
-          org == o.org &&
-          owners == o.owners &&
-          _self == o._self &&
-          write == o.write
+          org_id == o.org_id &&
+          name == o.name &&
+          description == o.description &&
+          rp == o.rp &&
+          retention_rules == o.retention_rules
     end
 
     # @see the `==` method
@@ -138,7 +141,7 @@ module InfluxDB2::API
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [labels, members, org, owners, _self, write, ].hash
+      [org_id, name, description, rp, retention_rules, ].hash
     end
 
     # Builds the object from hash

@@ -14,46 +14,24 @@ require 'date'
 require 'time'
 
 module InfluxDB2::API
-  class BucketLinks
-    # URI of resource.
-    attr_accessor :labels
+  class Organizations
+    attr_accessor :links
 
-    # URI of resource.
-    attr_accessor :members
-
-    # URI of resource.
-    attr_accessor :org
-
-    # URI of resource.
-    attr_accessor :owners
-
-    # URI of resource.
-    attr_accessor :_self
-
-    # URI of resource.
-    attr_accessor :write
+    attr_accessor :orgs
 
     # Attribute mapping from ruby-style variable name to JSON key
     def self.attribute_map
       {
-        :'labels' => :'labels',
-        :'members' => :'members',
-        :'org' => :'org',
-        :'owners' => :'owners',
-        :'_self' => :'self',
-        :'write' => :'write',
+        :'links' => :'links',
+        :'orgs' => :'orgs',
       }
     end
 
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'labels' => :'String',
-        :'members' => :'String',
-        :'org' => :'String',
-        :'owners' => :'String',
-        :'_self' => :'String',
-        :'write' => :'String',
+        :'links' => :'Links',
+        :'orgs' => :'Array<Organization>',
       }
     end
 
@@ -67,39 +45,25 @@ module InfluxDB2::API
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `InfluxDB2::BucketLinks` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `InfluxDB2::Organizations` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!self.class.attribute_map.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `InfluxDB2::BucketLinks`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `InfluxDB2::Organizations`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
 
-      if attributes.key?(:'labels')
-        self.labels = attributes[:'labels']
+      if attributes.key?(:'links')
+        self.links = attributes[:'links']
       end
 
-      if attributes.key?(:'members')
-        self.members = attributes[:'members']
-      end
-
-      if attributes.key?(:'org')
-        self.org = attributes[:'org']
-      end
-
-      if attributes.key?(:'owners')
-        self.owners = attributes[:'owners']
-      end
-
-      if attributes.key?(:'_self')
-        self._self = attributes[:'_self']
-      end
-
-      if attributes.key?(:'write')
-        self.write = attributes[:'write']
+      if attributes.key?(:'orgs')
+        if (value = attributes[:'orgs']).is_a?(Array)
+          self.orgs = value
+        end
       end
     end
 
@@ -121,12 +85,8 @@ module InfluxDB2::API
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          labels == o.labels &&
-          members == o.members &&
-          org == o.org &&
-          owners == o.owners &&
-          _self == o._self &&
-          write == o.write
+          links == o.links &&
+          orgs == o.orgs
     end
 
     # @see the `==` method
@@ -138,7 +98,7 @@ module InfluxDB2::API
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [labels, members, org, owners, _self, write, ].hash
+      [links, orgs, ].hash
     end
 
     # Builds the object from hash

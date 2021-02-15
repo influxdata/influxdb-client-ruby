@@ -122,7 +122,7 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::LabelsResponse'
+      return_type = opts[:debug_return_type] || 'LabelsResponse'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -186,7 +186,7 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::LabelResponse'
+      return_type = opts[:debug_return_type] || 'LabelResponse'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -258,7 +258,7 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(label_update)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::LabelResponse'
+      return_type = opts[:debug_return_type] || 'LabelResponse'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -321,7 +321,7 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(label_create_request)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::LabelResponse'
+      return_type = opts[:debug_return_type] || 'LabelResponse'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']

@@ -14,46 +14,31 @@ require 'date'
 require 'time'
 
 module InfluxDB2::API
-  class BucketLinks
+  class Links
     # URI of resource.
-    attr_accessor :labels
-
-    # URI of resource.
-    attr_accessor :members
-
-    # URI of resource.
-    attr_accessor :org
-
-    # URI of resource.
-    attr_accessor :owners
+    attr_accessor :_next
 
     # URI of resource.
     attr_accessor :_self
 
     # URI of resource.
-    attr_accessor :write
+    attr_accessor :prev
 
     # Attribute mapping from ruby-style variable name to JSON key
     def self.attribute_map
       {
-        :'labels' => :'labels',
-        :'members' => :'members',
-        :'org' => :'org',
-        :'owners' => :'owners',
+        :'_next' => :'next',
         :'_self' => :'self',
-        :'write' => :'write',
+        :'prev' => :'prev',
       }
     end
 
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'labels' => :'String',
-        :'members' => :'String',
-        :'org' => :'String',
-        :'owners' => :'String',
+        :'_next' => :'String',
         :'_self' => :'String',
-        :'write' => :'String',
+        :'prev' => :'String',
       }
     end
 
@@ -67,39 +52,27 @@ module InfluxDB2::API
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `InfluxDB2::BucketLinks` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `InfluxDB2::Links` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!self.class.attribute_map.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `InfluxDB2::BucketLinks`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `InfluxDB2::Links`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
 
-      if attributes.key?(:'labels')
-        self.labels = attributes[:'labels']
-      end
-
-      if attributes.key?(:'members')
-        self.members = attributes[:'members']
-      end
-
-      if attributes.key?(:'org')
-        self.org = attributes[:'org']
-      end
-
-      if attributes.key?(:'owners')
-        self.owners = attributes[:'owners']
+      if attributes.key?(:'_next')
+        self._next = attributes[:'_next']
       end
 
       if attributes.key?(:'_self')
         self._self = attributes[:'_self']
       end
 
-      if attributes.key?(:'write')
-        self.write = attributes[:'write']
+      if attributes.key?(:'prev')
+        self.prev = attributes[:'prev']
       end
     end
 
@@ -107,12 +80,17 @@ module InfluxDB2::API
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
+      if @_self.nil?
+        invalid_properties.push('invalid value for "_self", _self cannot be nil.')
+      end
+
       invalid_properties
     end
 
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
+      return false if @_self.nil?
       true
     end
 
@@ -121,12 +99,9 @@ module InfluxDB2::API
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          labels == o.labels &&
-          members == o.members &&
-          org == o.org &&
-          owners == o.owners &&
+          _next == o._next &&
           _self == o._self &&
-          write == o.write
+          prev == o.prev
     end
 
     # @see the `==` method
@@ -138,7 +113,7 @@ module InfluxDB2::API
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [labels, members, org, owners, _self, write, ].hash
+      [_next, _self, prev, ].hash
     end
 
     # Builds the object from hash

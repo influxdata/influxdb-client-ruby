@@ -127,7 +127,7 @@ module {{moduleName}}::API
         end
       else
         # models, e.g. Pet
-        {{moduleName}}.const_get(return_type).build_from_hash(data)
+        {{moduleName}}::API.const_get(return_type).build_from_hash(data)
       end
     end
 

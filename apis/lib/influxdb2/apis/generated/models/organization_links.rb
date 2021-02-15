@@ -14,46 +14,56 @@ require 'date'
 require 'time'
 
 module InfluxDB2::API
-  class BucketLinks
+  class OrganizationLinks
     # URI of resource.
-    attr_accessor :labels
+    attr_accessor :_self
 
     # URI of resource.
     attr_accessor :members
 
     # URI of resource.
-    attr_accessor :org
-
-    # URI of resource.
     attr_accessor :owners
 
     # URI of resource.
-    attr_accessor :_self
+    attr_accessor :labels
 
     # URI of resource.
-    attr_accessor :write
+    attr_accessor :secrets
+
+    # URI of resource.
+    attr_accessor :buckets
+
+    # URI of resource.
+    attr_accessor :tasks
+
+    # URI of resource.
+    attr_accessor :dashboards
 
     # Attribute mapping from ruby-style variable name to JSON key
     def self.attribute_map
       {
-        :'labels' => :'labels',
-        :'members' => :'members',
-        :'org' => :'org',
-        :'owners' => :'owners',
         :'_self' => :'self',
-        :'write' => :'write',
+        :'members' => :'members',
+        :'owners' => :'owners',
+        :'labels' => :'labels',
+        :'secrets' => :'secrets',
+        :'buckets' => :'buckets',
+        :'tasks' => :'tasks',
+        :'dashboards' => :'dashboards',
       }
     end
 
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'labels' => :'String',
-        :'members' => :'String',
-        :'org' => :'String',
-        :'owners' => :'String',
         :'_self' => :'String',
-        :'write' => :'String',
+        :'members' => :'String',
+        :'owners' => :'String',
+        :'labels' => :'String',
+        :'secrets' => :'String',
+        :'buckets' => :'String',
+        :'tasks' => :'String',
+        :'dashboards' => :'String',
       }
     end
 
@@ -67,39 +77,47 @@ module InfluxDB2::API
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `InfluxDB2::BucketLinks` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `InfluxDB2::OrganizationLinks` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!self.class.attribute_map.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `InfluxDB2::BucketLinks`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `InfluxDB2::OrganizationLinks`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
 
-      if attributes.key?(:'labels')
-        self.labels = attributes[:'labels']
+      if attributes.key?(:'_self')
+        self._self = attributes[:'_self']
       end
 
       if attributes.key?(:'members')
         self.members = attributes[:'members']
       end
 
-      if attributes.key?(:'org')
-        self.org = attributes[:'org']
-      end
-
       if attributes.key?(:'owners')
         self.owners = attributes[:'owners']
       end
 
-      if attributes.key?(:'_self')
-        self._self = attributes[:'_self']
+      if attributes.key?(:'labels')
+        self.labels = attributes[:'labels']
       end
 
-      if attributes.key?(:'write')
-        self.write = attributes[:'write']
+      if attributes.key?(:'secrets')
+        self.secrets = attributes[:'secrets']
+      end
+
+      if attributes.key?(:'buckets')
+        self.buckets = attributes[:'buckets']
+      end
+
+      if attributes.key?(:'tasks')
+        self.tasks = attributes[:'tasks']
+      end
+
+      if attributes.key?(:'dashboards')
+        self.dashboards = attributes[:'dashboards']
       end
     end
 
@@ -121,12 +139,14 @@ module InfluxDB2::API
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          labels == o.labels &&
-          members == o.members &&
-          org == o.org &&
-          owners == o.owners &&
           _self == o._self &&
-          write == o.write
+          members == o.members &&
+          owners == o.owners &&
+          labels == o.labels &&
+          secrets == o.secrets &&
+          buckets == o.buckets &&
+          tasks == o.tasks &&
+          dashboards == o.dashboards
     end
 
     # @see the `==` method
@@ -138,7 +158,7 @@ module InfluxDB2::API
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [labels, members, org, owners, _self, write, ].hash
+      [_self, members, owners, labels, secrets, buckets, tasks, dashboards, ].hash
     end
 
     # Builds the object from hash

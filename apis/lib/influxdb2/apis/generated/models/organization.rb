@@ -14,46 +14,67 @@ require 'date'
 require 'time'
 
 module InfluxDB2::API
-  class BucketLinks
-    # URI of resource.
-    attr_accessor :labels
+  class Organization
+    attr_accessor :links
 
-    # URI of resource.
-    attr_accessor :members
+    attr_accessor :id
 
-    # URI of resource.
-    attr_accessor :org
+    attr_accessor :name
 
-    # URI of resource.
-    attr_accessor :owners
+    attr_accessor :description
 
-    # URI of resource.
-    attr_accessor :_self
+    attr_accessor :created_at
 
-    # URI of resource.
-    attr_accessor :write
+    attr_accessor :updated_at
+
+    # If inactive the organization is inactive.
+    attr_reader :status
+
+    class EnumAttributeValidator
+      attr_reader :datatype
+      attr_reader :allowable_values
+
+      def initialize(datatype, allowable_values)
+        @allowable_values = allowable_values.map do |value|
+          case datatype.to_s
+          when /Integer/i
+            value.to_i
+          when /Float/i
+            value.to_f
+          else
+            value
+          end
+        end
+      end
+
+      def valid?(value)
+        !value || allowable_values.include?(value)
+      end
+    end
 
     # Attribute mapping from ruby-style variable name to JSON key
     def self.attribute_map
       {
-        :'labels' => :'labels',
-        :'members' => :'members',
-        :'org' => :'org',
-        :'owners' => :'owners',
-        :'_self' => :'self',
-        :'write' => :'write',
+        :'links' => :'links',
+        :'id' => :'id',
+        :'name' => :'name',
+        :'description' => :'description',
+        :'created_at' => :'createdAt',
+        :'updated_at' => :'updatedAt',
+        :'status' => :'status',
       }
     end
 
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'labels' => :'String',
-        :'members' => :'String',
-        :'org' => :'String',
-        :'owners' => :'String',
-        :'_self' => :'String',
-        :'write' => :'String',
+        :'links' => :'OrganizationLinks',
+        :'id' => :'String',
+        :'name' => :'String',
+        :'description' => :'String',
+        :'created_at' => :'Time',
+        :'updated_at' => :'Time',
+        :'status' => :'String',
       }
     end
 
@@ -67,39 +88,45 @@ module InfluxDB2::API
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `InfluxDB2::BucketLinks` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `InfluxDB2::Organization` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!self.class.attribute_map.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `InfluxDB2::BucketLinks`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `InfluxDB2::Organization`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
 
-      if attributes.key?(:'labels')
-        self.labels = attributes[:'labels']
+      if attributes.key?(:'links')
+        self.links = attributes[:'links']
       end
 
-      if attributes.key?(:'members')
-        self.members = attributes[:'members']
+      if attributes.key?(:'id')
+        self.id = attributes[:'id']
       end
 
-      if attributes.key?(:'org')
-        self.org = attributes[:'org']
+      if attributes.key?(:'name')
+        self.name = attributes[:'name']
       end
 
-      if attributes.key?(:'owners')
-        self.owners = attributes[:'owners']
+      if attributes.key?(:'description')
+        self.description = attributes[:'description']
       end
 
-      if attributes.key?(:'_self')
-        self._self = attributes[:'_self']
+      if attributes.key?(:'created_at')
+        self.created_at = attributes[:'created_at']
       end
 
-      if attributes.key?(:'write')
-        self.write = attributes[:'write']
+      if attributes.key?(:'updated_at')
+        self.updated_at = attributes[:'updated_at']
+      end
+
+      if attributes.key?(:'status')
+        self.status = attributes[:'status']
+      else
+        self.status = 'active'
       end
     end
 
@@ -107,13 +134,30 @@ module InfluxDB2::API
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
+      if @name.nil?
+        invalid_properties.push('invalid value for "name", name cannot be nil.')
+      end
+
       invalid_properties
     end
 
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
+      return false if @name.nil?
+      status_validator = EnumAttributeValidator.new('String', ["active", "inactive"])
+      return false unless status_validator.valid?(@status)
       true
+    end
+
+    # Custom attribute writer method checking allowed values (enum).
+    # @param [Object] status Object to be assigned
+    def status=(status)
+      validator = EnumAttributeValidator.new('String', ["active", "inactive"])
+      unless validator.valid?(status)
+        fail ArgumentError, "invalid value for \"status\", must be one of #{validator.allowable_values}."
+      end
+      @status = status
     end
 
     # Checks equality by comparing each attribute.
@@ -121,12 +165,13 @@ module InfluxDB2::API
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          labels == o.labels &&
-          members == o.members &&
-          org == o.org &&
-          owners == o.owners &&
-          _self == o._self &&
-          write == o.write
+          links == o.links &&
+          id == o.id &&
+          name == o.name &&
+          description == o.description &&
+          created_at == o.created_at &&
+          updated_at == o.updated_at &&
+          status == o.status
     end
 
     # @see the `==` method
@@ -138,7 +183,7 @@ module InfluxDB2::API
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [labels, members, org, owners, _self, write, ].hash
+      [links, id, name, description, created_at, updated_at, status, ].hash
     end
 
     # Builds the object from hash

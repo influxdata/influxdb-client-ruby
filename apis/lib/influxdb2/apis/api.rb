@@ -49,11 +49,18 @@ module InfluxDB2
         @api_client.user_agent = "influxdb-client-ruby/#{InfluxDB2::VERSION}"
       end
 
-      # Create a new instance of BucketsAPI.
+      # Create a new instance of BucketsApi.
       #
       # @return [InfluxDB2::API::BucketsApi] New instance of BucketsApi.
       def create_bucket_api
         InfluxDB2::BucketsApi.new(@api_client)
+      end
+
+      # Create a new instance of OrganizationsApi.
+      #
+      # @return [InfluxDB2::API::OrganizationsApi] New instance of OrganizationsApi.
+      def create_organization_api
+        InfluxDB2::OrganizationsApi.new(@api_client)
       end
     end
   end

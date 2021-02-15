@@ -289,7 +289,7 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::Organizations'
+      return_type = opts[:debug_return_type] || 'Organizations'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -353,7 +353,7 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::Organization'
+      return_type = opts[:debug_return_type] || 'Organization'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -417,7 +417,7 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::ResourceMembers'
+      return_type = opts[:debug_return_type] || 'ResourceMembers'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -481,7 +481,7 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::ResourceOwners'
+      return_type = opts[:debug_return_type] || 'ResourceOwners'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -545,7 +545,7 @@ module InfluxDB2
       post_body = opts[:debug_body]
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::SecretKeysResponse'
+      return_type = opts[:debug_return_type] || 'SecretKeysResponse'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -617,7 +617,7 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(organization)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::Organization'
+      return_type = opts[:debug_return_type] || 'Organization'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -755,7 +755,7 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(organization)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::Organization'
+      return_type = opts[:debug_return_type] || 'Organization'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -827,7 +827,7 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(add_resource_member_request_body)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::ResourceMember'
+      return_type = opts[:debug_return_type] || 'ResourceMember'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']
@@ -899,7 +899,7 @@ module InfluxDB2
       post_body = opts[:debug_body] || @api_client.object_to_http_body(add_resource_member_request_body)
 
       # return_type
-      return_type = opts[:debug_return_type] || 'API::ResourceOwner'
+      return_type = opts[:debug_return_type] || 'ResourceOwner'
 
       # auth_names
       auth_names = opts[:debug_auth_names] || ['header']

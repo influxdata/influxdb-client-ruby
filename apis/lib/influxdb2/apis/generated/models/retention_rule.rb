@@ -14,46 +14,47 @@ require 'date'
 require 'time'
 
 module InfluxDB2::API
-  class BucketLinks
-    # URI of resource.
-    attr_accessor :labels
+  class RetentionRule
+    attr_reader :type
 
-    # URI of resource.
-    attr_accessor :members
+    # Duration in seconds for how long data will be kept in the database.
+    attr_reader :every_seconds
 
-    # URI of resource.
-    attr_accessor :org
+    class EnumAttributeValidator
+      attr_reader :datatype
+      attr_reader :allowable_values
 
-    # URI of resource.
-    attr_accessor :owners
+      def initialize(datatype, allowable_values)
+        @allowable_values = allowable_values.map do |value|
+          case datatype.to_s
+          when /Integer/i
+            value.to_i
+          when /Float/i
+            value.to_f
+          else
+            value
+          end
+        end
+      end
 
-    # URI of resource.
-    attr_accessor :_self
-
-    # URI of resource.
-    attr_accessor :write
+      def valid?(value)
+        !value || allowable_values.include?(value)
+      end
+    end
 
     # Attribute mapping from ruby-style variable name to JSON key
     def self.attribute_map
       {
-        :'labels' => :'labels',
-        :'members' => :'members',
-        :'org' => :'org',
-        :'owners' => :'owners',
-        :'_self' => :'self',
-        :'write' => :'write',
+        :'type' => :'type',
+        :'every_seconds' => :'everySeconds',
       }
     end
 
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'labels' => :'String',
-        :'members' => :'String',
-        :'org' => :'String',
-        :'owners' => :'String',
-        :'_self' => :'String',
-        :'write' => :'String',
+        :'type' => :'String',
+        :'every_seconds' => :'Integer',
       }
     end
 
@@ -67,39 +68,25 @@ module InfluxDB2::API
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `InfluxDB2::BucketLinks` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `InfluxDB2::RetentionRule` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!self.class.attribute_map.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `InfluxDB2::BucketLinks`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `InfluxDB2::RetentionRule`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
 
-      if attributes.key?(:'labels')
-        self.labels = attributes[:'labels']
+      if attributes.key?(:'type')
+        self.type = attributes[:'type']
+      else
+        self.type = 'expire'
       end
 
-      if attributes.key?(:'members')
-        self.members = attributes[:'members']
-      end
-
-      if attributes.key?(:'org')
-        self.org = attributes[:'org']
-      end
-
-      if attributes.key?(:'owners')
-        self.owners = attributes[:'owners']
-      end
-
-      if attributes.key?(:'_self')
-        self._self = attributes[:'_self']
-      end
-
-      if attributes.key?(:'write')
-        self.write = attributes[:'write']
+      if attributes.key?(:'every_seconds')
+        self.every_seconds = attributes[:'every_seconds']
       end
     end
 
@@ -107,13 +94,54 @@ module InfluxDB2::API
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
+      if @type.nil?
+        invalid_properties.push('invalid value for "type", type cannot be nil.')
+      end
+
+      if @every_seconds.nil?
+        invalid_properties.push('invalid value for "every_seconds", every_seconds cannot be nil.')
+      end
+
+      if @every_seconds < 1
+        invalid_properties.push('invalid value for "every_seconds", must be greater than or equal to 1.')
+      end
+
       invalid_properties
     end
 
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
+      return false if @type.nil?
+      type_validator = EnumAttributeValidator.new('String', ["expire"])
+      return false unless type_validator.valid?(@type)
+      return false if @every_seconds.nil?
+      return false if @every_seconds < 1
       true
+    end
+
+    # Custom attribute writer method checking allowed values (enum).
+    # @param [Object] type Object to be assigned
+    def type=(type)
+      validator = EnumAttributeValidator.new('String', ["expire"])
+      unless validator.valid?(type)
+        fail ArgumentError, "invalid value for \"type\", must be one of #{validator.allowable_values}."
+      end
+      @type = type
+    end
+
+    # Custom attribute writer method with validation
+    # @param [Object] every_seconds Value to be assigned
+    def every_seconds=(every_seconds)
+      if every_seconds.nil?
+        fail ArgumentError, 'every_seconds cannot be nil'
+      end
+
+      if every_seconds < 1
+        fail ArgumentError, 'invalid value for "every_seconds", must be greater than or equal to 1.'
+      end
+
+      @every_seconds = every_seconds
     end
 
     # Checks equality by comparing each attribute.
@@ -121,12 +149,8 @@ module InfluxDB2::API
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          labels == o.labels &&
-          members == o.members &&
-          org == o.org &&
-          owners == o.owners &&
-          _self == o._self &&
-          write == o.write
+          type == o.type &&
+          every_seconds == o.every_seconds
     end
 
     # @see the `==` method
@@ -138,7 +162,7 @@ module InfluxDB2::API
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [labels, members, org, owners, _self, write, ].hash
+      [type, every_seconds, ].hash
     end
 
     # Builds the object from hash

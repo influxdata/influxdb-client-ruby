@@ -258,7 +258,7 @@
       {{#-first}}
       _any_of_found = false
       self.class.openapi_any_of.each do |_class|
-        _any_of = {{moduleName}}.const_get(_class).build_from_hash(self.to_hash)
+        _any_of = {{moduleName}}::API.const_get(_class).build_from_hash(self.to_hash)
         if _any_of.valid?
           _any_of_found = true
         end
@@ -274,7 +274,7 @@
       {{#-first}}
       _one_of_found = false
       self.class.openapi_one_of.each do |_class|
-        _one_of = {{moduleName}}.const_get(_class).build_from_hash(self.to_hash)
+        _one_of = {{moduleName}}::API.const_get(_class).build_from_hash(self.to_hash)
         if _one_of.valid?
           if _one_of_found
             return false

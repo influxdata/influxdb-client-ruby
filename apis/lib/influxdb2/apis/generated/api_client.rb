@@ -238,7 +238,7 @@ module InfluxDB2::API
         end
       else
         # models, e.g. Pet
-        InfluxDB2.const_get(return_type).build_from_hash(data)
+        InfluxDB2::API.const_get(return_type).build_from_hash(data)
       end
     end
 
