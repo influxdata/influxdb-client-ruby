@@ -53,35 +53,35 @@ module InfluxDB2
       #
       # @return [InfluxDB2::API::AuthorizationsApi] New instance of OrganizationsApi.
       def create_authorizations_api
-        InfluxDB2::AuthorizationsApi.new(@api_client)
+        InfluxDB2::API::AuthorizationsApi.new(@api_client)
       end
 
       # Create a new instance of BucketsApi.
       #
       # @return [InfluxDB2::API::BucketsApi] New instance of BucketsApi.
       def create_buckets_api
-        InfluxDB2::BucketsApi.new(@api_client)
+        InfluxDB2::API::BucketsApi.new(@api_client)
       end
 
       # Create a new instance of LabelsApi.
       #
       # @return [InfluxDB2::API::LabelsApi] New instance of LabelsApi.
       def create_labels_api
-        InfluxDB2::LabelsApi.new(@api_client)
+        InfluxDB2::API::LabelsApi.new(@api_client)
       end
 
       # Create a new instance of OrganizationsApi.
       #
       # @return [InfluxDB2::API::OrganizationsApi] New instance of OrganizationsApi.
       def create_organizations_api
-        InfluxDB2::OrganizationsApi.new(@api_client)
+        InfluxDB2::API::OrganizationsApi.new(@api_client)
       end
 
       # Create a new instance of UsersApi.
       #
       # @return [InfluxDB2::API::UsersApi] New instance of UsersApi.
       def create_users_api
-        InfluxDB2::UsersApi.new(@api_client)
+        InfluxDB2::API::UsersApi.new(@api_client)
       end
     end
   end

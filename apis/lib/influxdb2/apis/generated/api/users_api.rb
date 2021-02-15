@@ -12,7 +12,7 @@ OpenAPI Generator version: 5.0.0-beta3
 
 require 'cgi'
 
-module InfluxDB2
+module InfluxDB2::API
   class UsersApi
     attr_accessor :api_client
 
