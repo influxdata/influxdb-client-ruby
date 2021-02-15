@@ -311,10 +311,10 @@ The client supports following management API:
 |  | API docs |
 | --- | --- |
 | [**AuthorizationsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/AuthorizationsApi.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Authorizations |
-| [**BucketsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/BucketsApi.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Buckets |
-| [**LabelsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/LabelsApi.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Labels |
-| [**OrganizationsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/OrganizationsApi.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Organizations |
-| [**UsersApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/UsersApi.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Users |
+| [**BucketsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/BucketsApi.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Buckets |
+| [**LabelsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/LabelsApi.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Labels |
+| [**OrganizationsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/OrganizationsApi.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Organizations |
+| [**UsersApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/UsersApi.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Users |
 
 
 The following example demonstrates how to use a InfluxDB 2.0 Management API to create new bucket. For further information see docs and [examples](/examples).
