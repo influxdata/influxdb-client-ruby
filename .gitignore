@@ -13,5 +13,6 @@ Gemfile.lock
 influxdb-client-*.gem
 /TAGS
 vendor
+docs
 /.openapi-generator/
 bin/generated/
