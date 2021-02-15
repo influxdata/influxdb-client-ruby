@@ -42,8 +42,11 @@ class ApisTest < Minitest::Test
 
   def test_create_apis
     client = InfluxDB2::API::Client.new(@main_client)
-    refute_nil client.create_bucket_api
-    refute_nil client.create_organization_api
+    refute_nil client.create_authorizations_api
+    refute_nil client.create_buckets_api
+    refute_nil client.create_organizations_api
+    refute_nil client.create_users_api
+    refute_nil client.create_labels_api
   end
 
   def test_headers
@@ -51,7 +54,7 @@ class ApisTest < Minitest::Test
       .to_return(body: '{}', headers: { 'Content-Type' => 'application/json' })
 
     client = InfluxDB2::API::Client.new(@main_client)
-    bucket_api = client.create_bucket_api
+    bucket_api = client.create_buckets_api
     bucket_api.get_buckets
 
     headers = {

@@ -29,7 +29,7 @@ class BaseApiTests < Minitest::Test
     WebMock.allow_net_connect!
     @main_client = InfluxDB2::Client.new('http://localhost:8086', 'my-token')
     @client = InfluxDB2::API::Client.new(@main_client)
-    @my_org = @client.create_organization_api.get_orgs.orgs.select { |org| org.name == 'my-org' }.first
+    @my_org = @client.create_organizations_api.get_orgs.orgs.select { |org| org.name == 'my-org' }.first
   end
 
   def teardown

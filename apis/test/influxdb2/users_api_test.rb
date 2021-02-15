@@ -23,18 +23,18 @@ require 'test_helper'
 class UsersApiTest < BaseApiTests
   def setup
     super
-    @client.create_user_api.get_users.users.each do |user|
+    @client.create_users_api.get_users.users.each do |user|
       next unless user.name.end_with?('_TEST')
 
-      @client.create_user_api.delete_users_id(user.id)
+      @client.create_users_api.delete_users_id(user.id)
     end
   end
 
-  def test_create_org
+  def test_create_user
     name = generate_name('user')
     user = InfluxDB2::API::User.new(name: name)
 
-    result = @client.create_user_api.post_users(user)
+    result = @client.create_users_api.post_users(user)
 
     refute_nil result.id
     refute_nil result.links

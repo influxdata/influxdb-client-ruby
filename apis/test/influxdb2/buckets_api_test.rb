@@ -27,11 +27,11 @@ class BucketsApiTest < BaseApiTests
 
   def setup
     super
-    buckets = @client.create_bucket_api.get_buckets
+    buckets = @client.create_buckets_api.get_buckets
     buckets.buckets.each do |bucket|
       next unless bucket.name.end_with?('_TEST')
 
-      @client.create_bucket_api.delete_buckets_id(bucket.id)
+      @client.create_buckets_api.delete_buckets_id(bucket.id)
     end
   end
 
@@ -39,7 +39,7 @@ class BucketsApiTest < BaseApiTests
     name = generate_name('bucket')
     request = InfluxDB2::API::PostBucketRequest.new(org_id: @my_org.id, name: name)
 
-    result = @client.create_bucket_api.post_buckets(request)
+    result = @client.create_buckets_api.post_buckets(request)
 
     refute_nil result.id
     refute_nil result.links

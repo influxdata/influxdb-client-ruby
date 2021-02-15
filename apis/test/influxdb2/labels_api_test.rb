@@ -20,41 +20,25 @@
 
 require 'test_helper'
 
-class OrganizationsApiTest < BaseApiTests
+class LabelsApiTest < BaseApiTests
   def setup
     super
-    @client.create_organizations_api.get_orgs.orgs.each do |org|
-      next unless org.name.end_with?('_TEST')
+    @client.create_labels_api.get_labels.labels.each do |label|
+      next unless label.name.end_with?('_TEST')
 
-      @client.create_organizations_api.delete_orgs_id(org.id)
+      @client.create_labels_api.delete_labels_id(label.id)
     end
   end
 
-  def test_create_org
-    name = generate_name('organization')
-    organization = InfluxDB2::API::Organization.new(name: name)
+  def test_create_label
+    name = generate_name('label')
+    user = InfluxDB2::API::LabelCreateRequest.new(name: name, org_id: @my_org.id)
 
-    result = @client.create_organizations_api.post_orgs(organization)
+    result = @client.create_labels_api.post_labels(user)
 
-    refute_nil result.id
     refute_nil result.links
-    assert_equal name, result.name
-  end
-
-  def test_get_members
-    organization = InfluxDB2::API::Organization.new(name: generate_name('organization'))
-    result = @client.create_organizations_api.post_orgs(organization)
-
-    members = @client.create_organizations_api.get_orgs_id_members(result.id)
-    assert_equal 0, members.users.length
-  end
-
-  def test_get_owners
-    organization = InfluxDB2::API::Organization.new(name: generate_name('organization'))
-    result = @client.create_organizations_api.post_orgs(organization)
-
-    owners = @client.create_organizations_api.get_orgs_id_owners(result.id)
-    assert_equal 1, owners.users.length
-    assert_equal 'my-user', owners.users[0].name
+    refute_nil result.label.id
+    assert_equal name, result.label.name
+    assert_equal @my_org.id, result.label.org_id
   end
 end

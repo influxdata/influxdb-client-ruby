@@ -23,10 +23,10 @@ require 'test_helper'
 class AuthorizationsApiTest < BaseApiTests
   def setup
     super
-    @client.create_authorization_api.get_authorizations.authorizations.each do |auth|
+    @client.create_authorizations_api.get_authorizations.authorizations.each do |auth|
       next unless auth.description.end_with?('_TEST')
 
-      @client.create_authorization_api.delete_authorizations_id(auth.id)
+      @client.create_authorizations_api.delete_authorizations_id(auth.id)
     end
   end
 
@@ -39,7 +39,7 @@ class AuthorizationsApiTest < BaseApiTests
                                                       org_id: @my_org.id,
                                                       permissions: [permission])
 
-    result = @client.create_authorization_api.post_authorizations(authorization)
+    result = @client.create_authorizations_api.post_authorizations(authorization)
 
     refute_nil result.id
     refute_nil result.links
