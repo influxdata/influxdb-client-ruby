@@ -24,7 +24,7 @@ module InfluxDB2
   # in https://github.com/influxdata/influxdb/blob/master/http/swagger.yml.
   class Client
     # @return [ Hash ] options The configuration options.
-    attr_reader :options
+    attr_reader :options, :env
 
     # Instantiate a new InfluxDB client.
     #
@@ -52,6 +52,7 @@ module InfluxDB2
       @options[:url] = url if url.is_a? String
       @options[:token] = token if token.is_a? String
       @options[:logger] = @options[:logger].nil? ? DefaultApi.create_logger : @options[:logger]
+      @env = @options[:env] || Environment.current
       @closed = false
 
       at_exit { close! }
@@ -61,7 +62,7 @@ module InfluxDB2
     #
     # @return [WriteApi] New instance of WriteApi.
     def create_write_api(write_options: InfluxDB2::SYNCHRONOUS, point_settings: InfluxDB2::DEFAULT_POINT_SETTINGS)
-      write_api = WriteApi.new(options: @options, write_options: write_options, point_settings: point_settings)
+      write_api = env.default_write_api.new(options: @options, write_options: write_options, point_settings: point_settings)
       @auto_closeable.push(write_api)
       write_api
     end

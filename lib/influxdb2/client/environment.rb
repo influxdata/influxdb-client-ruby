@@ -18,15 +18,48 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-require 'influxdb2/client/default_api'
-require 'influxdb2/client/version'
-require 'influxdb2/client/client'
-require 'influxdb2/client/influx_error'
-require 'influxdb2/client/write_api'
-require 'influxdb2/client/test_write_api'
-require 'influxdb2/client/query_api'
-require 'influxdb2/client/delete_api'
-require 'influxdb2/client/health_api'
-require 'influxdb2/client/point'
-require 'influxdb2/client/flux_table'
-require 'influxdb2/client/environment'
+module InfluxDB2
+  class Environment
+    def self.current
+      @current ||= InfluxDB2::Environment.new(ENV)
+    end
+
+    def self.current=(env)
+      @current = env
+    end
+
+    def initialize(data)
+      @data = data
+    end
+
+    def name
+      if data['INFLUXDB_ENV']
+        data['INFLUXDB_ENV']
+      elsif defined?(Rails) && Rails.respond_to?(:env)
+        Rails.env.to_s
+      else
+        data['RAILS_ENV'] || data['RACK_ENV'] || data['ENV'] || 'development'
+      end
+    end
+
+    def default_write_api
+      if test?
+        TestWriteApi
+      else
+        WriteApi
+      end
+    end
+
+    def production?
+      name == 'production'
+    end
+
+    def test?
+      name == 'test'
+    end
+
+    private
+
+    attr_reader :data
+  end
+end

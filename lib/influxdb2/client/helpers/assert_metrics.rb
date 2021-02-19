@@ -18,15 +18,25 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-require 'influxdb2/client/default_api'
-require 'influxdb2/client/version'
-require 'influxdb2/client/client'
-require 'influxdb2/client/influx_error'
-require 'influxdb2/client/write_api'
-require 'influxdb2/client/test_write_api'
-require 'influxdb2/client/query_api'
-require 'influxdb2/client/delete_api'
-require 'influxdb2/client/health_api'
-require 'influxdb2/client/point'
-require 'influxdb2/client/flux_table'
-require 'influxdb2/client/environment'
+module InfluxDB2
+  module AssertMetrics
+    def assert_metric(data = {})
+      metrics = if block_given?
+        existing_metrics = InfluxDB2::TestWriteApi.metrics.dup
+        yield
+        InfluxDB2::TestWriteApi.metrics - existing_metrics
+      else
+        InfluxDB2::TestWriteApi.metrics
+      end
+
+      assert_includes(
+        metrics,
+        data
+      )
+    end
+
+    def before_setup
+      InfluxDB2::TestWriteApi.metrics.clear
+    end
+  end
+end
