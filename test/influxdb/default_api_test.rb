@@ -57,4 +57,33 @@ class DefaultApiTest < MiniTest::Test
 
     @api.log(:info, 'without error')
   end
+
+  def test_default_verify_mode
+    http_client = @api.send(:_prepare_http_client, URI.parse('https://localhost:8086'))
+
+    refute_nil http_client
+    assert_nil http_client.verify_mode
+
+    http_client.finish if http_client.started?
+  end
+
+  def test_default_verify_mode_none
+    @api = InfluxDB2::DefaultApi.new(options: { logger: @logger, verify_mode: OpenSSL::SSL::VERIFY_NONE })
+    http_client = @api.send(:_prepare_http_client, URI.parse('https://localhost:8086'))
+
+    refute_nil http_client
+    assert_equal OpenSSL::SSL::VERIFY_NONE, http_client.verify_mode
+
+    http_client.finish if http_client.started?
+  end
+
+  def test_default_verify_mode_peer
+    @api = InfluxDB2::DefaultApi.new(options: { logger: @logger, verify_mode: OpenSSL::SSL::VERIFY_PEER })
+    http_client = @api.send(:_prepare_http_client, URI.parse('https://localhost:8086'))
+
+    refute_nil http_client
+    assert_equal OpenSSL::SSL::VERIFY_PEER, http_client.verify_mode
+
+    http_client.finish if http_client.started?
+  end
 end

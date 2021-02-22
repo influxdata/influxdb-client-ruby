@@ -84,11 +84,7 @@ module InfluxDB2
     def _request(payload, uri, limit: @max_redirect_count, headers: {}, request: Net::HTTP::Post)
       raise InfluxError.from_message("Too many HTTP redirects. Exceeded limit: #{@max_redirect_count}") if limit.zero?
 
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.open_timeout = @options[:open_timeout] || DEFAULT_TIMEOUT
-      http.write_timeout = @options[:write_timeout] || DEFAULT_TIMEOUT if Net::HTTP.method_defined? :write_timeout
-      http.read_timeout = @options[:read_timeout] || DEFAULT_TIMEOUT
-      http.use_ssl = @options[:use_ssl].nil? ? true : @options[:use_ssl]
+      http = _prepare_http_client(uri)
 
       request = request.new(uri.request_uri)
       request['Authorization'] = "Token #{@options[:token]}"
@@ -113,6 +109,16 @@ module InfluxDB2
       ensure
         http.finish if http.started?
       end
+    end
+
+    def _prepare_http_client(uri)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.open_timeout = @options[:open_timeout] || DEFAULT_TIMEOUT
+      http.write_timeout = @options[:write_timeout] || DEFAULT_TIMEOUT if Net::HTTP.method_defined? :write_timeout
+      http.read_timeout = @options[:read_timeout] || DEFAULT_TIMEOUT
+      http.use_ssl = @options[:use_ssl].nil? ? true : @options[:use_ssl]
+      http.verify_mode = @options[:verify_mode] if @options[:verify_mode]
+      http
     end
 
     def _check_arg_type(name, value, klass)

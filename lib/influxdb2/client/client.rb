@@ -43,6 +43,9 @@ module InfluxDB2
     # @option options [Integer] :read_timeout Number of seconds to wait for one block of data to be read
     # @option options [Integer] :max_redirect_count Maximal number of followed HTTP redirects
     # @option options [bool] :use_ssl Turn on/off SSL for HTTP communication
+    # @option options [Integer] :verify_mode Sets the flags for the certification verification
+    #   at beginning of SSL/TLS session. Could be one of `OpenSSL::SSL::VERIFY_NONE` or `OpenSSL::SSL::VERIFY_PEER`.
+    #   For more info see - https://docs.ruby-lang.org/en/3.0.0/Net/HTTP.html#verify_mode.
     # @option options [Logger] :logger Logger used for logging. Disable logging by set to false.
     # @option options [Hash] :tags Default tags which will be added to each point written by api.
     #   the body line-protocol
