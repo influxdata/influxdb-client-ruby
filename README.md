@@ -48,6 +48,7 @@ client = InfluxDB2::Client.new('https://localhost:8086', 'my-token')
 | read_timeout | Number of seconds to wait for one block of data to be read | Integer | 10 |
 | max_redirect_count | Maximal number of followed HTTP redirects | Integer | 10 |
 | use_ssl | Turn on/off SSL for HTTP communication | bool | true |
+| verify_mode | Sets the flags for the certification verification at beginning of SSL/TLS session. | `OpenSSL::SSL::VERIFY_NONE` or `OpenSSL::SSL::VERIFY_PEER` | none |
 
 ```ruby
 client = InfluxDB2::Client.new('https://localhost:8086', 'my-token',
