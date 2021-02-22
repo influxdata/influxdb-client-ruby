@@ -1,5 +1,8 @@
 ## 1.12.0 [unreleased]
 
+### Features
+1. [#71](https://github.com/influxdata/influxdb-client-ruby/pull/71): Added possibility to specify the certification verification behaviour
+
 ## 1.11.0 [2021-01-29]
 
 ### CI
