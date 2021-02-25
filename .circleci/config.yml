@@ -37,38 +37,50 @@ commands:
     parameters:
       ruby-image:
         type: string
+      gemspec-file:
+        type: string
+      path:
+        type: string
     steps:
       - restore_cache:
           name: Restoring Gem Cache
           keys:
-            - &cache-key gem-cache-{{ checksum "influxdb-client.gemspec" }}-<< parameters.ruby-image >>
-            - gem-cache-{{ checksum "influxdb-client.gemspec" }}
+            - &cache-key gem-cache-{{ checksum "<< parameters.path >>/<< parameters.gemspec-file >>" }}-<< parameters.ruby-image >>
+            - gem-cache-{{ checksum "<< parameters.path >>/<< parameters.gemspec-file >>" }}
             - gem-cache-
       - run:
           name: Install dependencies
           command: |
+            cd << parameters.path >>
             gem install bundler
             bundle config set path 'vendor/bundle'
             bundle install --jobs=4 --retry=3
       - run:
           name: Static code analyze
           command: |
+            cd << parameters.path >>
             bundle exec rake rubocop
       - run:
           name: Run tests
           command: |
+            cd << parameters.path >>
             export MINITEST_REPORTER=JUnitReporter
             bundle exec rake test
       - save_cache:
           name: Saving Gem Cache
           key: *cache-key
           paths:
-            - ./vendor/bundle
+            - << parameters.path >>/vendor/bundle
           when: always
+      - storing-test-results:
+          path: << parameters.path >>
   storing-test-results:
+    parameters:
+      path:
+        type: string
     steps:
       - store_test_results:
-          path: test/reports
+          path: << parameters.path >>/test/reports
 
 jobs:
   tests-ruby:
@@ -79,6 +91,12 @@ jobs:
       influxdb-image:
         type: string
         default: &default-influxdb-image "influxdb:v2.0.4"
+      gemspec-file:
+        type: string
+        default: influxdb-client.gemspec
+      path:
+        type: string
+        default: .
     docker:
       - image: << parameters.ruby-image >>
       - image: &influx-image quay.io/influxdb/<< parameters.influxdb-image >>
@@ -88,11 +106,17 @@ jobs:
       - prepare
       - test:
           ruby-image: << parameters.ruby-image >>
-      - storing-test-results
+          gemspec-file: << parameters.gemspec-file >>
+          path: << parameters.path >>
 
   deploy-preview:
     docker:
       - image: *default-ruby-image
+    parameters:
+      gemspec-file:
+        type: string
+      path:
+        type: string
     steps:
       - run:
           name: Early return if this build is from a forked repository
@@ -108,40 +132,95 @@ jobs:
       - run:
           name: Build a Gem bundle
           command: |
-            gem build influxdb-client.gemspec
+            cd << parameters.path >>
+            gem build << parameters.gemspec-file >>
       - run:
           name: Deploy pre-release into https://rubygems.org
           command: |
+            cd << parameters.path >>
             gem push influxdb-client-*.pre.$CIRCLE_BUILD_NUM.gem
 workflows:
   version: 2
   build:
     jobs:
       - tests-ruby:
-          name: ruby-3.0
+          name: client-r3.0
           ruby-image: "circleci/ruby:3.0-buster"
       - tests-ruby:
-          name: ruby-2.7
+          name: APIs-r3.0
+          ruby-image: "circleci/ruby:3.0-buster"
+          gemspec-file: influxdb-client-apis.gemspec
+          path: ./apis
+          requires:
+            - client-r3.0
+      - tests-ruby:
+          name: client-r2.7
           ruby-image: "circleci/ruby:2.7-buster"
       - tests-ruby:
-          name: ruby-2.6
+          name: APIs-r2.7
+          ruby-image: "circleci/ruby:2.7-buster"
+          gemspec-file: influxdb-client-apis.gemspec
+          path: ./apis
+          requires:
+            - client-r2.7
       - tests-ruby:
-          name: ruby-2.6-nightly
+          name: client-r2.6
+      - tests-ruby:
+          name: APIs-r2.6
+          gemspec-file: influxdb-client-apis.gemspec
+          path: ./apis
+          requires:
+            - client-r2.6
+      - tests-ruby:
+          name: client-r2.6-nightly
           influxdb-image: "influxdb2:nightly"
       - tests-ruby:
-          name: ruby-2.5
+          name: APIs-r2.6-nightly
+          influxdb-image: "influxdb2:nightly"
+          gemspec-file: influxdb-client-apis.gemspec
+          path: ./apis
+          requires:
+            - client-r2.6-nightly
+      - tests-ruby:
+          name: client-r2.5
           ruby-image: "circleci/ruby:2.5-stretch"
       - tests-ruby:
-          name: ruby-2.4
-          ruby-image: "circleci/ruby:2.4-stretch"
-      - deploy-preview:
+          name: APIs-r2.5
+          ruby-image: "circleci/ruby:2.5-stretch"
+          gemspec-file: influxdb-client-apis.gemspec
+          path: ./apis
           requires:
-            - ruby-3.0
-            - ruby-2.7
-            - ruby-2.6
-            - ruby-2.6-nightly
-            - ruby-2.5
-            - ruby-2.4
+            - client-r2.5
+      - tests-ruby:
+          name: client-r2.4
+          ruby-image: "circleci/ruby:2.4-stretch"
+      - tests-ruby:
+          name: APIs-r2.4
+          ruby-image: "circleci/ruby:2.4-stretch"
+          gemspec-file: influxdb-client-apis.gemspec
+          path: ./apis
+          requires:
+            - client-r2.4
+      - deploy-preview:
+          name: Deploy Client
+          gemspec-file: influxdb-client.gemspec
+          path: .
+          requires:
+            - APIs-r3.0
+            - APIs-r2.7
+            - APIs-r2.6
+            - APIs-r2.6-nightly
+            - APIs-r2.5
+            - APIs-r2.4
+          filters:
+            branches:
+              only: master
+      - deploy-preview:
+          name: Deploy APIs
+          gemspec-file: influxdb-client-apis.gemspec
+          path: ./apis
+          requires:
+            - Deploy Client
           filters:
             branches:
               only: master

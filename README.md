@@ -12,6 +12,37 @@ This repository contains the reference Ruby client for the InfluxDB 2.0.
 
 #### Note: Use this client library with InfluxDB 2.x and InfluxDB 1.8+ ([see details](#influxdb-18-api-compatibility)). For connecting to InfluxDB 1.7 or earlier instances, use the [influxdb-ruby](https://github.com/influxdata/influxdb-ruby) client library.
 
+- [Features](#features)
+- [Installation](#installation)
+    - [Install the Gem](#install-the-gem)
+- [Usage](#usage)
+    - [Creating a client](#creating-a-client)
+    - [Writing data](#writing-data)
+    - [Querying data](#queries)
+    - [Delete data](#delete-data)
+    - [Management API](#management-api)
+- [Advanced Usage](#advanced-usage)
+    - [Default Tags](#default-tags)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Features
+
+InfluxDB 2.0 client consists of two packages
+
+- `influxdb-client`
+    - Querying data using the Flux language
+    - Writing data
+        - batched in chunks on background
+        - automatic retries on write failures
+- `influxdb-client-apis`
+    - provides all other InfluxDB 2.0 APIs for managing
+        - buckets
+        - labels
+        - authorizations
+        - ...
+    - built on top of `influxdb-client`
+
 ## Installation
 
 The InfluxDB 2 client is bundled as a gem and is hosted on [Rubygems](https://rubygems.org/gems/influxdb-client).
@@ -24,6 +55,12 @@ To install the client gem manually:
 
 ```
 gem install influxdb-client -v 1.11.0
+```
+
+For management API:
+
+```
+gem install influxdb-client-apis --pre
 ```
 
 ## Usage
@@ -266,6 +303,86 @@ The time range could be specified as:
 1. String - `"2019-02-03T04:05:06+07:00"`
 1. DateTime - `DateTime.rfc3339('2019-03-03T04:05:06+07:00')`
 1. Time - `Time.utc(2015, 10, 16, 8, 20, 15)`
+
+### Management API
+
+The client supports following management API:
+
+|  | API docs |
+| --- | --- |
+| [**AuthorizationsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/AuthorizationsApi.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Authorizations |
+| [**BucketsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/BucketsApi.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Buckets |
+| [**LabelsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/LabelsApi.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Labels |
+| [**OrganizationsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/OrganizationsApi.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Organizations |
+| [**UsersApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/UsersApi.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Users |
+
+
+The following example demonstrates how to use a InfluxDB 2.0 Management API to create new bucket. For further information see docs and [examples](/examples).
+
+```ruby
+#
+# This is an example how to create new bucket with permission to write.
+#
+# You could run example via: `cd apis && bundle exec ruby ../examples/create_new_bucket.rb`
+#
+$LOAD_PATH.unshift File.expand_path('../lib', __dir__)
+require 'influxdb-client'
+$LOAD_PATH.unshift File.expand_path('../apis/lib', __dir__)
+require 'influxdb-client-apis'
+
+url = 'http://localhost:8086'
+bucket = 'my-bucket'
+org = 'my-org'
+token = 'my-token'
+
+client = InfluxDB2::Client.new(url,
+                               token,
+                               bucket: bucket,
+                               org: org,
+                               use_ssl: false,
+                               precision: InfluxDB2::WritePrecision::NANOSECOND)
+
+api = InfluxDB2::API::Client.new(client)
+
+# Find my organization
+organization = api.create_organizations_api
+                  .get_orgs
+                  .orgs
+                  .select { |it| it.name == 'my-org' }
+                  .first
+
+#
+# Create new Bucket
+#
+retention_rule = InfluxDB2::API::RetentionRule.new(type: 'expire', every_seconds: 3600)
+bucket_name = 'new-bucket-name'
+request = InfluxDB2::API::PostBucketRequest.new(org_id: organization.id,
+                                                name: bucket_name,
+                                                retention_rules: [retention_rule])
+bucket = api.create_buckets_api
+            .post_buckets(request)
+
+#
+# Create Permission to read/write from Bucket
+#
+resource = InfluxDB2::API::Resource.new(type: 'buckets',
+                                        id: bucket.id,
+                                        org_id: organization.id)
+authorization = InfluxDB2::API::Authorization.new(description: "Authorization to read/write bucket: #{bucket.name}",
+                                                  org_id: organization.id,
+                                                  permissions: [
+                                                    InfluxDB2::API::Permission.new(action: 'read', resource: resource),
+                                                    InfluxDB2::API::Permission.new(action: 'write', resource: resource)
+                                                  ])
+result = api.create_authorizations_api
+            .post_authorizations(authorization)
+
+print("The token: '#{result.token}' is authorized to read/write from/to bucket: '#{bucket.name}'.")
+
+client.close!
+
+```
+- sources - [create_new_bucket.rb](/examples/create_new_bucket.rb)
 
 ## Advanced Usage
 

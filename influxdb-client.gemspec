@@ -22,6 +22,7 @@ lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'influxdb2/client/version'
 
+# noinspection DuplicatedCode
 Gem::Specification.new do |spec|
   spec.name          = 'influxdb-client'
   spec.version       = ENV['CIRCLE_BUILD_NUM'] ? "#{InfluxDB2::VERSION}-#{ENV['CIRCLE_BUILD_NUM']}" : InfluxDB2::VERSION
@@ -37,8 +38,9 @@ Gem::Specification.new do |spec|
   spec.metadata['source_code_uri'] = 'https://github.com/influxdata/influxdb-client-ruby'
   spec.metadata['changelog_uri'] = 'https://raw.githubusercontent.com/influxdata/influxdb-client-ruby/master/CHANGELOG.md'
 
-  spec.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
-  spec.test_files    = spec.files.grep(%r{^(test|spec|features|smoke)/})
+  spec.files = Dir.glob('lib/**/*')
+  spec.files += %w[influxdb-client.gemspec LICENSE README.md CHANGELOG.md Rakefile]
+  spec.test_files = Dir.glob('test/**/*')
   spec.require_paths = ['lib']
   spec.required_ruby_version = '>= 2.2.0'
 
@@ -46,7 +48,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'codecov', '~> 0.1.16'
   spec.add_development_dependency 'minitest', '~> 5.0'
   spec.add_development_dependency 'minitest-reporters', '~> 1.4'
-  spec.add_development_dependency 'rake', '>= 12.3.3'
+  spec.add_development_dependency 'rake', '~> 12.3'
   spec.add_development_dependency 'rubocop', '~> 0.66.0'
   spec.add_development_dependency 'simplecov', '~> 0.17.1'
   spec.add_development_dependency 'webmock', '~> 3.7'
