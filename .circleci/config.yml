@@ -74,6 +74,26 @@ commands:
           when: always
       - storing-test-results:
           path: << parameters.path >>
+  deploy-preview:
+    parameters:
+      gemspec-file:
+        type: string
+      path:
+        type: string
+    steps:
+      - run:
+          name: Setup Rubygems
+          command: bash .circleci/setup-rubygems.sh
+      - run:
+          name: Build a Gem bundle
+          command: |
+            cd << parameters.path >>
+            gem build << parameters.gemspec-file >>
+      - run:
+          name: Deploy pre-release into https://rubygems.org
+          command: |
+            cd << parameters.path >>
+            gem push influxdb-client-*.pre.$CIRCLE_BUILD_NUM.gem
   storing-test-results:
     parameters:
       path:
@@ -109,14 +129,9 @@ jobs:
           gemspec-file: << parameters.gemspec-file >>
           path: << parameters.path >>
 
-  deploy-preview:
+  deploy-all:
     docker:
       - image: *default-ruby-image
-    parameters:
-      gemspec-file:
-        type: string
-      path:
-        type: string
     steps:
       - run:
           name: Early return if this build is from a forked repository
@@ -126,19 +141,13 @@ jobs:
               circleci step halt
             fi
       - checkout
-      - run:
-          name: Setup Rubygems
-          command: bash .circleci/setup-rubygems.sh
-      - run:
-          name: Build a Gem bundle
-          command: |
-            cd << parameters.path >>
-            gem build << parameters.gemspec-file >>
-      - run:
-          name: Deploy pre-release into https://rubygems.org
-          command: |
-            cd << parameters.path >>
-            gem push influxdb-client-*.pre.$CIRCLE_BUILD_NUM.gem
+      - deploy-preview:
+          gemspec-file: influxdb-client.gemspec
+          path: .
+      - deploy-preview:
+          gemspec-file: influxdb-client-apis.gemspec
+          path: ./apis
+
 workflows:
   version: 2
   build:
@@ -201,10 +210,7 @@ workflows:
           path: ./apis
           requires:
             - client-r2.4
-      - deploy-preview:
-          name: Deploy Client
-          gemspec-file: influxdb-client.gemspec
-          path: .
+      - deploy-all:
           requires:
             - APIs-r3.0
             - APIs-r2.7
@@ -212,15 +218,6 @@ workflows:
             - APIs-r2.6-nightly
             - APIs-r2.5
             - APIs-r2.4
-          filters:
-            branches:
-              only: master
-      - deploy-preview:
-          name: Deploy APIs
-          gemspec-file: influxdb-client-apis.gemspec
-          path: ./apis
-          requires:
-            - Deploy Client
           filters:
             branches:
               only: master
