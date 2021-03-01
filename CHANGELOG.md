@@ -4,6 +4,9 @@
 1. [#69](https://github.com/influxdata/influxdb-client-ruby/pull/69): Created `influxdb-client-apis` package for Management API
 1. [#71](https://github.com/influxdata/influxdb-client-ruby/pull/71): Added possibility to specify the certification verification behaviour
 
+### CI
+1. [#73](https://github.com/influxdata/influxdb-client-ruby/pull/73): Updated stable image to `influxdb:latest` and nightly to `quay.io/influxdb/influxdb:nightly`
+
 ## 1.11.0 [2021-01-29]
 
 ### CI
