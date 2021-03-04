@@ -110,7 +110,7 @@ jobs:
         default: &default-ruby-image "circleci/ruby:2.6-stretch"
       influxdb-image:
         type: string
-        default: &default-influxdb-image "influxdb:v2.0.4"
+        default: &default-influxdb-image "influxdb:latest"
       gemspec-file:
         type: string
         default: influxdb-client.gemspec
@@ -119,7 +119,7 @@ jobs:
         default: .
     docker:
       - image: << parameters.ruby-image >>
-      - image: &influx-image quay.io/influxdb/<< parameters.influxdb-image >>
+      - image: &influx-image << parameters.influxdb-image >>
         environment:
           INFLUXD_HTTP_BIND_ADDRESS: :8086
     steps:
@@ -182,10 +182,10 @@ workflows:
             - client-r2.6
       - tests-ruby:
           name: client-r2.6-nightly
-          influxdb-image: "influxdb2:nightly"
+          influxdb-image: "quay.io/influxdb/influxdb:nightly"
       - tests-ruby:
           name: APIs-r2.6-nightly
-          influxdb-image: "influxdb2:nightly"
+          influxdb-image: "quay.io/influxdb/influxdb:nightly"
           gemspec-file: influxdb-client-apis.gemspec
           path: ./apis
           requires:
