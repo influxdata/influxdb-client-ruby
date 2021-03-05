@@ -1,5 +1,10 @@
 ## 1.13.0 [unreleased]
 
+## 1.12.1 [2021-03-05]
+
+### Bug Fixes
+1. [#74](https://github.com/influxdata/influxdb-client-ruby/pull/74): Avoid uses sources from parent path
+
 ## 1.12.0 [2021-03-05]
 
 ### Features
