@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+#
+# How to run script from ROOT path:
+#   docker run --rm -it -v "${PWD}":/code -v ~/.m2:/root/.m2 -w /code maven:3.6-slim /code/bin/generate-sources.sh
+#
+
 SCRIPT_PATH="$( cd "$(dirname "$0")" || exit ; pwd -P )"
 
 rm -rf "${SCRIPT_PATH}"/generated
@@ -71,9 +76,9 @@ cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/api_error.rb "${SCRIPT_PATH}"/..
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/configuration.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/
 
 # post process sources
-sed -i '' 's/::API//' "${SCRIPT_PATH}"/../lib/influxdb2/client/models/health_check.rb
-sed -i '' 's/::API//' "${SCRIPT_PATH}"/../lib/influxdb2/client/models/dialect.rb
-sed -i '' 's/::API//' "${SCRIPT_PATH}"/../lib/influxdb2/client/models/query.rb
-sed -i '' 's/::API//' "${SCRIPT_PATH}"/../lib/influxdb2/client/models/delete_predicate_request.rb
+sed -i 's/::API//' "${SCRIPT_PATH}"/../lib/influxdb2/client/models/health_check.rb
+sed -i 's/::API//' "${SCRIPT_PATH}"/../lib/influxdb2/client/models/dialect.rb
+sed -i 's/::API//' "${SCRIPT_PATH}"/../lib/influxdb2/client/models/query.rb
+sed -i 's/::API//' "${SCRIPT_PATH}"/../lib/influxdb2/client/models/delete_predicate_request.rb
 
-#rm -rf "${SCRIPT_PATH}"/generated
+rm -rf "${SCRIPT_PATH}"/generated

@@ -129,6 +129,35 @@ jobs:
           gemspec-file: << parameters.gemspec-file >>
           path: << parameters.path >>
 
+  check-generate-sources:
+    docker:
+      - image: *default-ruby-image
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restoring Cache
+          keys:
+            - &generate-sources-cache-key gs-cache-v1
+      - run:
+          name: Install Maven
+          command: |
+            sudo apt-get update
+            sudo apt-get install maven --yes
+      - run:
+          name: Checks generating sources from swagger
+          command: |
+            ./bin/generate-sources.sh
+            gem build influxdb-client.gemspec
+            gem build apis/influxdb-client-apis.gemspec
+      - run:
+          name: Checks that there are not changes sources from swagger
+          command: git diff --exit-code
+      - save_cache:
+          name: Saving Cache
+          key: *generate-sources-cache-key
+          paths:
+            - ~/.m2
+
   deploy-all:
     docker:
       - image: *default-ruby-image
@@ -232,3 +261,4 @@ workflows:
                 - master
     jobs:
       - tests-ruby
+      - check-generate-sources
