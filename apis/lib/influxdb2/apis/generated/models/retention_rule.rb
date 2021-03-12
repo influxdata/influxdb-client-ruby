@@ -17,8 +17,11 @@ module InfluxDB2::API
   class RetentionRule
     attr_reader :type
 
-    # Duration in seconds for how long data will be kept in the database.
+    # Duration in seconds for how long data will be kept in the database. 0 means infinite.
     attr_reader :every_seconds
+
+    # Shard duration measured in seconds.
+    attr_accessor :shard_group_duration_seconds
 
     class EnumAttributeValidator
       attr_reader :datatype
@@ -47,6 +50,7 @@ module InfluxDB2::API
       {
         :'type' => :'type',
         :'every_seconds' => :'everySeconds',
+        :'shard_group_duration_seconds' => :'shardGroupDurationSeconds',
       }
     end
 
@@ -55,6 +59,7 @@ module InfluxDB2::API
       {
         :'type' => :'String',
         :'every_seconds' => :'Integer',
+        :'shard_group_duration_seconds' => :'Integer',
       }
     end
 
@@ -88,6 +93,10 @@ module InfluxDB2::API
       if attributes.key?(:'every_seconds')
         self.every_seconds = attributes[:'every_seconds']
       end
+
+      if attributes.key?(:'shard_group_duration_seconds')
+        self.shard_group_duration_seconds = attributes[:'shard_group_duration_seconds']
+      end
     end
 
     # Show invalid properties with the reasons. Usually used together with valid?
@@ -102,8 +111,8 @@ module InfluxDB2::API
         invalid_properties.push('invalid value for "every_seconds", every_seconds cannot be nil.')
       end
 
-      if @every_seconds < 1
-        invalid_properties.push('invalid value for "every_seconds", must be greater than or equal to 1.')
+      if @every_seconds < 0
+        invalid_properties.push('invalid value for "every_seconds", must be greater than or equal to 0.')
       end
 
       invalid_properties
@@ -116,7 +125,7 @@ module InfluxDB2::API
       type_validator = EnumAttributeValidator.new('String', ["expire"])
       return false unless type_validator.valid?(@type)
       return false if @every_seconds.nil?
-      return false if @every_seconds < 1
+      return false if @every_seconds < 0
       true
     end
 
@@ -137,8 +146,8 @@ module InfluxDB2::API
         fail ArgumentError, 'every_seconds cannot be nil'
       end
 
-      if every_seconds < 1
-        fail ArgumentError, 'invalid value for "every_seconds", must be greater than or equal to 1.'
+      if every_seconds < 0
+        fail ArgumentError, 'invalid value for "every_seconds", must be greater than or equal to 0.'
       end
 
       @every_seconds = every_seconds
@@ -150,7 +159,8 @@ module InfluxDB2::API
       return true if self.equal?(o)
       self.class == o.class &&
           type == o.type &&
-          every_seconds == o.every_seconds
+          every_seconds == o.every_seconds &&
+          shard_group_duration_seconds == o.shard_group_duration_seconds
     end
 
     # @see the `==` method
@@ -162,7 +172,7 @@ module InfluxDB2::API
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [type, every_seconds, ].hash
+      [type, every_seconds, shard_group_duration_seconds, ].hash
     end
 
     # Builds the object from hash
