@@ -1,4 +1,4 @@
-## 1.13.0 [unreleased]
+## 1.13.0 [2021-04-01]
 
 ### API
 1. [#76](https://github.com/influxdata/influxdb-client-ruby/pull/76): Updated swagger to latest version
