@@ -90,6 +90,7 @@ module InfluxDB2::API
     # @option opts [String] :user Only show authorizations that belong to a user name.
     # @option opts [String] :org_id Only show authorizations that belong to an organization ID.
     # @option opts [String] :org Only show authorizations that belong to a organization name.
+    # @option opts [String] :token Find a token by value.
     # @return [Authorizations]
     def get_authorizations(opts = {})
       data, _status_code, _headers = get_authorizations_with_http_info(opts)
@@ -103,6 +104,7 @@ module InfluxDB2::API
     # @option opts [String] :user Only show authorizations that belong to a user name.
     # @option opts [String] :org_id Only show authorizations that belong to an organization ID.
     # @option opts [String] :org Only show authorizations that belong to a organization name.
+    # @option opts [String] :token Find a token by value.
     # @return [Array<(Authorizations, Integer, Hash)>] Authorizations data, response status code and response headers
     def get_authorizations_with_http_info(opts = {})
       if @api_client.config.debugging
@@ -117,6 +119,7 @@ module InfluxDB2::API
       query_params[:'user'] = opts[:'user'] if !opts[:'user'].nil?
       query_params[:'orgID'] = opts[:'org_id'] if !opts[:'org_id'].nil?
       query_params[:'org'] = opts[:'org'] if !opts[:'org'].nil?
+      query_params[:'token'] = opts[:'token'] if !opts[:'token'].nil?
 
       # header parameters
       header_params = opts[:header_params] || {}
