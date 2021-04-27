@@ -248,7 +248,7 @@ workflows:
           gemspec-file: influxdb-client-apis.gemspec
           path: ./apis
           requires:
-            - client-r2.4
+            - client-jruby
       - deploy-all:
           requires:
             - APIs-r3.0

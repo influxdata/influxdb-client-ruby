@@ -3,6 +3,9 @@
 ### API
 1. [#77](https://github.com/influxdata/influxdb-client-ruby/pull/77): Update swagger to latest version
 
+### CI
+1. [#78](https://github.com/influxdata/influxdb-client-ruby/pull/78): Add build configuration for jruby
+
 ## 1.13.0 [2021-04-01]
 
 ### API
