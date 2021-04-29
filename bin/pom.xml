@@ -11,7 +11,7 @@
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>5.0.0-beta3</version>
+                <version>5.1.0</version>
                 <configuration>
                     <inputSpec>https://raw.githubusercontent.com/influxdata/influxdb/master/http/swagger.yml</inputSpec>
                     <generatorName>ruby</generatorName>
