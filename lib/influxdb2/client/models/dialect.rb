@@ -52,7 +52,7 @@ module InfluxDB2
       end
     end
 
-    # Attribute mapping from ruby-style variable name to JSON key
+    # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
         :'header' => :'header',
@@ -70,7 +70,7 @@ module InfluxDB2
         :'delimiter' => :'String',
         :'annotations' => :'Array<String>',
         :'comment_prefix' => :'String',
-        :'date_time_format' => :'String',
+        :'date_time_format' => :'String'
       }
     end
 
@@ -220,7 +220,7 @@ module InfluxDB2
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [header, delimiter, annotations, comment_prefix, date_time_format, ].hash
+      [header, delimiter, annotations, comment_prefix, date_time_format].hash
     end
 
     # Builds the object from hash

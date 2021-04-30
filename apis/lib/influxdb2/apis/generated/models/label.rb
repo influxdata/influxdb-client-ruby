@@ -23,7 +23,7 @@ module InfluxDB2::API
     # Key/Value pairs associated with this label. Keys can be removed by sending an update with an empty value.
     attr_accessor :properties
 
-    # Attribute mapping from ruby-style variable name to JSON key
+    # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
         :'id' => :'id',
@@ -39,7 +39,7 @@ module InfluxDB2::API
         :'id' => :'String',
         :'org_id' => :'String',
         :'name' => :'String',
-        :'properties' => :'Hash<String, String>',
+        :'properties' => :'Hash<String, String>'
       }
     end
 
@@ -116,7 +116,7 @@ module InfluxDB2::API
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [id, org_id, name, properties, ].hash
+      [id, org_id, name, properties].hash
     end
 
     # Builds the object from hash

@@ -23,7 +23,7 @@ module InfluxDB2::API
     # URI of resource.
     attr_accessor :prev
 
-    # Attribute mapping from ruby-style variable name to JSON key
+    # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
         :'_next' => :'next',
@@ -37,7 +37,7 @@ module InfluxDB2::API
       {
         :'_next' => :'String',
         :'_self' => :'String',
-        :'prev' => :'String',
+        :'prev' => :'String'
       }
     end
 
@@ -112,7 +112,7 @@ module InfluxDB2::API
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [_next, _self, prev, ].hash
+      [_next, _self, prev].hash
     end
 
     # Builds the object from hash

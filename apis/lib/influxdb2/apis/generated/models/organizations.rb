@@ -18,7 +18,7 @@ module InfluxDB2::API
 
     attr_accessor :orgs
 
-    # Attribute mapping from ruby-style variable name to JSON key
+    # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
         :'links' => :'links',
@@ -30,7 +30,7 @@ module InfluxDB2::API
     def self.openapi_types
       {
         :'links' => :'Links',
-        :'orgs' => :'Array<Organization>',
+        :'orgs' => :'Array<Organization>'
       }
     end
 
@@ -97,7 +97,7 @@ module InfluxDB2::API
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [links, orgs, ].hash
+      [links, orgs].hash
     end
 
     # Builds the object from hash

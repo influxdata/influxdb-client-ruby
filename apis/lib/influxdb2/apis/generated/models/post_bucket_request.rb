@@ -25,7 +25,7 @@ module InfluxDB2::API
     # Rules to expire or retain data.  No rules means data never expires.
     attr_accessor :retention_rules
 
-    # Attribute mapping from ruby-style variable name to JSON key
+    # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
         :'org_id' => :'orgID',
@@ -43,7 +43,7 @@ module InfluxDB2::API
         :'name' => :'String',
         :'description' => :'String',
         :'rp' => :'String',
-        :'retention_rules' => :'Array<RetentionRule>',
+        :'retention_rules' => :'Array<RetentionRule>'
       }
     end
 
@@ -140,7 +140,7 @@ module InfluxDB2::API
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [org_id, name, description, rp, retention_rules, ].hash
+      [org_id, name, description, rp, retention_rules].hash
     end
 
     # Builds the object from hash

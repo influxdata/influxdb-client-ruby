@@ -24,7 +24,7 @@ module InfluxDB2
     # InfluxQL-like delete statement
     attr_accessor :predicate
 
-    # Attribute mapping from ruby-style variable name to JSON key
+    # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
         :'start' => :'start',
@@ -38,7 +38,7 @@ module InfluxDB2
       {
         :'start' => :'Time',
         :'stop' => :'Time',
-        :'predicate' => :'String',
+        :'predicate' => :'String'
       }
     end
 
@@ -118,7 +118,7 @@ module InfluxDB2
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [start, stop, predicate, ].hash
+      [start, stop, predicate].hash
     end
 
     # Builds the object from hash
