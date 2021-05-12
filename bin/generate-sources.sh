@@ -48,6 +48,7 @@ cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/organizations.rb "${SCRIP
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/links.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/authorization.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/authorization_update_request.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
+cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/authorization_post_request.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/authorizations.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/authorization_all_of.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/authorization_all_of_links.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
@@ -56,13 +57,14 @@ cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/resource.rb "${SCRIPT_PAT
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/resource_member.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/resource_member_all_of.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/resource_members.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
+cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/resource_members_links.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/resource_owner.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/resource_owner_all_of.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/resource_owners.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/user.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
-cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/user_links.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/users.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
-cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/users_links.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
+cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/user_response_links.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
+cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/user_response.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/label.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/label_create_request.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/label_mapping.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/

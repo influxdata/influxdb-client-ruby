@@ -13,24 +13,63 @@ require 'date'
 require 'time'
 
 module InfluxDB2::API
-  class Buckets
-    attr_accessor :links
+  class AuthorizationPostRequest
+    # If inactive the token is inactive and requests using the token will be rejected.
+    attr_reader :status
 
-    attr_accessor :buckets
+    # A description of the token.
+    attr_accessor :description
+
+    # ID of org that authorization is scoped to.
+    attr_accessor :org_id
+
+    # ID of user that authorization is scoped to.
+    attr_accessor :user_id
+
+    # List of permissions for an auth.  An auth must have at least one Permission.
+    attr_reader :permissions
+
+    class EnumAttributeValidator
+      attr_reader :datatype
+      attr_reader :allowable_values
+
+      def initialize(datatype, allowable_values)
+        @allowable_values = allowable_values.map do |value|
+          case datatype.to_s
+          when /Integer/i
+            value.to_i
+          when /Float/i
+            value.to_f
+          else
+            value
+          end
+        end
+      end
+
+      def valid?(value)
+        !value || allowable_values.include?(value)
+      end
+    end
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'links' => :'links',
-        :'buckets' => :'buckets',
+        :'status' => :'status',
+        :'description' => :'description',
+        :'org_id' => :'orgID',
+        :'user_id' => :'userID',
+        :'permissions' => :'permissions',
       }
     end
 
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'links' => :'Links',
-        :'buckets' => :'Array<Bucket>'
+        :'status' => :'String',
+        :'description' => :'String',
+        :'org_id' => :'String',
+        :'user_id' => :'String',
+        :'permissions' => :'Array<Permission>'
       }
     end
 
@@ -40,28 +79,50 @@ module InfluxDB2::API
       ])
     end
 
+    # List of class defined in allOf (OpenAPI v3)
+    def self.openapi_all_of
+      [
+      :'AuthorizationPostRequestAllOf',
+      :'AuthorizationUpdateRequest'
+      ]
+    end
+
     # Initializes the object
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `InfluxDB2::Buckets` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `InfluxDB2::AuthorizationPostRequest` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!self.class.attribute_map.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `InfluxDB2::Buckets`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `InfluxDB2::AuthorizationPostRequest`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
 
-      if attributes.key?(:'links')
-        self.links = attributes[:'links']
+      if attributes.key?(:'status')
+        self.status = attributes[:'status']
+      else
+        self.status = 'active'
       end
 
-      if attributes.key?(:'buckets')
-        if (value = attributes[:'buckets']).is_a?(Array)
-          self.buckets = value
+      if attributes.key?(:'description')
+        self.description = attributes[:'description']
+      end
+
+      if attributes.key?(:'org_id')
+        self.org_id = attributes[:'org_id']
+      end
+
+      if attributes.key?(:'user_id')
+        self.user_id = attributes[:'user_id']
+      end
+
+      if attributes.key?(:'permissions')
+        if (value = attributes[:'permissions']).is_a?(Array)
+          self.permissions = value
         end
       end
     end
@@ -70,13 +131,54 @@ module InfluxDB2::API
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
+      if @org_id.nil?
+        invalid_properties.push('invalid value for "org_id", org_id cannot be nil.')
+      end
+
+      if @permissions.nil?
+        invalid_properties.push('invalid value for "permissions", permissions cannot be nil.')
+      end
+
+      if @permissions.length < 1
+        invalid_properties.push('invalid value for "permissions", number of items must be greater than or equal to 1.')
+      end
+
       invalid_properties
     end
 
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
+      status_validator = EnumAttributeValidator.new('String', ["active", "inactive"])
+      return false unless status_validator.valid?(@status)
+      return false if @org_id.nil?
+      return false if @permissions.nil?
+      return false if @permissions.length < 1
       true
+    end
+
+    # Custom attribute writer method checking allowed values (enum).
+    # @param [Object] status Object to be assigned
+    def status=(status)
+      validator = EnumAttributeValidator.new('String', ["active", "inactive"])
+      unless validator.valid?(status)
+        fail ArgumentError, "invalid value for \"status\", must be one of #{validator.allowable_values}."
+      end
+      @status = status
+    end
+
+    # Custom attribute writer method with validation
+    # @param [Object] permissions Value to be assigned
+    def permissions=(permissions)
+      if permissions.nil?
+        fail ArgumentError, 'permissions cannot be nil'
+      end
+
+      if permissions.length < 1
+        fail ArgumentError, 'invalid value for "permissions", number of items must be greater than or equal to 1.'
+      end
+
+      @permissions = permissions
     end
 
     # Checks equality by comparing each attribute.
@@ -84,8 +186,11 @@ module InfluxDB2::API
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          links == o.links &&
-          buckets == o.buckets
+          status == o.status &&
+          description == o.description &&
+          org_id == o.org_id &&
+          user_id == o.user_id &&
+          permissions == o.permissions
     end
 
     # @see the `==` method
@@ -97,7 +202,7 @@ module InfluxDB2::API
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [links, buckets].hash
+      [status, description, org_id, user_id, permissions].hash
     end
 
     # Builds the object from hash

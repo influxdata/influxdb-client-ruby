@@ -35,9 +35,9 @@ class AuthorizationsApiTest < BaseApiTests
 
     resource = InfluxDB2::API::Resource.new(type: 'users', org_id: my_org.id)
     permission = InfluxDB2::API::Permission.new(action: 'read', resource: resource)
-    authorization = InfluxDB2::API::Authorization.new(description: description,
-                                                      org_id: @my_org.id,
-                                                      permissions: [permission])
+    authorization = InfluxDB2::API::AuthorizationPostRequest.new(description: description,
+                                                                 org_id: @my_org.id,
+                                                                 permissions: [permission])
 
     result = @client.create_authorizations_api.post_authorizations(authorization)
 

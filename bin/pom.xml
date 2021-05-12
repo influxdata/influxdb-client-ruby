@@ -11,9 +11,9 @@
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>5.1.1-SNAPSHOT</version>
+                <version>5.1.1</version>
                 <configuration>
-                    <inputSpec>https://raw.githubusercontent.com/influxdata/influxdb/master/http/swagger.yml</inputSpec>
+                    <inputSpec>https://raw.githubusercontent.com/influxdata/openapi/master/contracts/oss.yml</inputSpec>
                     <generatorName>ruby</generatorName>
                     <configOptions>
                       <moduleName>InfluxDB2</moduleName>
@@ -33,16 +33,4 @@
             </plugin>
         </plugins>
     </build>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>oss.snapshot</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
 </project>
