@@ -53,6 +53,7 @@ cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/authorizations.rb "${SCRI
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/authorization_all_of.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/authorization_all_of_links.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/permission.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
+cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/password_reset_body.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/resource.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/resource_member.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/resource_member_all_of.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
