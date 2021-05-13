@@ -1809,6 +1809,9 @@ module InfluxDB2::API
     # List all users
     # @param [Hash] opts the optional parameters
     # @option opts [String] :zap_trace_span OpenTracing span context
+    # @option opts [Integer] :offset 
+    # @option opts [Integer] :limit  (default to 20)
+    # @option opts [String] :after The last resource ID from which to seek from (but not including). This is to be used instead of &#x60;offset&#x60;. 
     # @return [Users]
     def get_users(opts = {})
       data, _status_code, _headers = get_users_with_http_info(opts)
@@ -1818,16 +1821,34 @@ module InfluxDB2::API
     # List all users
     # @param [Hash] opts the optional parameters
     # @option opts [String] :zap_trace_span OpenTracing span context
+    # @option opts [Integer] :offset 
+    # @option opts [Integer] :limit 
+    # @option opts [String] :after The last resource ID from which to seek from (but not including). This is to be used instead of &#x60;offset&#x60;. 
     # @return [Array<(Users, Integer, Hash)>] Users data, response status code and response headers
     def get_users_with_http_info(opts = {})
       if @api_client.config.debugging
         @api_client.config.logger.debug 'Calling API: UsersApi.get_users ...'
       end
+      if @api_client.config.client_side_validation && !opts[:'offset'].nil? && opts[:'offset'] < 0
+        fail ArgumentError, 'invalid value for "opts[:"offset"]" when calling UsersApi.get_users, must be greater than or equal to 0.'
+      end
+
+      if @api_client.config.client_side_validation && !opts[:'limit'].nil? && opts[:'limit'] > 100
+        fail ArgumentError, 'invalid value for "opts[:"limit"]" when calling UsersApi.get_users, must be smaller than or equal to 100.'
+      end
+
+      if @api_client.config.client_side_validation && !opts[:'limit'].nil? && opts[:'limit'] < 1
+        fail ArgumentError, 'invalid value for "opts[:"limit"]" when calling UsersApi.get_users, must be greater than or equal to 1.'
+      end
+
       # resource path
       local_var_path = '/users'
 
       # query parameters
       query_params = opts[:query_params] || {}
+      query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
+      query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
+      query_params[:'after'] = opts[:'after'] if !opts[:'after'].nil?
 
       # header parameters
       header_params = opts[:header_params] || {}
