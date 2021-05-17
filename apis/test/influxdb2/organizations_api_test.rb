@@ -32,7 +32,7 @@ class OrganizationsApiTest < BaseApiTests
 
   def test_create_org
     name = generate_name('organization')
-    organization = InfluxDB2::API::Organization.new(name: name)
+    organization = InfluxDB2::API::PostOrganizationRequest.new(name: name)
 
     result = @client.create_organizations_api.post_orgs(organization)
 
@@ -42,7 +42,7 @@ class OrganizationsApiTest < BaseApiTests
   end
 
   def test_get_members
-    organization = InfluxDB2::API::Organization.new(name: generate_name('organization'))
+    organization = InfluxDB2::API::PostOrganizationRequest.new(name: generate_name('organization'))
     result = @client.create_organizations_api.post_orgs(organization)
 
     members = @client.create_organizations_api.get_orgs_id_members(result.id)
@@ -50,7 +50,7 @@ class OrganizationsApiTest < BaseApiTests
   end
 
   def test_get_owners
-    organization = InfluxDB2::API::Organization.new(name: generate_name('organization'))
+    organization = InfluxDB2::API::PostOrganizationRequest.new(name: generate_name('organization'))
     result = @client.create_organizations_api.post_orgs(organization)
 
     owners = @client.create_organizations_api.get_orgs_id_owners(result.id)

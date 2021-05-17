@@ -45,6 +45,8 @@ cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/post_bucket_request.rb "$
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/organization.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/organization_links.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/organizations.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
+cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/post_organization_request.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
+cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/patch_organization_request.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/links.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/authorization.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/authorization_update_request.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
