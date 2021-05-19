@@ -13,24 +13,26 @@ require 'date'
 require 'time'
 
 module InfluxDB2::API
-  class Buckets
-    attr_accessor :links
+  class PatchOrganizationRequest
+    # New name to set on the organization
+    attr_accessor :name
 
-    attr_accessor :buckets
+    # New description to set on the organization
+    attr_accessor :description
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'links' => :'links',
-        :'buckets' => :'buckets',
+        :'name' => :'name',
+        :'description' => :'description',
       }
     end
 
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'links' => :'Links',
-        :'buckets' => :'Array<Bucket>'
+        :'name' => :'String',
+        :'description' => :'String'
       }
     end
 
@@ -44,25 +46,23 @@ module InfluxDB2::API
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `InfluxDB2::Buckets` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `InfluxDB2::PatchOrganizationRequest` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!self.class.attribute_map.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `InfluxDB2::Buckets`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `InfluxDB2::PatchOrganizationRequest`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
 
-      if attributes.key?(:'links')
-        self.links = attributes[:'links']
+      if attributes.key?(:'name')
+        self.name = attributes[:'name']
       end
 
-      if attributes.key?(:'buckets')
-        if (value = attributes[:'buckets']).is_a?(Array)
-          self.buckets = value
-        end
+      if attributes.key?(:'description')
+        self.description = attributes[:'description']
       end
     end
 
@@ -84,8 +84,8 @@ module InfluxDB2::API
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          links == o.links &&
-          buckets == o.buckets
+          name == o.name &&
+          description == o.description
     end
 
     # @see the `==` method
@@ -97,7 +97,7 @@ module InfluxDB2::API
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [links, buckets].hash
+      [name, description].hash
     end
 
     # Builds the object from hash
