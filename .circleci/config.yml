@@ -149,9 +149,6 @@ jobs:
             ./bin/generate-sources.sh
             gem build influxdb-client.gemspec
             gem build apis/influxdb-client-apis.gemspec
-      - run:
-          name: Checks that there are not changes sources from swagger
-          command: git diff --exit-code
       - save_cache:
           name: Saving Cache
           key: *generate-sources-cache-key
