@@ -1,4 +1,4 @@
-## 1.15.0 [unreleased]
+## 1.15.0 [2021-06-04]
 
 ### API
 1. [#79](https://github.com/influxdata/influxdb-client-ruby/pull/79): Update swagger generator to 5.1.1
