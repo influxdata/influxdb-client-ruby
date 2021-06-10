@@ -450,7 +450,6 @@ class WriteApiRetryStrategyTest < MiniTest::Test
     sleep(11)
     assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 4, body: request)
-
   end
 
   def test_write_connection_error
@@ -475,7 +474,6 @@ class WriteApiRetryStrategyTest < MiniTest::Test
 
     assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 3, body: request)
-
   end
 
   def test_abort_on_exception
@@ -564,42 +562,39 @@ class WriteApiRetryStrategyTest < MiniTest::Test
   end
 
   def test_backoff_time_default
-
     retries = InfluxDB2::WriteRetry.new
 
     backoff = retries.get_backoff_time(1)
-    assert_gte backoff, 5000
-    assert_lte backoff, 10000
+    assert_gte backoff, 5_000
+    assert_lte backoff, 10_000
 
     backoff = retries.get_backoff_time(2)
-    assert_gte backoff, 10000
-    assert_lte backoff, 20000
+    assert_gte backoff, 10_000
+    assert_lte backoff, 20_000
 
     backoff = retries.get_backoff_time(3)
-    assert_gte backoff, 20000
-    assert_lte backoff, 40000
+    assert_gte backoff, 20_000
+    assert_lte backoff, 40_000
 
     backoff = retries.get_backoff_time(4)
-    assert_gte backoff, 40000
-    assert_lte backoff, 80000
+    assert_gte backoff, 40_000
+    assert_lte backoff, 80_000
 
     backoff = retries.get_backoff_time(5)
-    assert_gte backoff, 80000
-    assert_lte backoff, 125000
+    assert_gte backoff, 80_000
+    assert_lte backoff, 125_000
 
     backoff = retries.get_backoff_time(6)
-    assert_gte backoff, 80000
-    assert_lte backoff, 125000
-
+    assert_gte backoff, 80_000
+    assert_lte backoff, 125_000
   end
 
   def test_backoff_time_custom
-
     retries = InfluxDB2::WriteRetry.new(
-      :max_retry_delay => 2000,
-      :retry_interval => 100,
-      :exponential_base => 2,
-      :max_retries => 5,
+      max_retry_delay: 2_000,
+      retry_interval: 100,
+      exponential_base: 2,
+      max_retries: 5
     )
 
     backoff = retries.get_backoff_time(1)
@@ -616,12 +611,10 @@ class WriteApiRetryStrategyTest < MiniTest::Test
 
     backoff = retries.get_backoff_time(4)
     assert_gte backoff, 800
-    assert_lte backoff, 1600
+    assert_lte backoff, 1_600
 
     backoff = retries.get_backoff_time(5)
-    assert_gte backoff, 1600
-    assert_lte backoff, 2000
-
+    assert_gte backoff, 1_600
+    assert_lte backoff, 2_000
   end
-
 end

@@ -19,8 +19,9 @@
 # THE SOFTWARE.
 
 module InfluxDB2
+  # Exponential random write retry.
   class WriteRetry
-    @error_msg_prefix = "Error with options to with_retries:"
+    @error_msg_prefix = 'Error with options to with_retries:'
 
     # @param [Hash] options the retry options.
     # @option options [Integer] :max_retries (5) The maximum number of times to run the block.
@@ -33,14 +34,14 @@ module InfluxDB2
       @api_client = options[:api_client]
       @max_retries = options[:max_retries] || 5
       raise "#{@error_msg_prefix} :max_retries must be greater than 0." unless @max_retries > 0
+
       @retry_interval = options[:retry_interval] || 5_000
       @max_retry_delay = options[:max_retry_delay] || 125_000
       @max_retry_time = options[:max_retry_time] || 180_000
       @exponential_base = options[:exponential_base] || 2
       @jitter_interval = options[:jitter_interval] || 0
-      if @retry_interval > @max_retry_delay
-        raise "#{@error_msg_prefix} :retry_interval cannot be greater than :max_retry_delay."
-      end
+      raise "#{@error_msg_prefix} :retry_interval cannot be greater than :max_retry_delay." if
+        @retry_interval > @max_retry_delay
     end
 
     def get_backoff_time(attempts)
@@ -51,7 +52,7 @@ module InfluxDB2
       while i < attempts
         i += 1
         range_start = range_stop
-        range_stop = range_stop * @exponential_base
+        range_stop *= @exponential_base
         break if range_stop > @max_retry_delay
       end
 
@@ -60,17 +61,17 @@ module InfluxDB2
     end
 
     # Runs the supplied code block with a exponential backoff retry strategy.
-    def retry(&block)
+    def retry
       raise "#{@error_msg_prefix} must be passed a block" unless block_given?
+
       attempts = 0
       start_time = Time.now
       begin
         attempts += 1
-        return block.call(attempts)
+        yield attempts
       rescue InfluxError => e
-
         if attempts > @max_retries
-          @api_client.log(:error, "Maximum retry attempts reached.")
+          @api_client.log(:error, 'Maximum retry attempts reached.')
           raise e
         end
 
@@ -81,11 +82,11 @@ module InfluxDB2
 
         raise e if (e.code.nil? || e.code.to_i < 429) && !_connection_error(e.original)
 
-        if e.retry_after.nil? || e.retry_after.empty?
-          timeout = get_backoff_time(attempts)
-        else
-          timeout = (e.retry_after.to_f * 1000) + @jitter_interval * rand
-        end
+        timeout = if e.retry_after.nil? || e.retry_after.empty?
+                    get_backoff_time(attempts)
+                  else
+                    (e.retry_after.to_f * 1000) + @jitter_interval * rand
+                  end
 
         message = 'The retriable error occurred during writing of data. '\
     "Reason: '#{e.message}'. Retry in: #{timeout.to_f / 1000}s."

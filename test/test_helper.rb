@@ -52,18 +52,18 @@ class MockLogger
   end
 end
 
-def assert_gt(a, b)
-  assert_operator a, :>, b
+def assert_gt(val1, val2)
+  assert_operator val1, :>, val2
 end
 
-def assert_gte(a, b)
-  assert_operator a, :>=, b
+def assert_gte(val1, val2)
+  assert_operator val1, :>=, val2
 end
 
-def assert_lt(a, b)
-  assert_operator a, :<, b
+def assert_lt(val1, val2)
+  assert_operator val1, :<, val2
 end
 
-def assert_lte(a, b)
-  assert_operator a, :<=, b
+def assert_lte(val1, val2)
+  assert_operator val1, :<=, val2
 end

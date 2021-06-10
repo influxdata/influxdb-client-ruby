@@ -102,12 +102,12 @@ module InfluxDB2
 
     def _write_raw(key, points)
       write_retry = InfluxDB2::WriteRetry.new(
-        :api_client => @api_client,
-        :max_retries => @write_options.max_retries,
-        :exponential_base => @write_options.exponential_base,
-        :retry_interval => @write_options.retry_interval,
-        :max_retry_delay => @write_options.max_retry_delay,
-        :max_retry_time => @write_options.max_retry_time,
+        api_client: @api_client,
+        max_retries: @write_options.max_retries,
+        exponential_base: @write_options.exponential_base,
+        retry_interval: @write_options.retry_interval,
+        max_retry_delay: @write_options.max_retry_delay,
+        max_retry_time: @write_options.max_retry_time
       )
 
       if @write_options.jitter_interval > 0
@@ -119,6 +119,5 @@ module InfluxDB2
         @api_client.write_raw(points.join("\n"), precision: key.precision, bucket: key.bucket, org: key.org)
       end
     end
-
   end
 end
