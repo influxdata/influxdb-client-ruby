@@ -36,19 +36,23 @@ module InfluxDB2
     # @param [Integer] jitter_interval: the number of milliseconds to increase the batch flush interval
     # @param [Integer] max_retries: max number of retries when write fails
     # @param [Integer] max_retry_delay: maximum delay when retrying write in milliseconds
-    #   by a random amount
-    # @param [Integer] exponential_base: base for the exponential retry delay, the next delay is computed as
-    #   "exponential_base^(attempts-1) + random(jitter_interval)"
+    # @param [Integer] max_retry_time: maximum total retry timeout in milliseconds
+    # @param [Integer] exponential_base: the next delay is computed using random exponential backoff as a random value
+    #   within the interval retry_interval*exponential_base^(attempts-1) and retry_interval*exponential_base^(attempts).
+    #   Example for retry_interval=5000, exponential_base=2, max_retry_delay=125000, total=5
+    #   Retry delays are random distributed values within the ranges of
+    #   [5000-10000, 10000-20000, 20000-40000, 40000-80000, 80000-125000]
     # @param [Boolean] batch_abort_on_exception: batching worker will be aborted after failed retry strategy
     def initialize(write_type: WriteType::SYNCHRONOUS, batch_size: 1_000, flush_interval: 1_000, retry_interval: 5_000,
-                   jitter_interval: 0, max_retries: 5, max_retry_delay: 180_000, exponential_base: 5,
-                   batch_abort_on_exception: false)
+                   jitter_interval: 0, max_retries: 5, max_retry_delay: 125_000, max_retry_time: 180_000,
+                   exponential_base: 2, batch_abort_on_exception: false)
       _check_not_negative('batch_size', batch_size)
       _check_not_negative('flush_interval', flush_interval)
       _check_not_negative('retry_interval', retry_interval)
       _check_positive('jitter_interval', jitter_interval)
-      _check_positive('max_retries', jitter_interval)
-      _check_positive('max_retry_delay', jitter_interval)
+      _check_positive('max_retries', max_retries)
+      _check_positive('max_retry_delay', max_retry_delay)
+      _check_positive('max_retry_time', max_retry_time)
       _check_positive('exponential_base', exponential_base)
       @write_type = write_type
       @batch_size = batch_size
@@ -57,12 +61,13 @@ module InfluxDB2
       @jitter_interval = jitter_interval
       @max_retries = max_retries
       @max_retry_delay = max_retry_delay
+      @max_retry_time = max_retry_time
       @exponential_base = exponential_base
       @batch_abort_on_exception = batch_abort_on_exception
     end
 
     attr_reader :write_type, :batch_size, :flush_interval, :retry_interval, :jitter_interval,
-                :max_retries, :max_retry_delay, :exponential_base, :batch_abort_on_exception
+                :max_retries, :max_retry_delay, :max_retry_time, :exponential_base, :batch_abort_on_exception
 
     def _check_not_negative(key, value)
       raise ArgumentError, "The '#{key}' should be positive or zero, but is: #{value}" if value <= 0

@@ -159,13 +159,14 @@ The writes are processed in batches which are configurable by `WriteOptions`:
 
 | Property | Description | Default Value |
 | --- | --- | --- |
-| batchSize | the number of data point to collect in batch | 1000 |
-| flush_interval | the number of milliseconds before the batch is written | 1000 |
-| retry_interval | the number of milliseconds to retry unsuccessful write. The retry interval is used when the InfluxDB server does not specify "Retry-After" header. | 5000 |
+| batchSize | the number of data point to collect in batch | 1_000 |
+| flush_interval | the number of milliseconds before the batch is written | 1_000 |
+| retry_interval | the number of milliseconds to retry unsuccessful write. The retry interval is used when the InfluxDB server does not specify "Retry-After" header. | 5_000 |
 | jitter_interval | the number of milliseconds to increase the batch flush interval by a random amount | 0 |
 | max_retries | the number of max retries when write fails | 5 |
-| max_retry_delay | maximum delay when retrying write in milliseconds | 180000 |
-| exponential_base | the base for the exponential retry delay, the next delay is computed as `retry_interval * exponential_base^(attempts - 1) + random(jitter_interval)` | 5 |
+| max_retry_delay | maximum delay when retrying write in milliseconds | 125_000 |
+| max_retry_time | maximum total retry timeout in milliseconds | 180_000 |
+| exponential_base | the base for the exponential retry delay, the next delay is computed using random exponential backoff as a random value within the interval  ``retry_interval * exponential_base^(attempts-1)`` and ``retry_interval * exponential_base^(attempts)``. Example for ``retry_interval=5000, exponential_base=2, max_retry_delay=125000, total=5`` Retry delays are random distributed values within the ranges of ``[5000-10000, 10000-20000, 20000-40000, 40000-80000, 80000-125000]`` | 2 |
 | batch_abort_on_exception | the batching worker will be aborted after failed retry strategy | false |
 ```ruby
 write_options = InfluxDB2::WriteOptions.new(write_type: InfluxDB2::WriteType::BATCHING,

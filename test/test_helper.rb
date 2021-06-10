@@ -34,7 +34,7 @@ require 'influxdb-client'
 
 require 'minitest/autorun'
 require 'minitest/reporters'
-Minitest::Reporters.use!
+Minitest::Reporters.use! unless ENV['RM_INFO']
 
 require 'webmock/minitest'
 
@@ -46,6 +46,24 @@ class MockLogger
   end
 
   def add(level, &block)
-    @messages << [level, yield(block)]
+    line = yield(block)
+    print("#{line}\n")
+    @messages << [level, line]
   end
+end
+
+def assert_gt(a, b)
+  assert_operator a, :>, b
+end
+
+def assert_gte(a, b)
+  assert_operator a, :>=, b
+end
+
+def assert_lt(a, b)
+  assert_operator a, :<, b
+end
+
+def assert_lte(a, b)
+  assert_operator a, :<=, b
 end
