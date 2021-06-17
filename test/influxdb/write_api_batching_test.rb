@@ -292,9 +292,9 @@ class WriteApiRetryStrategyTest < MiniTest::Test
 
     @write_client.write(data: ['h2o_feet,location=coyote_creek water_level=1.0 1',
                                InfluxDB2::Point.new(name: 'h2o_feet')
-                                   .add_tag('location', 'coyote_creek')
-                                   .add_field('water_level', 2.0)
-                                   .time(2, InfluxDB2::WritePrecision::NANOSECOND)])
+                                               .add_tag('location', 'coyote_creek')
+                                               .add_field('water_level', 2.0)
+                                               .time(2, InfluxDB2::WritePrecision::NANOSECOND)])
 
     sleep(0.5)
 
@@ -342,32 +342,7 @@ class WriteApiRetryStrategyTest < MiniTest::Test
 
     @client.create_write_api(write_options: write_options).write(data: point)
 
-    sleep(0.5)
-
-    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                     times: 1, body: request)
-
-    sleep(2)
-
-    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                     times: 2, body: request)
-
-    sleep(4)
-
-    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                     times: 3, body: request)
-
-    sleep(5)
-
-    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                     times: 4, body: request)
-
-    sleep(5)
-
-    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                     times: 4, body: request)
-
-    sleep(5)
+    sleep(15)
 
     assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 4, body: request)
@@ -465,38 +440,14 @@ class WriteApiRetryStrategyTest < MiniTest::Test
     request = 'h2o,location=europe level=2.0'
 
     write_options = InfluxDB2::WriteOptions.new(write_type: InfluxDB2::WriteType::BATCHING,
-                                                batch_size: 1, retry_interval: 2_000, max_retries: 3,
+                                                batch_size: 1, retry_interval: 1000, max_retries: 3,
                                                 max_retry_delay: 5_000, exponential_base: 2)
 
     @client.create_write_api(write_options: write_options).write(data: point)
 
-    sleep(0.5)
-
-    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                     times: 1, body: request)
-
-    sleep(2)
-
-    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                     times: 2, body: request)
-
-    sleep(4)
-
-    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                     times: 3, body: request)
-
-    sleep(5)
-
-    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                     times: 4, body: request)
-
-    sleep(5)
-
-    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                     times: 4, body: request)
-
-    sleep(5)
-
+    # random sleep intervals
+    # [1000, 2000], [2000, 4000], [4000, 5000]
+    sleep(11)
     assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 4, body: request)
   end
@@ -519,22 +470,7 @@ class WriteApiRetryStrategyTest < MiniTest::Test
 
     @client.create_write_api(write_options: write_options).write(data: point)
 
-    sleep(0.5)
-
-    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                     times: 1, body: request)
-
-    sleep(2)
-
-    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                     times: 2, body: request)
-
-    sleep(4)
-
-    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                     times: 3, body: request)
-
-    sleep(5)
+    sleep(10)
 
     assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 3, body: request)
@@ -623,5 +559,62 @@ class WriteApiRetryStrategyTest < MiniTest::Test
 "Reason: 'Server is temporarily unavailable to accept writes.'. Retry in: 3.0s."
 
     assert_equal(message, @logger.messages[0][1])
+  end
+
+  def test_backoff_time_default
+    retries = InfluxDB2::WriteRetry.new
+
+    backoff = retries.get_backoff_time(1)
+    assert_gte backoff, 5_000
+    assert_lte backoff, 10_000
+
+    backoff = retries.get_backoff_time(2)
+    assert_gte backoff, 10_000
+    assert_lte backoff, 20_000
+
+    backoff = retries.get_backoff_time(3)
+    assert_gte backoff, 20_000
+    assert_lte backoff, 40_000
+
+    backoff = retries.get_backoff_time(4)
+    assert_gte backoff, 40_000
+    assert_lte backoff, 80_000
+
+    backoff = retries.get_backoff_time(5)
+    assert_gte backoff, 80_000
+    assert_lte backoff, 125_000
+
+    backoff = retries.get_backoff_time(6)
+    assert_gte backoff, 80_000
+    assert_lte backoff, 125_000
+  end
+
+  def test_backoff_time_custom
+    retries = InfluxDB2::WriteRetry.new(
+      max_retry_delay: 2_000,
+      retry_interval: 100,
+      exponential_base: 2,
+      max_retries: 5
+    )
+
+    backoff = retries.get_backoff_time(1)
+    assert_gte backoff, 100
+    assert_lte backoff, 200
+
+    backoff = retries.get_backoff_time(2)
+    assert_gte backoff, 200
+    assert_lte backoff, 400
+
+    backoff = retries.get_backoff_time(3)
+    assert_gte backoff, 400
+    assert_lte backoff, 800
+
+    backoff = retries.get_backoff_time(4)
+    assert_gte backoff, 800
+    assert_lte backoff, 1_600
+
+    backoff = retries.get_backoff_time(5)
+    assert_gte backoff, 1_600
+    assert_lte backoff, 2_000
   end
 end

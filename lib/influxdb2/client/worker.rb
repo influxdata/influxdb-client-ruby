@@ -96,36 +96,28 @@ module InfluxDB2
 
     def _write(data)
       data.each do |key, points|
-        _write_raw(key, points, 1, @write_options.retry_interval)
+        _write_raw(key, points)
       end
     end
 
-    def _write_raw(key, points, attempts, retry_interval)
+    def _write_raw(key, points)
+      write_retry = InfluxDB2::WriteRetry.new(
+        api_client: @api_client,
+        max_retries: @write_options.max_retries,
+        exponential_base: @write_options.exponential_base,
+        retry_interval: @write_options.retry_interval,
+        max_retry_delay: @write_options.max_retry_delay,
+        max_retry_time: @write_options.max_retry_time
+      )
+
       if @write_options.jitter_interval > 0
         jitter_delay = (@write_options.jitter_interval.to_f / 1_000) * rand
         sleep jitter_delay
       end
-      @api_client.write_raw(points.join("\n"), precision: key.precision, bucket: key.bucket, org: key.org)
-    rescue InfluxError => e
-      raise e if attempts > @write_options.max_retries
-      raise e if (e.code.nil? || e.code.to_i < 429) && !_connection_error(e.original)
 
-      timeout = if e.retry_after.empty?
-                  [retry_interval.to_f, @write_options.max_retry_delay.to_f].min / 1_000
-                else
-                  e.retry_after.to_f
-                end
-
-      message = 'The retriable error occurred during writing of data. '\
-"Reason: '#{e.message}'. Retry in: #{timeout}s."
-
-      @api_client.log(:warn, message)
-      sleep timeout
-      _write_raw(key, points, attempts + 1, retry_interval * @write_options.exponential_base)
-    end
-
-    def _connection_error(error)
-      InfluxError::HTTP_ERRORS.any? { |c| error.instance_of? c }
+      write_retry.retry do
+        @api_client.write_raw(points.join("\n"), precision: key.precision, bucket: key.bucket, org: key.org)
+      end
     end
   end
 end
