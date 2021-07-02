@@ -25,7 +25,7 @@ require 'influxdb2/client/version'
 # noinspection DuplicatedCode
 Gem::Specification.new do |spec|
   spec.name          = 'influxdb-client'
-  spec.version       = ENV['CIRCLE_BUILD_NUM'] ? "#{InfluxDB2::VERSION}-#{ENV['CIRCLE_BUILD_NUM']}" : InfluxDB2::VERSION
+  spec.version       = '1.16.1'
   spec.authors       = ['Jakub Bednar']
   spec.email         = ['jakub.bednar@gmail.com']
 
