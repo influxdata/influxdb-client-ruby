@@ -1,5 +1,8 @@
 ## 1.16.0 [unreleased]
 
+### Bug Fixes
+1. [#86](https://github.com/influxdata/influxdb-client-ruby/pull/86): Uninitialized `set` for models
+
 ## 1.15.0 [2021-06-04]
 
 ### API
