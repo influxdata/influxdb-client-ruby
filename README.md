@@ -26,6 +26,15 @@ This repository contains the reference Ruby client for the InfluxDB 2.0.
 - [Contributing](#contributing)
 - [License](#license)
 
+## Documentation
+
+This section contains links to the client library documentation.
+
+* [Product documentation](https://docs.influxdata.com/influxdb/v2.0/api-guide/client-libraries/), [Getting Started](#installation)
+* [Examples](examples)
+* [API Reference](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2.html)
+* [Changelog](CHANGELOG.md)
+
 ## Features
 
 InfluxDB 2.0 client consists of two packages
