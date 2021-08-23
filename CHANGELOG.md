@@ -1,5 +1,15 @@
-## 1.18.0 [unreleased]
+## 2.0.0 [unreleased]
 
+### Breaking Changes
+Due to a security reason `Authorization` header is not forwarded when redirect leads to a different domain.
+To overcome this limitation you have to set the client property `redirect_forward_authorization` to `true`.
+
+### Features
+1. [#89](https://github.com/influxdata/influxdb-client-ruby/pull/89): `Authorization` header is not forwarded when redirect leads to a different domain
+
+### Bug Fixes
+1. [#89](https://github.com/influxdata/influxdb-client-ruby/pull/89): Correct redirect location
+ 
 ## 1.17.0 [2021-08-20]
 
 ### Bug Fixes
