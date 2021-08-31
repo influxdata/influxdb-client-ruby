@@ -23,6 +23,7 @@ This repository contains the reference Ruby client for the InfluxDB 2.0.
     - [Management API](#management-api)
 - [Advanced Usage](#advanced-usage)
     - [Default Tags](#default-tags)
+    - [Proxy configuration](#proxy-configuration)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -93,6 +94,7 @@ client = InfluxDB2::Client.new('https://localhost:8086', 'my-token')
 | write_timeout | Number of seconds to wait for one block of data to be written | Integer | 10 |
 | read_timeout | Number of seconds to wait for one block of data to be read | Integer | 10 |
 | max_redirect_count | Maximal number of followed HTTP redirects | Integer | 10 |
+| redirect_forward_authorization | Pass Authorization header to different domain during HTTP redirect. | bool | false |
 | use_ssl | Turn on/off SSL for HTTP communication | bool | true |
 | verify_mode | Sets the flags for the certification verification at beginning of SSL/TLS session. | `OpenSSL::SSL::VERIFY_NONE` or `OpenSSL::SSL::VERIFY_PEER` | none |
 
@@ -399,6 +401,20 @@ client.close!
 ### Check the server status 
 
 Server availability can be checked using the `client.health` method. That is equivalent of the [influx ping](https://v2.docs.influxdata.com/v2.0/reference/cli/influx/ping/).
+
+### Proxy configuration
+
+You can configure the client to tunnel requests through an HTTP proxy. To configure the proxy use a `http_proxy` environment variable. 
+
+```ruby
+ENV['HTTP_PROXY'] = 'http://my-user:my-password@my-proxy:8099'
+```
+
+Client automatically follows HTTP redirects. The default redirect policy is to follow up to 10 consecutive requests.
+You can configure redirect counts by the client property: `max_redirect_count`. 
+
+Due to a security reason `Authorization` header is not forwarded when redirect leads to a different domain. 
+To overcome this limitation you have to set the client property `redirect_forward_authorization` to `true`.
 
 ### InfluxDB 1.8 API compatibility
 

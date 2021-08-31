@@ -19,5 +19,5 @@
 # THE SOFTWARE.
 
 module InfluxDB2
-  VERSION = '1.18.0'.freeze
+  VERSION = '2.0.0'.freeze
 end

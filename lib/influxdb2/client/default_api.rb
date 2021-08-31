@@ -73,21 +73,24 @@ module InfluxDB2
       _post(payload, uri, headers: headers.merge(HEADER_CONTENT_TYPE => 'text/plain'))
     end
 
-    def _post(payload, uri, limit: @max_redirect_count, headers: {})
-      _request(payload, uri, limit: limit, headers: headers, request: Net::HTTP::Post)
+    def _post(payload, uri, limit: @max_redirect_count, add_authorization: true, headers: {})
+      _request(payload, uri, limit: limit, add_authorization: add_authorization,
+                             headers: headers, request: Net::HTTP::Post)
     end
 
-    def _get(uri, limit: @max_redirect_count, headers: {})
-      _request(nil, uri, limit: limit, headers: headers.merge('Accept' => 'application/json'), request: Net::HTTP::Get)
+    def _get(uri, limit: @max_redirect_count, add_authorization: true, headers: {})
+      _request(nil, uri, limit: limit, add_authorization: add_authorization,
+                         headers: headers.merge('Accept' => 'application/json'), request: Net::HTTP::Get)
     end
 
-    def _request(payload, uri, limit: @max_redirect_count, headers: {}, request: Net::HTTP::Post)
+    def _request(payload, uri, limit: @max_redirect_count, add_authorization: true, headers: {},
+                 request: Net::HTTP::Post)
       raise InfluxError.from_message("Too many HTTP redirects. Exceeded limit: #{@max_redirect_count}") if limit.zero?
 
       http = _prepare_http_client(uri)
 
       request = request.new(uri.request_uri)
-      request['Authorization'] = "Token #{@options[:token]}"
+      request['Authorization'] = "Token #{@options[:token]}" if add_authorization
       request['User-Agent'] = "influxdb-client-ruby/#{InfluxDB2::VERSION}"
       headers.each { |k, v| request[k] = v }
 
@@ -100,7 +103,16 @@ module InfluxDB2
           response
         when Net::HTTPRedirection then
           location = response['location']
-          _post(payload, URI.parse(location), limit: limit - 1, headers: headers)
+          redirect_forward_authorization = @options[:redirect_forward_authorization] || false
+
+          uri_redirect = URI.parse(location)
+          uri_redirect.query = uri.query
+          uri_redirect.path = File.join(uri_redirect.path, uri.path)
+
+          redirect_forward_authorization ||= (uri_redirect.host == uri.host) && (uri_redirect.port == uri.port)
+
+          _post(payload, uri_redirect, limit: limit - 1, add_authorization: redirect_forward_authorization,
+                                       headers: headers)
         else
           raise InfluxError.from_response(response)
         end

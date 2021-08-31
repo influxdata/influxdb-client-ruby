@@ -201,7 +201,7 @@ class WriteApiTest < MiniTest::Test
   def test_follow_redirect
     stub_request(:any, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 307, headers:
-          { 'location' => 'http://localhost:9090/api/v2/write?bucket=my-bucket&org=my-org&precision=ns' })
+          { 'location' => 'http://localhost:9090/' })
       .then.to_return(status: 204)
     stub_request(:any, 'http://localhost:9090/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
@@ -223,7 +223,7 @@ class WriteApiTest < MiniTest::Test
   def test_follow_redirect_max
     stub_request(:any, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 307, headers:
-          { 'location' => 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns' })
+          { 'location' => 'http://localhost:8086/' })
 
     client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',

@@ -42,6 +42,8 @@ module InfluxDB2
     # @option options [Integer] :write_timeout Number of seconds to wait for one block of data to be written
     # @option options [Integer] :read_timeout Number of seconds to wait for one block of data to be read
     # @option options [Integer] :max_redirect_count Maximal number of followed HTTP redirects
+    # @option options [bool] :redirect_forward_authorization Pass Authorization header to different domain
+    #   during HTTP redirect.
     # @option options [bool] :use_ssl Turn on/off SSL for HTTP communication
     # @option options [Integer] :verify_mode Sets the flags for the certification verification
     #   at beginning of SSL/TLS session. Could be one of `OpenSSL::SSL::VERIFY_NONE` or `OpenSSL::SSL::VERIFY_PEER`.
