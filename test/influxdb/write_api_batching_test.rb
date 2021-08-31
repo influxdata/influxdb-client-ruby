@@ -618,34 +618,11 @@ class WriteApiRetryStrategyTest < MiniTest::Test
     assert_lte backoff, 2_000
   end
 
-  def test_write_error_plain
-    error_body = 'Service Unavailable'
-    stub_request(:any, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
-      .to_return(status: 503, headers: { 'content-type' => 'text/plain' },
-                 body: error_body)
-
-    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
-                                   bucket: 'my-bucket',
-                                   org: 'my-org',
-                                   precision: InfluxDB2::WritePrecision::NANOSECOND,
-                                   use_ssl: false)
-
-    error = assert_raises InfluxDB2::InfluxError do
-      write_api = client.create_write_api
-      write_api.write(data: 'h2o,location=west value=33i 15')
-    end
-
-    assert_equal '503', error.code
-    assert_equal "Service Unavailable", error.message
-  end
-
   def test_write_error_plain_retry
     error_body = 'Service Unavailable'
-
     stub_request(:any, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 503, headers: { 'content-type' => 'text/plain', 'Retry-After' => '2' }, body: error_body)
-      .to_return(status: 503, headers: { 'content-type' => 'text/plain' }, body: error_body)
-      .to_return(status: 204)
+      .to_return(status: 503, headers: { 'content-type' => 'text/plain' }, body: error_body).to_return(status: 204)
 
     client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
@@ -661,10 +638,7 @@ class WriteApiRetryStrategyTest < MiniTest::Test
     write_api.write(data: request)
 
     sleep(10)
-
     assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 3, body: request)
-
   end
-
 end
