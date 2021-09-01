@@ -210,11 +210,6 @@ class WriteApiBatchingTest < MiniTest::Test
     @write_client.write(data: ['h2o_feet,location=coyote_creek water_level=1.0 1',
                                'h2o_feet,location=coyote_creek water_level=2.0 2'])
 
-    sleep(0.05)
-
-    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
-                     times: 0, body: request)
-
     sleep(2)
 
     assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
@@ -616,5 +611,29 @@ class WriteApiRetryStrategyTest < MiniTest::Test
     backoff = retries.get_backoff_time(5)
     assert_gte backoff, 1_600
     assert_lte backoff, 2_000
+  end
+
+  def test_write_error_plain_retry
+    error_body = 'Service Unavailable'
+    stub_request(:any, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 503, headers: { 'content-type' => 'text/plain', 'Retry-After' => '2' }, body: error_body)
+      .to_return(status: 503, headers: { 'content-type' => 'text/plain' }, body: error_body).to_return(status: 204)
+
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
+                                   bucket: 'my-bucket',
+                                   org: 'my-org',
+                                   precision: InfluxDB2::WritePrecision::NANOSECOND,
+                                   use_ssl: false)
+
+    @write_options = InfluxDB2::WriteOptions.new(write_type: InfluxDB2::WriteType::BATCHING,
+                                                 batch_size: 1, flush_interval: 1_000, retry_interval: 1_000)
+
+    write_api = client.create_write_api(write_options: @write_options)
+    request = 'h2o,location=west value=33i 15'
+    write_api.write(data: request)
+
+    sleep(10)
+    assert_requested(:post, 'http://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 3, body: request)
   end
 end

@@ -1,5 +1,8 @@
 ## 2.0.0 [unreleased]
 
+### Bug Fixes
+1. [#90](https://github.com/influxdata/influxdb-client-ruby/pull/90): Fix parse text plain 503 error response  
+
 ### Breaking Changes
 Due to a security reason `Authorization` header is not forwarded when redirect leads to a different domain.
 To overcome this limitation you have to set the client property `redirect_forward_authorization` to `true`.

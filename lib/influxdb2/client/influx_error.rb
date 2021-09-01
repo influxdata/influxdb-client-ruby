@@ -35,6 +35,9 @@ module InfluxDB2
       obj = new(message: json['message'] || '', code: response.code, reference: json['code'] || '',
                 retry_after: response['Retry-After'] || '')
       obj
+    rescue JSON::ParserError
+      new(message: response.body || '', code: response.code, reference: '',
+          retry_after: response['Retry-After'] || '')
     end
 
     def self.from_message(message)
