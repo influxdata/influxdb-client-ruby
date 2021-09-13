@@ -45,9 +45,9 @@ commands:
       - restore_cache:
           name: Restoring Gem Cache
           keys:
-            - &cache-key gem-cache-{{ checksum "<< parameters.path >>/<< parameters.gemspec-file >>" }}-<< parameters.ruby-image >>
-            - gem-cache-{{ checksum "<< parameters.path >>/<< parameters.gemspec-file >>" }}
-            - gem-cache-
+            - &cache-key gem-cache-v2-{{ checksum "<< parameters.path >>/<< parameters.gemspec-file >>" }}-<< parameters.ruby-image >>
+            - gem-cache-v2-{{ checksum "<< parameters.path >>/<< parameters.gemspec-file >>" }}
+            - gem-cache-v2-
       - run:
           name: Install dependencies
           command: |
@@ -107,7 +107,7 @@ jobs:
     parameters:
       ruby-image:
         type: string
-        default: &default-ruby-image "circleci/ruby:2.6-stretch"
+        default: &default-ruby-image "cimg/ruby:2.6"
       influxdb-image:
         type: string
         default: &default-influxdb-image "influxdb:latest"
@@ -180,20 +180,20 @@ workflows:
     jobs:
       - tests-ruby:
           name: client-r3.0
-          ruby-image: "circleci/ruby:3.0-buster"
+          ruby-image: "cimg/ruby:3.0"
       - tests-ruby:
           name: APIs-r3.0
-          ruby-image: "circleci/ruby:3.0-buster"
+          ruby-image: "cimg/ruby:3.0"
           gemspec-file: influxdb-client-apis.gemspec
           path: ./apis
           requires:
             - client-r3.0
       - tests-ruby:
           name: client-r2.7
-          ruby-image: "circleci/ruby:2.7-buster"
+          ruby-image: "cimg/ruby:2.7"
       - tests-ruby:
           name: APIs-r2.7
-          ruby-image: "circleci/ruby:2.7-buster"
+          ruby-image: "cimg/ruby:2.7"
           gemspec-file: influxdb-client-apis.gemspec
           path: ./apis
           requires:
@@ -218,30 +218,30 @@ workflows:
             - client-r2.6-nightly
       - tests-ruby:
           name: client-r2.5
-          ruby-image: "circleci/ruby:2.5-stretch"
+          ruby-image: "cimg/ruby:2.5"
       - tests-ruby:
           name: APIs-r2.5
-          ruby-image: "circleci/ruby:2.5-stretch"
+          ruby-image: "cimg/ruby:2.5"
           gemspec-file: influxdb-client-apis.gemspec
           path: ./apis
           requires:
             - client-r2.5
       - tests-ruby:
           name: client-r2.4
-          ruby-image: "circleci/ruby:2.4-stretch"
+          ruby-image: "cimg/ruby:2.4"
       - tests-ruby:
           name: APIs-r2.4
-          ruby-image: "circleci/ruby:2.4-stretch"
+          ruby-image: "cimg/ruby:2.4"
           gemspec-file: influxdb-client-apis.gemspec
           path: ./apis
           requires:
             - client-r2.4
       - tests-ruby:
           name: client-jruby
-          ruby-image: "circleci/jruby:9.2.17.0"
+          ruby-image: "jruby:9.2.17.0"
       - tests-ruby:
           name: APIs-jruby
-          ruby-image: "circleci/jruby:9.2.17.0"
+          ruby-image: "jruby:9.2.17.0"
           gemspec-file: influxdb-client-apis.gemspec
           path: ./apis
           requires:

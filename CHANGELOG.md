@@ -1,5 +1,8 @@
 ## 2.1.0 [unreleased]
 
+### CI
+1. [#91](https://github.com/influxdata/influxdb-client-ruby/pull/91): Switch to next-gen CircleCI's convenience images
+
 ## 2.0.0 [2021-09-13]
 
 ### Bug Fixes
