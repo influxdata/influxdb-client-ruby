@@ -1,4 +1,4 @@
-## 2.0.0 [unreleased]
+## 2.0.0 [2021-09-13]
 
 ### Bug Fixes
 1. [#90](https://github.com/influxdata/influxdb-client-ruby/pull/90): Fix parse text plain 503 error response  
