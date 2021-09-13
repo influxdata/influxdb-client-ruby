@@ -1,13 +1,13 @@
 ## 2.1.0 [unreleased]
 
+### CI
+1. [#91](https://github.com/influxdata/influxdb-client-ruby/pull/91): Switch to next-gen CircleCI's convenience images
+
 ## 2.0.0 [2021-09-13]
 
 ### Bug Fixes
 1. [#90](https://github.com/influxdata/influxdb-client-ruby/pull/90): Fix parse text plain 503 error response  
 1. [#89](https://github.com/influxdata/influxdb-client-ruby/pull/89): Correct redirect location
-
-### CI
-1. [#91](https://github.com/influxdata/influxdb-client-ruby/pull/91): Switch to next-gen CircleCI's convenience images
 
 ### Breaking Changes
 Due to a security reason `Authorization` header is not forwarded when redirect leads to a different domain.
