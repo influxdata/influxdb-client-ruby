@@ -148,7 +148,7 @@ jobs:
           command: |
             ./bin/generate-sources.sh
             gem build influxdb-client.gemspec
-            gem build apis/influxdb-client-apis.gemspec
+            gem build -C apis influxdb-client-apis.gemspec
       - save_cache:
           name: Saving Cache
           key: *generate-sources-cache-key
