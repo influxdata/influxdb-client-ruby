@@ -1,5 +1,8 @@
 ## 2.1.0 [unreleased]
 
+### Features
+1. [#93](https://github.com/influxdata/influxdb-client-ruby/pull/93): Add `PingApi` to check status of OSS and Cloud instance
+
 ### CI
 1. [#91](https://github.com/influxdata/influxdb-client-ruby/pull/91): Switch to next-gen CircleCI's convenience images
 

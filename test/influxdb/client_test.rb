@@ -97,7 +97,7 @@ class ClientTest < Minitest::Test
     assert_equal 'ready for queries and writes', ping.message
     assert_equal 'OSS, oss2', ping.build
     assert_equal 'ok', ping.status
-    assert_includes ping.version, '2.'
+    refute_empty ping.version
   end
 
   def test_ping_not_running
