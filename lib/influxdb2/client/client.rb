@@ -87,6 +87,7 @@ module InfluxDB2
 
     # Get the health of an instance.
     #
+    # @deprecated Use `ping` instead
     # @return [HealthCheck]
     def health
       HealthApi.new(options: @options).health
