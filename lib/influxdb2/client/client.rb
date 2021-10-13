@@ -93,6 +93,14 @@ module InfluxDB2
       HealthApi.new(options: @options).health
     end
 
+    # Checks the status of InfluxDB instance and version of InfluxDB.
+    #
+    # @deprecated Use `ping` instead
+    # @return [Ping]
+    def ping
+      PingApi.new(options: @options).ping
+    end
+
     # Close all connections into InfluxDB 2.
     #
     # @return [ true ] Always true.
