@@ -90,6 +90,26 @@ class ClientTest < Minitest::Test
     assert_equal 'fail', health.status
   end
 
+  def test_ping
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token', use_ssl: false)
+
+    ping = client.ping
+    assert_equal 'ready for queries and writes', ping.message
+    assert_equal 'OSS, oss2', ping.build
+    assert_equal 'ok', ping.status
+    refute_empty ping.version
+  end
+
+  def test_ping_not_running
+    client_not_running = InfluxDB2::Client.new('http://localhost:8099', 'my-token', use_ssl: false)
+    ping = client_not_running.ping
+
+    assert_match 'Failed to open TCP connection to localhost:8099', ping.message
+    assert_equal 'fail', ping.status
+    assert_nil ping.build
+    assert_nil ping.version
+  end
+
   def test_trailing_slash_in_url
     uri = URI.parse(File.join('http://localhost:8099', '/api/v2/write'))
     assert_equal 'http://localhost:8099/api/v2/write', uri.to_s

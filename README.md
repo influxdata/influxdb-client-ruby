@@ -400,7 +400,7 @@ client.close!
 
 ### Check the server status 
 
-Server availability can be checked using the `client.health` method. That is equivalent of the [influx ping](https://v2.docs.influxdata.com/v2.0/reference/cli/influx/ping/).
+Server availability can be checked using the `client.ping` method. That is equivalent of the [influx ping](https://v2.docs.influxdata.com/v2.0/reference/cli/influx/ping/).
 
 ### Proxy configuration
 

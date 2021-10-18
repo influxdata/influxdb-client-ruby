@@ -20,31 +20,46 @@
 require_relative 'models/health_check'
 
 module InfluxDB2
-  # The client of the InfluxDB 2.0 that implement Health HTTP API endpoint.
+  # The client of the InfluxDB 2.0 that implement Ping HTTP API endpoint.
   #
-  # @deprecated Use `PingApi` instead
-  class HealthApi < DefaultApi
+  class PingApi < DefaultApi
     # @param [Hash] options The options to be used by the client.
     def initialize(options:)
       super(options: options)
     end
 
-    # Get the health of an instance.
+    # Checks the status of InfluxDB instance and version of InfluxDB.
     #
-    # @return [HealthCheck]
-    def health
-      uri = _parse_uri('/health')
-      body = _get(uri).body
-      data = JSON.parse("[#{body}]", symbolize_names: true)[0]
-      HealthCheck.new.tap do |model|
-        model.build_from_hash data
+    # @return [Ping]
+    def ping
+      uri = _parse_uri('/ping')
+      headers = _get(uri)
+      Ping.new.tap do |model|
+        model.status = 'ok'
+        model.build = headers['X-Influxdb-Build']
+        model.version = headers['X-Influxdb-Version']
+        model.message = 'ready for queries and writes'
       end
     rescue StandardError => e
-      HealthCheck.new.tap do |model|
-        model.name = 'influxdb'
+      Ping.new.tap do |model|
         model.status = 'fail'
         model.message = e.message
       end
     end
+  end
+
+  # The status of InfluxDB instance and version of InfluxDB.
+  class Ping
+    # The type of InfluxDB build.
+    attr_accessor :build
+
+    # The version of InfluxDB.
+    attr_accessor :version
+
+    # The status of InfluxDB.
+    attr_accessor :status
+
+    # The error message.
+    attr_accessor :message
   end
 end
