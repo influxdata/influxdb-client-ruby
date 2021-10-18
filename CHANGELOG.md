@@ -5,6 +5,7 @@
 
 ### CI
 1. [#91](https://github.com/influxdata/influxdb-client-ruby/pull/91): Switch to next-gen CircleCI's convenience images
+1. [#95](https://github.com/influxdata/influxdb-client-ruby/pull/95): Update `jruby` to `9.3.1.0-jdk11`
 
 ## 2.0.0 [2021-09-13]
 
