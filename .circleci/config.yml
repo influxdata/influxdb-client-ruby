@@ -238,10 +238,10 @@ workflows:
             - client-r2.4
       - tests-ruby:
           name: client-jruby
-          ruby-image: "jruby:9.2.17.0"
+          ruby-image: "jruby:9.3.1.0-jdk11"
       - tests-ruby:
           name: APIs-jruby
-          ruby-image: "jruby:9.2.17.0"
+          ruby-image: "jruby:9.3.1.0-jdk11"
           gemspec-file: influxdb-client-apis.gemspec
           path: ./apis
           requires:
