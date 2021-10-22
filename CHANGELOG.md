@@ -1,4 +1,4 @@
-## 2.1.0 [unreleased]
+## 2.1.0 [2021-10-22]
 
 ### Features
 1. [#93](https://github.com/influxdata/influxdb-client-ruby/pull/93): Add `PingApi` to check status of OSS and Cloud instance
