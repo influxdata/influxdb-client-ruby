@@ -58,7 +58,7 @@ class QueryApiTest < MiniTest::Test
                                    use_ssl: false)
 
     query = 'from(bucket: params.bucketParam) |> range(start:  duration(v: params.startParam)) |> last()'
-    params = Hash["bucketParam" => 'my-bucket', "startParam" => '1970-01-01T00:00:00.000000001Z']
+    params = Hash['bucketParam' => 'my-bucket', 'startParam' => '1970-01-01T00:00:00.000000001Z']
     result = client.create_query_api.query_raw(query: query, params: params)
 
     assert_equal result, SUCCESS_DATA
@@ -98,7 +98,7 @@ class QueryApiTest < MiniTest::Test
                                    use_ssl: false)
 
     query = 'from(bucket: params.bucketParam) |> range(start:  duration(v: params.startParam)) |> last()'
-    params = Hash["bucketParam" => 'my-bucket', "startParam" => '1970-01-01T00:00:00.000000001Z']
+    params = Hash['bucketParam' => 'my-bucket', 'startParam' => '1970-01-01T00:00:00.000000001Z']
 
     result = client.create_query_api.query(query: query, params: params)
 

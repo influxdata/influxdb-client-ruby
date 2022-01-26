@@ -4,9 +4,9 @@ require 'influxdb-client'
 # warning: Parameterized Queries are supported only in InfluxDB Cloud, currently there is no support in InfluxDB OSS.
 
 url = 'https://europe-west1-1.gcp.cloud2.influxdata.com'
-token = "my-token"
-bucket = "my-bucket"
-org = "my-org"
+token = 'my-token'
+bucket = 'my-bucket'
+org = 'my-org'
 
 client = InfluxDB2::Client.new(url,
                                token,
@@ -26,8 +26,8 @@ write_api.write(data: point)
 puts '*** Query Points ***'
 
 query_api = client.create_query_api
-query = "from(bucket: params.bucketParam) |> range(start: duration(v: params.startParam))"
-params = Hash["bucketParam" => 'my-bucket', "startParam" => '-1h']
+query = 'from(bucket: params.bucketParam) |> range(start: duration(v: params.startParam))'
+params = Hash['bucketParam' => 'my-bucket', 'startParam' => '-1h']
 result = query_api.query(query: query, params: params)
 result[0].records.each { |record| puts "#{record.time} #{record.measurement}: #{record.field} #{record.value}" }
 

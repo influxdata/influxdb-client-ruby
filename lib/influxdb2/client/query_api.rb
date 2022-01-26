@@ -37,7 +37,7 @@ module InfluxDB2
     # @param [Object] query the flux query to execute. The data could be represent by [String], [Query]
     # @param [String] org specifies the source organization
     # @return [String] result of query
-    def query_raw(query: nil, org: nil, dialect: DEFAULT_DIALECT,  params: nil)
+    def query_raw(query: nil, org: nil, dialect: DEFAULT_DIALECT, params: nil)
       _post_query(query: query, org: org, dialect: dialect, params: params).read_body
     end
 
@@ -55,7 +55,7 @@ module InfluxDB2
     # @param [Object] query the flux query to execute. The data could be represent by [String], [Query]
     # @param [String] org specifies the source organization
     # @return stream of Flux Records
-    def query_stream(query: nil, org: nil, dialect: DEFAULT_DIALECT,  params: nil)
+    def query_stream(query: nil, org: nil, dialect: DEFAULT_DIALECT, params: nil)
       response = _post_query(query: query, org: org, dialect: dialect, params: params)
 
       InfluxDB2::FluxCsvParser.new(response, stream: true)
@@ -80,7 +80,7 @@ module InfluxDB2
       if query.nil?
         nil
       elsif query.is_a?(Query)
-        if !params.nil? query.params = params
+        unless params.nil? query.params = params
         end
         query
       elsif query.is_a?(String)
