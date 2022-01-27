@@ -80,8 +80,7 @@ module InfluxDB2
       if query.nil?
         nil
       elsif query.is_a?(Query)
-        unless params.nil? query.params = params
-        end
+        query.params = params unless params.nil?
         query
       elsif query.is_a?(String)
         if query.empty?
