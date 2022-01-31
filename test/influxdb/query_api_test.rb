@@ -100,19 +100,20 @@ class QueryApiTest < MiniTest::Test
   end
 
   def test_parameterized_query
-    stub_request(:post, 'http://localhost:8086/api/v2/query?org=my-org')
-      .with(body:
-              '{"query":"from(bucket: params.bucketParam) |> range(start: duration(v: params.startParam)) |> last()",
-                "params":{"bucketParam":"my-bucket","startParam":"1970-01-01T00:00:00.000000001Z"},
-                "dialect":{"header":true,"delimiter":",","annotations":["datatype","group","default"],
-                 "commentPrefix":"#","dateTimeFormat":"RFC3339"}}',
-            headers:
-              '{"Accept" => "*/*",
-                "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
-                "Authorization" => "Token my-token",
-                "Content-Type" => "application/json",
-                "User-Agent" => "influxdb-client-ruby/2.2.0"}')
-      .to_return(body: SUCCESS_DATA)
+    stub_request(:post, "http://localhost:8086/api/v2/query?org=my-org").
+      with(
+        body: "{\"query\":\"from(bucket: params.bucketParam) |> range(start:  duration(v: params.startParam))
+          |> last()\",\"params\":{\"bucketParam\":\"my-bucket\",\"startParam\":\"1970-01-01T00:00:00.000000001Z\"},
+          \"dialect\":{\"header\":true,\"delimiter\":\",\",\"annotations\":[\"datatype\",\"group\",\"default\"],
+          \"commentPrefix\":\"#\",\"dateTimeFormat\":\"RFC3339\"}}",
+        headers: {
+          'Accept'=>'*/*',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Authorization'=>'Token my-token',
+          'Content-Type'=>'application/json',
+          'User-Agent'=>'influxdb-client-ruby/2.2.0'
+        }).
+      to_return(status: 200, body: "", headers: {})
 
     client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
