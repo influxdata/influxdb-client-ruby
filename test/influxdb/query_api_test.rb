@@ -51,11 +51,10 @@ class QueryApiTest < MiniTest::Test
 
   def test_parameterized_query_raw
     stub_request(:post, 'http://localhost:8086/api/v2/query?org=my-org')
-      .with(body:
-              "{'query':'from(bucket: params.bucketParam) |> range(start:  duration(v: params.startParam)) |> last()',
-                'params':{'bucketParam':'my-bucket','startParam':'1970-01-01T00:00:00.000000001Z'},
-                'dialect':{'header':true,'delimiter':',','annotations':['datatype','group','default'],
-                'commentPrefix':'#','dateTimeFormat':'RFC3339'}}")
+      .with(body: '{"query":"from(bucket: params.bucketParam) |> range(start: duration(v: params.startParam)) |> last()",
+        "params":{"bucketParam":"my-bucket","startParam":"1970-01-01T00:00:00.000000001Z"},
+        "dialect":{"header":true,"delimiter":",","annotations":["datatype","group","default"],
+        "commentPrefix":"#","dateTimeFormat":"RFC3339"}}')
       .to_return(body: SUCCESS_DATA)
     client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
                                    bucket: 'my-bucket',
@@ -95,11 +94,10 @@ class QueryApiTest < MiniTest::Test
 
   def test_parameterized_query
     stub_request(:post, 'http://localhost:8086/api/v2/query?org=my-org')
-      .with(body:
-              "{'query':'from(bucket: params.bucketParam) |> range(start:  duration(v: params.startParam)) |> last()',
-                'params':{'bucketParam':'my-bucket','startParam':'1970-01-01T00:00:00.000000001Z'},
-                'dialect':{'header':true,'delimiter':',','annotations':['datatype','group','default'],
-                'commentPrefix':'#','dateTimeFormat':'RFC3339'}}")
+      .with(body: '{"query":"from(bucket: params.bucketParam) |> range(start: duration(v: params.startParam)) |> last()",
+        "params":{"bucketParam":"my-bucket","startParam":"1970-01-01T00:00:00.000000001Z"},
+        "dialect":{"header":true,"delimiter":",","annotations":["datatype","group","default"],
+        "commentPrefix":"#","dateTimeFormat":"RFC3339"}}')
       .to_return(body: SUCCESS_DATA)
 
     client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
