@@ -36,16 +36,18 @@ module InfluxDB2
 
     # @param [Object] query the flux query to execute. The data could be represent by [String], [Query]
     # @param [String] org specifies the source organization
+    # @param [Enumerable] params represent key/value pairs parameters to be injected into query
     # @return [String] result of query
-    def query_raw(query: nil, org: nil, dialect: DEFAULT_DIALECT)
-      _post_query(query: query, org: org, dialect: dialect).read_body
+    def query_raw(query: nil, org: nil, dialect: DEFAULT_DIALECT, params: nil)
+      _post_query(query: query, org: org, dialect: dialect, params: params).read_body
     end
 
     # @param [Object] query the flux query to execute. The data could be represent by [String], [Query]
     # @param [String] org specifies the source organization
+    # @param [Enumerable] params represent key/value pairs parameters to be injected into query
     # @return [Array] list of FluxTables which are matched the query
-    def query(query: nil, org: nil, dialect: DEFAULT_DIALECT)
-      response = query_raw(query: query, org: org, dialect: dialect)
+    def query(query: nil, org: nil, dialect: DEFAULT_DIALECT, params: nil)
+      response = query_raw(query: query, org: org, dialect: dialect, params: params)
       parser = InfluxDB2::FluxCsvParser.new(response)
 
       parser.parse
@@ -54,20 +56,21 @@ module InfluxDB2
 
     # @param [Object] query the flux query to execute. The data could be represent by [String], [Query]
     # @param [String] org specifies the source organization
+    # @param [Enumerable] params represent key/value pairs parameters to be injected into query
     # @return stream of Flux Records
-    def query_stream(query: nil, org: nil, dialect: DEFAULT_DIALECT)
-      response = _post_query(query: query, org: org, dialect: dialect)
+    def query_stream(query: nil, org: nil, dialect: DEFAULT_DIALECT, params: nil)
+      response = _post_query(query: query, org: org, dialect: dialect, params: params)
 
       InfluxDB2::FluxCsvParser.new(response, stream: true)
     end
 
     private
 
-    def _post_query(query: nil, org: nil, dialect: DEFAULT_DIALECT)
+    def _post_query(query: nil, org: nil, dialect: DEFAULT_DIALECT, params: nil)
       org_param = org || @options[:org]
       _check('org', org_param)
 
-      payload = _generate_payload(query, dialect)
+      payload = _generate_payload(query: query, dialect: dialect, params: params)
       return nil if payload.nil?
 
       uri = _parse_uri('/api/v2/query')
@@ -76,16 +79,17 @@ module InfluxDB2
       _post_json(payload.to_body.to_json, uri)
     end
 
-    def _generate_payload(query, dialect)
+    def _generate_payload(query: nil, dialect: nil, params: nil)
       if query.nil?
         nil
       elsif query.is_a?(Query)
+        query.params = params unless params.nil?
         query
       elsif query.is_a?(String)
         if query.empty?
           nil
         else
-          Query.new(query: query, dialect: dialect, type: nil)
+          Query.new(query: query, dialect: dialect, type: nil, params: params)
         end
       end
     end

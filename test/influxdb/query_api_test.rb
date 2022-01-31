@@ -49,6 +49,27 @@ class QueryApiTest < MiniTest::Test
     assert_equal result, SUCCESS_DATA
   end
 
+  def test_parameterized_query_raw
+    body = '{"query":"from(bucket: params.bucketParam) |> range(start:  duration(v: params.startParam)) |> last()",' \
+'"params":{"bucketParam":"my-bucket","startParam":"1970-01-01T00:00:00.000000001Z"},' \
+'"dialect":{"header":true,"delimiter":",","annotations":["datatype","group","default"],' \
+'"commentPrefix":"#","dateTimeFormat":"RFC3339"}}'
+    stub_request(:post, 'http://localhost:8086/api/v2/query?org=my-org')
+      .with(body: body)
+      .to_return(body: SUCCESS_DATA)
+
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
+                                   bucket: 'my-bucket',
+                                   org: 'my-org',
+                                   use_ssl: false)
+
+    query = 'from(bucket: params.bucketParam) |> range(start:  duration(v: params.startParam)) |> last()'
+    params = Hash['bucketParam' => 'my-bucket', 'startParam' => '1970-01-01T00:00:00.000000001Z']
+    result = client.create_query_api.query_raw(query: query, params: params)
+
+    assert_equal result, SUCCESS_DATA
+  end
+
   def test_query
     stub_request(:post, 'http://localhost:8086/api/v2/query?org=my-org')
       .to_return(body: SUCCESS_DATA)
@@ -61,6 +82,36 @@ class QueryApiTest < MiniTest::Test
     bucket = 'my-bucket'
     result = client.create_query_api.query(query:
       'from(bucket:"' + bucket + '") |> range(start: 1970-01-01T00:00:00.000000001Z) |> last()')
+
+    assert_equal 1, result.length
+    assert_equal 4, result[0].records.length
+
+    record1 = result[0].records[0]
+
+    assert_equal Time.parse('1970-01-01T00:00:10Z').to_datetime.rfc3339(9), record1.time
+    assert_equal 'mem', record1.measurement
+    assert_equal 10, record1.value
+    assert_equal 'free', record1.field
+  end
+
+  def test_parameterized_query
+    body = '{"query":"from(bucket: params.bucketParam) |> range(start:  duration(v: params.startParam)) |> last()",' \
+'"params":{"bucketParam":"my-bucket","startParam":"1970-01-01T00:00:00.000000001Z"},' \
+'"dialect":{"header":true,"delimiter":",","annotations":["datatype","group","default"],' \
+'"commentPrefix":"#","dateTimeFormat":"RFC3339"}}'
+    stub_request(:post, 'http://localhost:8086/api/v2/query?org=my-org')
+      .with(body: body)
+      .to_return(body: SUCCESS_DATA)
+
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
+                                   bucket: 'my-bucket',
+                                   org: 'my-org',
+                                   use_ssl: false)
+
+    query = 'from(bucket: params.bucketParam) |> range(start:  duration(v: params.startParam)) |> last()'
+    params = Hash['bucketParam' => 'my-bucket', 'startParam' => '1970-01-01T00:00:00.000000001Z']
+
+    result = client.create_query_api.query(query: query, params: params)
 
     assert_equal 1, result.length
     assert_equal 4, result[0].records.length

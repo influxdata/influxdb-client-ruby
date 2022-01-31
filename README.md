@@ -152,6 +152,33 @@ query_api.query_stream(query: query).each do |record|
 end
 ```
 
+#### Parameterized queries
+InfluxDB Cloud supports [Parameterized Queries](https://docs.influxdata.com/influxdb/cloud/query-data/parameterized-queries/)
+that let you dynamically change values in a query using the InfluxDB API. Parameterized queries make Flux queries more
+reusable and can also be used to help prevent injection attacks.
+
+InfluxDB Cloud inserts the params object into the Flux query as a Flux record named `params`. Use dot or bracket
+notation to access parameters in the `params` record in your Flux query. Parameterized Flux queries support only `int`
+, `float`, and `string` data types. To convert the supported data types into
+other [Flux basic data types, use Flux type conversion functions](https://docs.influxdata.com/influxdb/cloud/query-data/parameterized-queries/#supported-parameter-data-types).
+
+Parameterized query example:
+> :warning: Parameterized Queries are supported only in InfluxDB Cloud, currently there is no support in InfluxDB OSS.
+
+```ruby
+client = InfluxDB2::Client.new('https://localhost:8086', 'my-token',
+                              bucket: 'my-bucket',
+                              org: 'my-org')
+
+query = 'from(bucket: params.bucketParam) |> range(start: duration(v: params.startParam))'
+params = { 'bucketParam' => 'my-bucket', 'startParam' => '-1h' }
+
+query_api = client.create_query_api
+result = query_api.query(query: query, params: params)
+
+result[0].records.each { |record| puts "#{record.time} #{record.measurement}: #{record.field} #{record.value}" }
+```
+
 ### Writing data
 The [WriteApi](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb2/client/write_api.rb) supports synchronous and batching writes into InfluxDB 2.0. In default api uses synchronous write. To enable batching you can use WriteOption.
 

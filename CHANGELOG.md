@@ -1,5 +1,11 @@
 ## 2.2.0 [unreleased]
 
+### Features
+1. [#96](https://github.com/influxdata/influxdb-client-ruby/pull/96): Add support for Parameterized Queries
+
+### Documentation
+1. [#96](https://github.com/influxdata/influxdb-client-ruby/pull/96): Add Parameterized Queries example
+
 ## 2.1.0 [2021-10-22]
 
 ### Features
