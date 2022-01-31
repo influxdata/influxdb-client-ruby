@@ -4,7 +4,7 @@
 
 
 ## Queries
-- [influxdb_18_example.rb](influxdb_18_example.rb) - How to write and query data
+- [influxdb_18_example.rb](influxdb_18_example.rb) - How to connect to InfluxDB 1.8
 - [parameterized_query.rb](parameterized_query.rb) - How to use parameterized Flux queries
 
 ## Management API

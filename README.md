@@ -171,7 +171,7 @@ client = InfluxDB2::Client.new('https://localhost:8086', 'my-token',
                               org: 'my-org')
 
 query = 'from(bucket: params.bucketParam) |> range(start: duration(v: params.startParam))'
-params = Hash['bucketParam' => 'my-bucket', 'startParam' => '-1d']
+params = { 'bucketParam' => 'my-bucket', 'startParam' => '-1h' }
 
 query_api = client.create_query_api
 result = query_api.query(query: query, params: params)

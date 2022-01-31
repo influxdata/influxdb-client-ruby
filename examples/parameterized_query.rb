@@ -27,7 +27,7 @@ puts '*** Query Points ***'
 
 query_api = client.create_query_api
 query = 'from(bucket: params.bucketParam) |> range(start: duration(v: params.startParam))'
-params = Hash['bucketParam' => 'my-bucket', 'startParam' => '-1h']
+params = { 'bucketParam' => 'my-bucket', 'startParam' => '-1h' }
 result = query_api.query(query: query, params: params)
 result[0].records.each { |record| puts "#{record.time} #{record.measurement}: #{record.field} #{record.value}" }
 

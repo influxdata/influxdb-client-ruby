@@ -36,6 +36,7 @@ module InfluxDB2
 
     # @param [Object] query the flux query to execute. The data could be represent by [String], [Query]
     # @param [String] org specifies the source organization
+    # @param [Enumerable] params represent key/value pairs parameters to be injected into query
     # @return [String] result of query
     def query_raw(query: nil, org: nil, dialect: DEFAULT_DIALECT, params: nil)
       _post_query(query: query, org: org, dialect: dialect, params: params).read_body
@@ -43,6 +44,7 @@ module InfluxDB2
 
     # @param [Object] query the flux query to execute. The data could be represent by [String], [Query]
     # @param [String] org specifies the source organization
+    # @param [Enumerable] params represent key/value pairs parameters to be injected into query
     # @return [Array] list of FluxTables which are matched the query
     def query(query: nil, org: nil, dialect: DEFAULT_DIALECT, params: nil)
       response = query_raw(query: query, org: org, dialect: dialect, params: params)
@@ -54,6 +56,7 @@ module InfluxDB2
 
     # @param [Object] query the flux query to execute. The data could be represent by [String], [Query]
     # @param [String] org specifies the source organization
+    # @param [Enumerable] params represent key/value pairs parameters to be injected into query
     # @return stream of Flux Records
     def query_stream(query: nil, org: nil, dialect: DEFAULT_DIALECT, params: nil)
       response = _post_query(query: query, org: org, dialect: dialect, params: params)
