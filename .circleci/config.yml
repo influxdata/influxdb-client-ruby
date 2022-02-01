@@ -139,10 +139,10 @@ jobs:
           keys:
             - &generate-sources-cache-key gs-cache-v1
       - run:
-          name: Install Maven
+          name: Install Maven & Git
           command: |
             sudo apt-get update
-            sudo apt-get install maven --yes
+            sudo apt-get install maven git --yes
       - run:
           name: Checks generating sources from swagger
           command: |

@@ -130,7 +130,7 @@ module InfluxDB2::API
     # @return true if the model is valid
     def valid?
       return false if @type.nil?
-      type_validator = EnumAttributeValidator.new('String', ["authorizations", "buckets", "dashboards", "orgs", "sources", "tasks", "telegrafs", "users", "variables", "scrapers", "secrets", "labels", "views", "documents", "notificationRules", "notificationEndpoints", "checks", "dbrp", "notebooks", "annotations", "remotes", "replications"])
+      type_validator = EnumAttributeValidator.new('String', ["authorizations", "buckets", "dashboards", "orgs", "sources", "tasks", "telegrafs", "users", "variables", "scrapers", "secrets", "labels", "views", "documents", "notificationRules", "notificationEndpoints", "checks", "dbrp", "notebooks", "annotations", "remotes", "replications", "flows", "functions"])
       return false unless type_validator.valid?(@type)
       true
     end
@@ -138,7 +138,7 @@ module InfluxDB2::API
     # Custom attribute writer method checking allowed values (enum).
     # @param [Object] type Object to be assigned
     def type=(type)
-      validator = EnumAttributeValidator.new('String', ["authorizations", "buckets", "dashboards", "orgs", "sources", "tasks", "telegrafs", "users", "variables", "scrapers", "secrets", "labels", "views", "documents", "notificationRules", "notificationEndpoints", "checks", "dbrp", "notebooks", "annotations", "remotes", "replications"])
+      validator = EnumAttributeValidator.new('String', ["authorizations", "buckets", "dashboards", "orgs", "sources", "tasks", "telegrafs", "users", "variables", "scrapers", "secrets", "labels", "views", "documents", "notificationRules", "notificationEndpoints", "checks", "dbrp", "notebooks", "annotations", "remotes", "replications", "flows", "functions"])
       unless validator.valid?(type)
         fail ArgumentError, "invalid value for \"type\", must be one of #{validator.allowable_values}."
       end
