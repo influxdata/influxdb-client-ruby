@@ -13,7 +13,7 @@
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <version>5.1.1</version>
                 <configuration>
-                    <inputSpec>https://raw.githubusercontent.com/influxdata/openapi/master/contracts/oss.yml</inputSpec>
+                    <inputSpec>./oss.yml</inputSpec>
                     <generatorName>ruby</generatorName>
                     <configOptions>
                       <moduleName>InfluxDB2</moduleName>

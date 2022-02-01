@@ -16,3 +16,6 @@ vendor
 docs
 /.openapi-generator/
 bin/generated/
+bin/cloud.yml
+bin/oss.yml
+bin/influxdb-clients-apigen/
