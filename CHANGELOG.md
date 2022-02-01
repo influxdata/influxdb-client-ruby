@@ -3,6 +3,9 @@
 ### Features
 1. [#96](https://github.com/influxdata/influxdb-client-ruby/pull/96): Add support for Parameterized Queries
 
+### Bug Fixes
+1. [#97](https://github.com/influxdata/influxdb-client-ruby/pull/97): Add missing PermissionResources from Cloud API definition
+
 ### Documentation
 1. [#96](https://github.com/influxdata/influxdb-client-ruby/pull/96): Add Parameterized Queries example
 
