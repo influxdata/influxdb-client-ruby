@@ -1,5 +1,8 @@
 ## 2.3.0 [unreleased]
 
+### Bug Fixes
+1. [#99](https://github.com/influxdata/influxdb-client-ruby/pull/99): Add missing `PatchBucketRequest` model
+
 ### CI
 1. [#100](https://github.com/influxdata/influxdb-client-ruby/pull/100): Use new Codecov uploader for reporting code coverage
 
