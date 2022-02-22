@@ -45,9 +45,9 @@ commands:
       - restore_cache:
           name: Restoring Gem Cache
           keys:
-            - &cache-key gem-cache-v2-{{ checksum "<< parameters.path >>/<< parameters.gemspec-file >>" }}-<< parameters.ruby-image >>
-            - gem-cache-v2-{{ checksum "<< parameters.path >>/<< parameters.gemspec-file >>" }}
-            - gem-cache-v2-
+            - &cache-key gem-cache-v3-{{ checksum "<< parameters.path >>/<< parameters.gemspec-file >>" }}-<< parameters.ruby-image >>
+            - gem-cache-v3-{{ checksum "<< parameters.path >>/<< parameters.gemspec-file >>" }}
+            - gem-cache-v3-
       - run:
           name: Install dependencies
           command: |
@@ -66,6 +66,17 @@ commands:
             cd << parameters.path >>
             export MINITEST_REPORTER=JUnitReporter
             bundle exec rake test
+      - run:
+          name: Collecting coverage reports
+          command: |
+            curl -Os https://uploader.codecov.io/latest/linux/codecov
+            curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM
+            curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM.sig
+            curl -s https://keybase.io/codecovsecurity/pgp_keys.asc | gpg --no-default-keyring --keyring trustedkeys.gpg --import
+            gpgv codecov.SHA256SUM.sig codecov.SHA256SUM
+            shasum -a 256 -c codecov.SHA256SUM
+            chmod +x ./codecov
+            ./codecov
       - save_cache:
           name: Saving Gem Cache
           key: *cache-key
