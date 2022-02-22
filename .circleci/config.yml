@@ -45,9 +45,9 @@ commands:
       - restore_cache:
           name: Restoring Gem Cache
           keys:
-            - &cache-key gem-cache-v2-{{ checksum "<< parameters.path >>/<< parameters.gemspec-file >>" }}-<< parameters.ruby-image >>
-            - gem-cache-v2-{{ checksum "<< parameters.path >>/<< parameters.gemspec-file >>" }}
-            - gem-cache-v2-
+            - &cache-key gem-cache-v3-{{ checksum "<< parameters.path >>/<< parameters.gemspec-file >>" }}-<< parameters.ruby-image >>
+            - gem-cache-v3-{{ checksum "<< parameters.path >>/<< parameters.gemspec-file >>" }}
+            - gem-cache-v3-
       - run:
           name: Install dependencies
           command: |
