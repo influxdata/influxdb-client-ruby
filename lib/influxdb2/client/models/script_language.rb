@@ -13,7 +13,7 @@ require 'date'
 require 'set'
 require 'time'
 
-module InfluxDB2::API
+module InfluxDB2
   class ScriptLanguage
     FLUX = "flux".freeze
 

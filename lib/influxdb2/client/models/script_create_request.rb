@@ -13,7 +13,7 @@ require 'date'
 require 'set'
 require 'time'
 
-module InfluxDB2::API
+module InfluxDB2
   class ScriptCreateRequest
     # The name of the script. The name must be unique within the organization.
     attr_accessor :name
@@ -205,7 +205,7 @@ module InfluxDB2::API
           end
         end
       else # model
-        InfluxDB2::API.const_get(type).build_from_hash(value)
+        InfluxDB2.const_get(type).build_from_hash(value)
       end
     end
 

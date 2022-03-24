@@ -105,6 +105,12 @@ sed -i 's/::API//' "${SCRIPT_PATH}"/../lib/influxdb2/client/models/health_check.
 sed -i 's/::API//' "${SCRIPT_PATH}"/../lib/influxdb2/client/models/dialect.rb
 sed -i 's/::API//' "${SCRIPT_PATH}"/../lib/influxdb2/client/models/query.rb
 sed -i 's/::API//' "${SCRIPT_PATH}"/../lib/influxdb2/client/models/delete_predicate_request.rb
+sed -i 's/::API//' "${SCRIPT_PATH}"/../lib/influxdb2/client/models/scripts.rb
+sed -i 's/::API//' "${SCRIPT_PATH}"/../lib/influxdb2/client/models/script.rb
+sed -i 's/::API//' "${SCRIPT_PATH}"/../lib/influxdb2/client/models/script_create_request.rb
+sed -i 's/::API//' "${SCRIPT_PATH}"/../lib/influxdb2/client/models/script_invocation_params.rb
+sed -i 's/::API//' "${SCRIPT_PATH}"/../lib/influxdb2/client/models/script_language.rb
+sed -i 's/::API//' "${SCRIPT_PATH}"/../lib/influxdb2/client/models/script_update_request.rb
 sed -i "s/'Object'/'Hash<String, Object>'/" "${SCRIPT_PATH}"/../lib/influxdb2/client/models/script_invocation_params.rb
 
 rm -rf "${SCRIPT_PATH}"/generated

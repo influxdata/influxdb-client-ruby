@@ -13,7 +13,7 @@ require 'date'
 require 'set'
 require 'time'
 
-module InfluxDB2::API
+module InfluxDB2
   class Scripts
     attr_accessor :scripts
 
@@ -158,7 +158,7 @@ module InfluxDB2::API
           end
         end
       else # model
-        InfluxDB2::API.const_get(type).build_from_hash(value)
+        InfluxDB2.const_get(type).build_from_hash(value)
       end
     end
 
