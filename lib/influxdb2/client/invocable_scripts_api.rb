@@ -38,7 +38,23 @@ module InfluxDB2
     def create_script(script_create_request)
       uri = _parse_uri('/api/v2/scripts')
 
-      response = _post_json(script_create_request.to_body.to_json, uri, headers: { 'Accept' => 'application/json' })
+      response = _request_json(script_create_request.to_body.to_json, uri, headers: { 'Accept' => 'application/json' })
+      body = response.body
+
+      data = JSON.parse("[#{body}]", symbolize_names: true)[0]
+      Script.build_from_hash(data)
+    end
+
+    # Update a script.
+    #
+    # @param script_id [String] The ID of the script to update. (required)
+    # @param update_request [ScriptUpdateRequest] Script updates to apply (required)
+    # @return [Script] The updated script.
+    def update_script(script_id, update_request)
+      uri = _parse_uri('/api/v2/scripts/' + URI.encode_www_form_component(script_id))
+
+      response = _request_json(update_request.to_body.to_json, uri, headers: { 'Accept' => 'application/json' },
+                                                                    request: Net::HTTP::Patch)
       body = response.body
 
       data = JSON.parse("[#{body}]", symbolize_names: true)[0]

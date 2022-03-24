@@ -37,4 +37,12 @@ create_request = InfluxDB2::ScriptCreateRequest.new(name: "my_script_#{unique_id
 created_script = scripts_api.create_script(create_request)
 puts created_script.inspect
 
+#
+# Update Invocable Script
+#
+puts "------- Update -------\n"
+update_request = InfluxDB2::ScriptCreateRequest.new(description: 'my updated description')
+created_script = scripts_api.update_script(created_script.id, update_request)
+puts created_script.inspect
+
 client.close!

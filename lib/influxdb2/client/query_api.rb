@@ -76,7 +76,7 @@ module InfluxDB2
       uri = _parse_uri('/api/v2/query')
       uri.query = URI.encode_www_form(org: org_param)
 
-      _post_json(payload.to_body.to_json, uri)
+      _request_json(payload.to_body.to_json, uri)
     end
 
     def _generate_payload(query: nil, dialect: nil, params: nil)

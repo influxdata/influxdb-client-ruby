@@ -63,19 +63,14 @@ module InfluxDB2
       URI.parse(File.join(@options[:url], api_path))
     end
 
-    def _post_json(payload, uri, headers: {})
+    def _request_json(payload, uri, headers: {}, request: Net::HTTP::Post)
       _check_arg_type(:headers, headers, Hash)
-      _post(payload, uri, headers: headers.merge(HEADER_CONTENT_TYPE => 'application/json'))
+      _request(payload, uri, headers: headers.merge(HEADER_CONTENT_TYPE => 'application/json'), request: request)
     end
 
     def _post_text(payload, uri, headers: {})
       _check_arg_type(:headers, headers, Hash)
-      _post(payload, uri, headers: headers.merge(HEADER_CONTENT_TYPE => 'text/plain'))
-    end
-
-    def _post(payload, uri, limit: @max_redirect_count, add_authorization: true, headers: {})
-      _request(payload, uri, limit: limit, add_authorization: add_authorization,
-                             headers: headers, request: Net::HTTP::Post)
+      _request(payload, uri, headers: headers.merge(HEADER_CONTENT_TYPE => 'text/plain'))
     end
 
     def _get(uri, limit: @max_redirect_count, add_authorization: true, headers: {})
@@ -111,8 +106,8 @@ module InfluxDB2
 
           redirect_forward_authorization ||= (uri_redirect.host == uri.host) && (uri_redirect.port == uri.port)
 
-          _post(payload, uri_redirect, limit: limit - 1, add_authorization: redirect_forward_authorization,
-                                       headers: headers)
+          _request(payload, uri_redirect, limit: limit - 1, add_authorization: redirect_forward_authorization,
+                                          headers: headers, request: request)
         else
           raise InfluxError.from_response(response)
         end
