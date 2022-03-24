@@ -28,10 +28,11 @@ scripts_api = client.create_invocable_scripts_api
 # Create Invocable Script
 #
 puts "------- Create -------\n"
+script_query = 'from(bucket: params.bucket_name) |> range(start: -30d) |> limit(n:2)'
 create_request = InfluxDB2::ScriptCreateRequest.new(name: "my_script_#{unique_id}",
                                                     description: 'my first try',
                                                     language: InfluxDB2::ScriptLanguage::FLUX,
-                                                    script: 'from(bucket: params.bucket_name) |> range(start: -30d) |> limit(n:2)')
+                                                    script: script_query)
 
 created_script = scripts_api.create_script(create_request)
 puts created_script.inspect
