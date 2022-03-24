@@ -39,10 +39,8 @@ module InfluxDB2
       uri = _parse_uri('/api/v2/scripts')
 
       response = _request_json(script_create_request.to_body.to_json, uri, headers: { 'Accept' => 'application/json' })
-      body = response.body
 
-      data = JSON.parse("[#{body}]", symbolize_names: true)[0]
-      Script.build_from_hash(data)
+      _to_object(response, Script)
     end
 
     # Update a script.
@@ -51,21 +49,18 @@ module InfluxDB2
     # @param update_request [ScriptUpdateRequest] Script updates to apply (required)
     # @return [Script] The updated script.
     def update_script(script_id, update_request)
-      uri = _parse_uri('/api/v2/scripts/' + URI.encode_www_form_component(script_id))
+      uri = _parse_uri_script(script_id)
 
       response = _request_json(update_request.to_body.to_json, uri, headers: { 'Accept' => 'application/json' },
                                                                     method: Net::HTTP::Patch)
-      body = response.body
-
-      data = JSON.parse("[#{body}]", symbolize_names: true)[0]
-      Script.build_from_hash(data)
+      _to_object(response, Script)
     end
 
     # Delete a script.
     #
     # @param script_id [String] The ID of the script to delete. (required)
     def delete_script(script_id)
-      uri = _parse_uri('/api/v2/scripts/' + URI.encode_www_form_component(script_id))
+      uri = _parse_uri_script(script_id)
 
       _request_json('', uri, headers: { 'Accept' => 'application/json' },
                              method: Net::HTTP::Delete)
@@ -86,10 +81,20 @@ module InfluxDB2
       response = _request_json('', uri, headers: { 'Accept' => 'application/json' },
                                         method: Net::HTTP::Get)
 
+      _to_object(response, Scripts).scripts
+    end
+
+    private
+
+    def _parse_uri_script(script_id)
+      _parse_uri('/api/v2/scripts/' + URI.encode_www_form_component(script_id))
+    end
+
+    def _to_object(response, model)
       body = response.body
 
       data = JSON.parse("[#{body}]", symbolize_names: true)[0]
-      Scripts.build_from_hash(data).scripts
+      model.build_from_hash(data)
     end
   end
 end
