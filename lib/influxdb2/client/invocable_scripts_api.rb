@@ -18,16 +18,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-require 'influxdb2/client/default_api'
-require 'influxdb2/client/version'
-require 'influxdb2/client/client'
-require 'influxdb2/client/influx_error'
-require 'influxdb2/client/write_api'
-require 'influxdb2/client/query_api'
-require 'influxdb2/client/delete_api'
-require 'influxdb2/client/health_api'
-require 'influxdb2/client/ping_api'
-require 'influxdb2/client/invocable_scripts_api'
-require 'influxdb2/client/point'
-require 'influxdb2/client/flux_table'
-require 'influxdb2/client/write_retry'
+module InfluxDB2
+  # Use API invokable scripts to create custom InfluxDB API endpoints that query, process, and shape data.
+  #
+  # API invokable scripts let you assign scripts to API endpoints and then execute them as standard REST operations
+  # in InfluxDB Cloud.
+  class InvocableScriptsApi < DefaultApi
+    # @param [Hash] options The options to be used by the client.
+    def initialize(options:)
+      super(options: options)
+    end
+  end
+end

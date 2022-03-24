@@ -18,16 +18,24 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-require 'influxdb2/client/default_api'
-require 'influxdb2/client/version'
-require 'influxdb2/client/client'
-require 'influxdb2/client/influx_error'
-require 'influxdb2/client/write_api'
-require 'influxdb2/client/query_api'
-require 'influxdb2/client/delete_api'
-require 'influxdb2/client/health_api'
-require 'influxdb2/client/ping_api'
-require 'influxdb2/client/invocable_scripts_api'
-require 'influxdb2/client/point'
-require 'influxdb2/client/flux_table'
-require 'influxdb2/client/write_retry'
+require 'test_helper'
+
+class InvocableScriptsApiTest < MiniTest::Test
+  def setup
+    WebMock.disable_net_connect!
+    @client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
+                                    bucket: 'my-bucket',
+                                    org: 'my-org',
+                                    precision: InfluxDB2::WritePrecision::NANOSECOND,
+                                    use_ssl: false)
+  end
+
+  def teardown
+    @client.close!
+  end
+
+  def test_create_instance
+    invocable_scripts_api = @client.create_invocable_scripts_api
+    refute_nil invocable_scripts_api
+  end
+end
