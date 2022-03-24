@@ -45,4 +45,11 @@ update_request = InfluxDB2::ScriptCreateRequest.new(description: 'my updated des
 created_script = scripts_api.update_script(created_script.id, update_request)
 puts created_script.inspect
 
+#
+# Delete previously created Script
+#
+puts "------- Delete -------\n"
+scripts_api.delete_script(created_script.id)
+puts " Successfully deleted script: '#{created_script.name}'"
+
 client.close!

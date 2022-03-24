@@ -60,5 +60,15 @@ module InfluxDB2
       data = JSON.parse("[#{body}]", symbolize_names: true)[0]
       Script.build_from_hash(data)
     end
+
+    # Delete a script.
+    #
+    # @param script_id [String] The ID of the script to delete. (required)
+    def delete_script(script_id)
+      uri = _parse_uri('/api/v2/scripts/' + URI.encode_www_form_component(script_id))
+
+      _request_json('', uri, headers: { 'Accept' => 'application/json' },
+                             method: Net::HTTP::Delete)
+    end
   end
 end
