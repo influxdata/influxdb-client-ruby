@@ -18,6 +18,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+require_relative 'models/script'
+
 module InfluxDB2
   # Use API invokable scripts to create custom InfluxDB API endpoints that query, process, and shape data.
   #
@@ -27,6 +29,20 @@ module InfluxDB2
     # @param [Hash] options The options to be used by the client.
     def initialize(options:)
       super(options: options)
+    end
+
+    # Create a script.
+    #
+    # @param script_create_request [ScriptCreateRequest] The script to create.
+    # @return [Script] The created script.
+    def create_script(script_create_request)
+      uri = _parse_uri('/api/v2/scripts')
+
+      response = _post_json(script_create_request.to_body.to_json, uri, headers: { 'Accept' => 'application/json' })
+      body = response.body
+
+      data = JSON.parse("[#{body}]", symbolize_names: true)[0]
+      Script.build_from_hash(data)
     end
   end
 end
