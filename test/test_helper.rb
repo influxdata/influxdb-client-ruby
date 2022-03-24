@@ -18,11 +18,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-require 'simplecov'
-SimpleCov.start do
-  add_filter 'lib/influxdb2/client/models/'
-  add_filter 'test/influxdb'
-end
+# require 'simplecov'
+# SimpleCov.start do
+#   add_filter 'lib/influxdb2/client/models/'
+#   add_filter 'test/influxdb'
+# end
 
 if ENV['CI'] == 'true'
   require 'simplecov-cobertura'

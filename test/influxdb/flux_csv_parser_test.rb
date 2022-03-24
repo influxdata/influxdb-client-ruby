@@ -489,4 +489,21 @@ class FluxCsvParserErrorTest < MiniTest::Test
     assert_equal tables[0].records[10].values['le'], Float::INFINITY
     assert_equal tables[0].records[11].values['le'], -Float::INFINITY
   end
+
+  def test_parse_without_datatype
+    data = ',result,table,_start,_stop,_field,_measurement,host,region,_value2,value1,value_str
+,,0,1677-09-21T00:12:43.145224192Z,2018-07-16T11:21:02.547596934Z,free,mem,A,west,121,11,test
+,,1,1677-09-21T00:12:43.145224192Z,2018-07-16T11:21:02.547596934Z,free,mem,A,west,121,11,test'
+
+    tables = InfluxDB2::FluxCsvParser.new(data, stream: false, response_mode: InfluxDB2::FluxResponseMode::ONLY_NAMES)
+                                     .parse
+                                     .tables
+    assert_equal 2, tables.size
+    assert_equal 11, tables[0].columns.size
+    assert_equal 1, tables[0].records.size
+    assert_equal 11, tables[0].records[0].values.size
+    assert_equal '0', tables[0].records[0].values['table']
+    assert_equal '11', tables[0].records[0].values['value1']
+    assert_equal 'west', tables[0].records[0].values['region']
+  end
 end
