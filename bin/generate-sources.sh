@@ -88,12 +88,12 @@ cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/label_mapping.rb "${SCRIP
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/label_response.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/label_update.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/labels_response.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
-cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/scripts.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
-cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/script.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
-cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/script_create_request.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
-cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/script_invocation_params.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
-cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/script_language.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
-cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/script_update_request.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
+cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/scripts.rb "${SCRIPT_PATH}"/../lib/influxdb2/client/models/
+cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/script.rb "${SCRIPT_PATH}"/../lib/influxdb2/client/models/
+cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/script_create_request.rb "${SCRIPT_PATH}"/../lib/influxdb2/client/models/
+cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/script_invocation_params.rb "${SCRIPT_PATH}"/../lib/influxdb2/client/models/
+cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/script_language.rb "${SCRIPT_PATH}"/../lib/influxdb2/client/models/
+cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/script_update_request.rb "${SCRIPT_PATH}"/../lib/influxdb2/client/models/
 
 # copy supporting files
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/api_client.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/
@@ -105,7 +105,7 @@ sed -i 's/::API//' "${SCRIPT_PATH}"/../lib/influxdb2/client/models/health_check.
 sed -i 's/::API//' "${SCRIPT_PATH}"/../lib/influxdb2/client/models/dialect.rb
 sed -i 's/::API//' "${SCRIPT_PATH}"/../lib/influxdb2/client/models/query.rb
 sed -i 's/::API//' "${SCRIPT_PATH}"/../lib/influxdb2/client/models/delete_predicate_request.rb
-sed -i "s/'Object'/'Hash<String, Object>'/" "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/script_invocation_params.rb
+sed -i "s/'Object'/'Hash<String, Object>'/" "${SCRIPT_PATH}"/../lib/influxdb2/client/models/script_invocation_params.rb
 
 rm -rf "${SCRIPT_PATH}"/generated
 rm -rf "${SCRIPT_PATH}/influxdb-clients-apigen"
