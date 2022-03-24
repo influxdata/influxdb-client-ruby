@@ -54,7 +54,7 @@ module InfluxDB2
       uri = _parse_uri('/api/v2/scripts/' + URI.encode_www_form_component(script_id))
 
       response = _request_json(update_request.to_body.to_json, uri, headers: { 'Accept' => 'application/json' },
-                                                                    request: Net::HTTP::Patch)
+                                                                    method: Net::HTTP::Patch)
       body = response.body
 
       data = JSON.parse("[#{body}]", symbolize_names: true)[0]
