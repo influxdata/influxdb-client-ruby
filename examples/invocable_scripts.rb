@@ -46,6 +46,16 @@ created_script = scripts_api.update_script(created_script.id, update_request)
 puts created_script.inspect
 
 #
+# List scripts
+#
+puts "\n------- List -------\n"
+scripts = scripts_api.find_scripts
+scripts.each do |script|
+  puts " ---\n ID: #{script.id}\n Name: #{script.name}\n Description: #{script.description}"
+end
+puts '---'
+
+#
 # Delete previously created Script
 #
 puts "------- Delete -------\n"

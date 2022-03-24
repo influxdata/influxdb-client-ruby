@@ -70,5 +70,26 @@ module InfluxDB2
       _request_json('', uri, headers: { 'Accept' => 'application/json' },
                              method: Net::HTTP::Delete)
     end
+
+    # List scripts.
+    #
+    # @param [Hash] opts the optional parameters
+    # @option opts [Integer] :limit The number of scripts to return.
+    # @option opts [Integer] :offset The offset for pagination.
+    # @return [Script]
+    def find_scripts(opts = {})
+      limit = !opts[:limit].nil? ? opts[:limit] : []
+      offset = !opts[:offset].nil? ? opts[:offset] : []
+      uri = _parse_uri('/api/v2/scripts')
+      uri.query = URI.encode_www_form(limit: limit, offset: offset)
+
+      response = _request_json('', uri, headers: { 'Accept' => 'application/json' },
+                                        method: Net::HTTP::Get)
+
+      body = response.body
+
+      data = JSON.parse("[#{body}]", symbolize_names: true)[0]
+      Scripts.build_from_hash(data).scripts
+    end
   end
 end
