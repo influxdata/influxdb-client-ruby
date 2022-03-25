@@ -35,10 +35,10 @@ docker network rm influx_network || true
 docker network create -d bridge influx_network --subnet 192.168.0.0/24 --gateway 192.168.0.1
 
 #
-# InfluxDB 2.0
+# InfluxDB 2.x
 #
 echo
-echo "Restarting InfluxDB 2.0 [${INFLUXDB_V2_IMAGE}] ... "
+echo "Restarting InfluxDB 2.x [${INFLUXDB_V2_IMAGE}] ... "
 echo
 
 docker pull "${INFLUXDB_V2_IMAGE}" || true

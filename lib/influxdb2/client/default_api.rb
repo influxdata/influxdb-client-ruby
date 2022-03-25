@@ -63,33 +63,28 @@ module InfluxDB2
       URI.parse(File.join(@options[:url], api_path))
     end
 
-    def _post_json(payload, uri, headers: {})
+    def _request_json(payload, uri, headers: {}, method: Net::HTTP::Post)
       _check_arg_type(:headers, headers, Hash)
-      _post(payload, uri, headers: headers.merge(HEADER_CONTENT_TYPE => 'application/json'))
+      _request(payload, uri, headers: headers.merge(HEADER_CONTENT_TYPE => 'application/json'), method: method)
     end
 
     def _post_text(payload, uri, headers: {})
       _check_arg_type(:headers, headers, Hash)
-      _post(payload, uri, headers: headers.merge(HEADER_CONTENT_TYPE => 'text/plain'))
-    end
-
-    def _post(payload, uri, limit: @max_redirect_count, add_authorization: true, headers: {})
-      _request(payload, uri, limit: limit, add_authorization: add_authorization,
-                             headers: headers, request: Net::HTTP::Post)
+      _request(payload, uri, headers: headers.merge(HEADER_CONTENT_TYPE => 'text/plain'))
     end
 
     def _get(uri, limit: @max_redirect_count, add_authorization: true, headers: {})
       _request(nil, uri, limit: limit, add_authorization: add_authorization,
-                         headers: headers.merge('Accept' => 'application/json'), request: Net::HTTP::Get)
+                         headers: headers.merge('Accept' => 'application/json'), method: Net::HTTP::Get)
     end
 
     def _request(payload, uri, limit: @max_redirect_count, add_authorization: true, headers: {},
-                 request: Net::HTTP::Post)
+                 method: Net::HTTP::Post)
       raise InfluxError.from_message("Too many HTTP redirects. Exceeded limit: #{@max_redirect_count}") if limit.zero?
 
       http = _prepare_http_client(uri)
 
-      request = request.new(uri.request_uri)
+      request = method.new(uri.request_uri)
       request['Authorization'] = "Token #{@options[:token]}" if add_authorization
       request['User-Agent'] = "influxdb-client-ruby/#{InfluxDB2::VERSION}"
       headers.each { |k, v| request[k] = v }
@@ -111,8 +106,8 @@ module InfluxDB2
 
           redirect_forward_authorization ||= (uri_redirect.host == uri.host) && (uri_redirect.port == uri.port)
 
-          _post(payload, uri_redirect, limit: limit - 1, add_authorization: redirect_forward_authorization,
-                                       headers: headers)
+          _request(payload, uri_redirect, limit: limit - 1, add_authorization: redirect_forward_authorization,
+                                          headers: headers, method: method)
         else
           raise InfluxError.from_response(response)
         end

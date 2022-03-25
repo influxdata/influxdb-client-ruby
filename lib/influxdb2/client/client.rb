@@ -85,6 +85,13 @@ module InfluxDB2
       DeleteApi.new(options: @options)
     end
 
+    # Create an InvocableScripts API instance.
+    #
+    # @return [InvocableScriptsApi] New instance of InvocableScriptsApi.
+    def create_invocable_scripts_api
+      InvocableScriptsApi.new(options: @options)
+    end
+
     # Get the health of an instance.
     #
     # @deprecated Use `ping` instead

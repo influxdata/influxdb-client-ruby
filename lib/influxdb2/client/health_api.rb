@@ -20,7 +20,7 @@
 require_relative 'models/health_check'
 
 module InfluxDB2
-  # The client of the InfluxDB 2.0 that implement Health HTTP API endpoint.
+  # The client of the InfluxDB 2.x that implement Health HTTP API endpoint.
   #
   # @deprecated Use `PingApi` instead
   class HealthApi < DefaultApi

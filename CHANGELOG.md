@@ -1,5 +1,8 @@
 ## 2.4.0 [unreleased]
 
+### Features
+1. [#101](https://github.com/influxdata/influxdb-client-ruby/pull/101): Add `InvocableScriptsApi` to create, update, list, delete and invoke scripts by seamless way
+
 ## 2.3.0 [2022-03-18]
 
 ### Bug Fixes

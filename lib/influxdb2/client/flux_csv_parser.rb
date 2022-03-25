@@ -41,11 +41,23 @@ module InfluxDB2
     end
   end
 
+  # The configuration for expected amount of metadata response from InfluxDB.
+  #
+  class FluxResponseMode
+    # full information about types, default values and groups
+    FULL = 'full'.freeze
+    # useful for Invocable scripts
+    ONLY_NAMES = 'only_names'.freeze
+  end
+
   # This class us used to construct FluxResult from CSV.
   #
   class FluxCsvParser
     include Enumerable
-    def initialize(response, stream: false)
+    # @param [String|HTTPResponse] data to be parse
+    # @param [Boolean] stream set to true if the response is stream otherwise (`string`) set `false`
+    # @param [str] response_mode set the amount of metadata expected in response
+    def initialize(response, stream: false, response_mode: InfluxDB2::FluxResponseMode::FULL)
       @response = response
       @stream = stream
       @tables = {}
@@ -58,6 +70,7 @@ module InfluxDB2
       @parsing_state_error = false
 
       @closed = false
+      @response_mode = response_mode
     end
 
     attr_reader :tables, :closed
@@ -112,7 +125,9 @@ module InfluxDB2
       token = csv[0]
 
       # start new table
-      if (ANNOTATIONS.include? token) && !@start_new_table
+      if ((ANNOTATIONS.include? token) && !@start_new_table) ||
+         (@response_mode == InfluxDB2::FluxResponseMode::ONLY_NAMES && @table.nil?)
+
         # Return already parsed DataFrame
         @start_new_table = true
         @table = InfluxDB2::FluxTable.new
@@ -177,6 +192,10 @@ module InfluxDB2
     def _parse_values(csv)
       # parse column names
       if @start_new_table
+        if @response_mode == InfluxDB2::FluxResponseMode::ONLY_NAMES && @table.columns.empty?
+          _add_data_types(@table, csv.map { |_| 'string' })
+          @groups = csv.map { |_| 'false' }
+        end
         _add_groups(@table, @groups)
         _add_column_names_and_tags(@table, csv)
         @start_new_table = false
