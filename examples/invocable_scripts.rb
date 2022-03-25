@@ -46,6 +46,31 @@ created_script = scripts_api.update_script(created_script.id, update_request)
 puts created_script.inspect
 
 #
+# Invoke a script
+#
+
+# FluxTables
+puts "\n------- Invoke to FluxTables -------\n"
+tables = scripts_api.invoke_script(created_script.id, params: { 'bucket_name' => bucket })
+tables.each do |_, table|
+  table.records.each do |record|
+    puts "#{record.time} #{record.values['location']}: #{record.field} #{record.value}"
+  end
+end
+
+# Stream of FluxRecords
+puts "\n------- Invoke to Stream of FluxRecords -------\n"
+records = scripts_api.invoke_script_stream(created_script.id, params: { 'bucket_name' => bucket })
+records.each do |record|
+  puts "#{record.time} #{record.values['location']}: #{record.field} #{record.value}"
+end
+
+# RAW
+puts "\n------- Invoke to Raw-------\n"
+raw = scripts_api.invoke_script_raw(created_script.id, params: { 'bucket_name' => bucket })
+puts "RAW output:\n #{raw}"
+
+#
 # List scripts
 #
 puts "\n------- List -------\n"

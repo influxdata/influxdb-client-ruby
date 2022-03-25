@@ -56,7 +56,7 @@ module InfluxDB2
     include Enumerable
     # @param [String|HTTPResponse] data to be parse
     # @param [Boolean] stream set to true if the response is stream otherwise (`string`) set `false`
-    # @param [FluxResponseMode] response_mode set the amount of metadata expected in response
+    # @param [str] response_mode set the amount of metadata expected in response
     def initialize(response, stream: false, response_mode: InfluxDB2::FluxResponseMode::FULL)
       @response = response
       @stream = stream

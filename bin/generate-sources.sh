@@ -42,7 +42,6 @@ cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/api/buckets_api.rb "${SCRIPT_PAT
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/api/labels_api.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/api/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/api/organizations_api.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/api/
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/api/users_api.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/api/
-cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/api/invocable_scripts_api.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/api/
 
 ## copy models
 cp -r "${SCRIPT_PATH}"/generated/lib/influx_db2/models/add_resource_member_request_body.rb "${SCRIPT_PATH}"/../apis/lib/influxdb2/apis/generated/models/
