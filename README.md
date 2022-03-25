@@ -8,7 +8,7 @@
 [![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/influxdata/influxdb-client-ruby.svg)](https://github.com/influxdata/influxdb-client-ruby/pulls)
 [![Slack Status](https://img.shields.io/badge/slack-join_chat-white.svg?logo=slack&style=social)](https://www.influxdata.com/slack)
 
-This repository contains the reference Ruby client for the InfluxDB 2.0.
+This repository contains the reference Ruby client for the InfluxDB 2.x.
 
 #### Note: Use this client library with InfluxDB 2.x and InfluxDB 1.8+ ([see details](#influxdb-18-api-compatibility)). For connecting to InfluxDB 1.7 or earlier instances, use the [influxdb-ruby](https://github.com/influxdata/influxdb-ruby) client library.
 
@@ -31,14 +31,14 @@ This repository contains the reference Ruby client for the InfluxDB 2.0.
 
 This section contains links to the client library documentation.
 
-* [Product documentation](https://docs.influxdata.com/influxdb/v2.0/api-guide/client-libraries/), [Getting Started](#installation)
+* [Product documentation](https://docs.influxdata.com/influxdb/latest/api-guide/client-libraries/), [Getting Started](#installation)
 * [Examples](examples)
 * [API Reference](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2.html)
 * [Changelog](CHANGELOG.md)
 
 ## Features
 
-InfluxDB 2.0 client consists of two packages
+InfluxDB 2.x client consists of two packages
 
 - `influxdb-client`
     - Querying data using the Flux language
@@ -46,7 +46,7 @@ InfluxDB 2.0 client consists of two packages
         - batched in chunks on background
         - automatic retries on write failures
 - `influxdb-client-apis`
-    - provides all other InfluxDB 2.0 APIs for managing
+    - provides all other InfluxDB 2.x APIs for managing
         - buckets
         - labels
         - authorizations
@@ -180,7 +180,7 @@ result[0].records.each { |record| puts "#{record.time} #{record.measurement}: #{
 ```
 
 ### Writing data
-The [WriteApi](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb2/client/write_api.rb) supports synchronous and batching writes into InfluxDB 2.0. In default api uses synchronous write. To enable batching you can use WriteOption.
+The [WriteApi](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb2/client/write_api.rb) supports synchronous and batching writes into InfluxDB 2.x. In default api uses synchronous write. To enable batching you can use WriteOption.
 
 ```ruby
 client = InfluxDB2::Client.new('https://localhost:8086', 'my-token',
@@ -324,7 +324,7 @@ write_api.write(data: InfluxDB2::Point.new(name: 'h2o')
 
 ### Delete data
 
-The [DeleteApi](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb2/client/delete_api.rb) supports deletes [points](https://v2.docs.influxdata.com/v2.0/reference/glossary/#point) from an InfluxDB bucket.
+The [DeleteApi](https://github.com/influxdata/influxdb-client-ruby/blob/master/lib/influxdb2/client/delete_api.rb) supports deletes [points](https://docs.influxdata.com/influxdb/latest/reference/key-concepts/data-elements/#point) from an InfluxDB bucket.
 
 ```ruby
 client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
@@ -347,16 +347,16 @@ The time range could be specified as:
 
 The client supports following management API:
 
-|  | API docs |
-| --- | --- |
-| [**AuthorizationsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/AuthorizationsApi.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Authorizations |
-| [**BucketsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/BucketsApi.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Buckets |
-| [**LabelsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/LabelsApi.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Labels |
-| [**OrganizationsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/OrganizationsApi.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Organizations |
-| [**UsersApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/UsersApi.html) | https://docs.influxdata.com/influxdb/v2.0/api/#tag/Users |
+|  | API docs                                                            |
+| --- |---------------------------------------------------------------------|
+| [**AuthorizationsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/AuthorizationsApi.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Authorizations |
+| [**BucketsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/BucketsApi.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Buckets          |
+| [**LabelsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/LabelsApi.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Labels           |
+| [**OrganizationsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/OrganizationsApi.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Organizations    |
+| [**UsersApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/UsersApi.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Users            |
 
 
-The following example demonstrates how to use a InfluxDB 2.0 Management API to create new bucket. For further information see docs and [examples](/examples).
+The following example demonstrates how to use a InfluxDB 2.x Management API to create new bucket. For further information see docs and [examples](/examples).
 
 ```ruby
 #
@@ -427,7 +427,7 @@ client.close!
 
 ### Check the server status 
 
-Server availability can be checked using the `client.ping` method. That is equivalent of the [influx ping](https://v2.docs.influxdata.com/v2.0/reference/cli/influx/ping/).
+Server availability can be checked using the `client.ping` method. That is equivalent of the [influx ping](https://docs.influxdata.com/influxdb/latest/reference/cli/influx/ping/).
 
 ### Proxy configuration
 
@@ -445,15 +445,15 @@ To overcome this limitation you have to set the client property `redirect_forwar
 
 ### InfluxDB 1.8 API compatibility
 
-[InfluxDB 1.8.0 introduced forward compatibility APIs](https://docs.influxdata.com/influxdb/v1.8/tools/api/#influxdb-2-0-api-compatibility-endpoints) for InfluxDB 2.0. This allow you to easily move from InfluxDB 1.x to InfluxDB 2.0 Cloud or open source.
+[InfluxDB 1.8.0 introduced forward compatibility APIs](https://docs.influxdata.com/influxdb/v1.8/tools/api/#influxdb-2-0-api-compatibility-endpoints) for InfluxDB 2.x. This allow you to easily move from InfluxDB 1.x to InfluxDB 2.x Cloud or open source.
 
 The following forward compatible APIs are available:
 
-| API | Endpoint | Description |
-|:----------|:----------|:----------|
-| [query_api.rb](lib/influxdb2/client/query_api.rb) | [/api/v2/query](https://docs.influxdata.com/influxdb/latest/tools/api/#api-v2-query-http-endpoint) | Query data in InfluxDB 1.8.0+ using the InfluxDB 2.0 API and [Flux](https://docs.influxdata.com/flux/latest/) _(endpoint should be enabled by [`flux-enabled` option](https://docs.influxdata.com/influxdb/latest/administration/config/#flux-enabled-false))_  |
-| [write_api.rb](lib/influxdb2/client/write_api.rb) | [/api/v2/write](https://docs.influxdata.com/influxdb/latest/tools/api/#api-v2-write-http-endpoint) | Write data to InfluxDB 1.8.0+ using the InfluxDB 2.0 API |
-| [health_api.rb](lib/influxdb2/client/health_api.rb) | [/health](https://docs.influxdata.com/influxdb/latest/tools/api/#health-http-endpoint) | Check the health of your InfluxDB instance |    
+| API | Endpoint | Description                                                                                                                                                                                                                                                    |
+|:----------|:----------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [query_api.rb](lib/influxdb2/client/query_api.rb) | [/api/v2/query](https://docs.influxdata.com/influxdb/latest/tools/api/#api-v2-query-http-endpoint) | Query data in InfluxDB 1.8.0+ using the InfluxDB 2.x API and [Flux](https://docs.influxdata.com/flux/latest/) _(endpoint should be enabled by [`flux-enabled` option](https://docs.influxdata.com/influxdb/latest/administration/config/#flux-enabled-false))_ |
+| [write_api.rb](lib/influxdb2/client/write_api.rb) | [/api/v2/write](https://docs.influxdata.com/influxdb/latest/tools/api/#api-v2-write-http-endpoint) | Write data to InfluxDB 1.8.0+ using the InfluxDB 2.x API                                                                                                                                                                                                       |
+| [health_api.rb](lib/influxdb2/client/health_api.rb) | [/health](https://docs.influxdata.com/influxdb/latest/tools/api/#health-http-endpoint) | Check the health of your InfluxDB instance                                                                                                                                                                                                                     |    
 
 For detail info see [InfluxDB 1.8 example](examples/influxdb_18_example.rb).
 

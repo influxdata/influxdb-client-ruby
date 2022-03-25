@@ -20,7 +20,7 @@
 require_relative 'models/health_check'
 
 module InfluxDB2
-  # The client of the InfluxDB 2.0 that implement Ping HTTP API endpoint.
+  # The client of the InfluxDB 2.x that implement Ping HTTP API endpoint.
   #
   class PingApi < DefaultApi
     # @param [Hash] options The options to be used by the client.

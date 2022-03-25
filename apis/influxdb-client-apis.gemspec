@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Jakub Bednar']
   spec.email         = ['jakub.bednar@gmail.com']
 
-  spec.summary       = 'Contains client APIs for InfluxDB v2.0.'
+  spec.summary       = 'Contains client APIs for InfluxDB 2.'
   spec.description   = 'This is the official client APIs for for InfluxDB 2.'
   spec.homepage      = 'https://github.com/influxdata/influxdb-client-ruby'
   spec.license       = 'MIT'

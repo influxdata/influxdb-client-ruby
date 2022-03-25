@@ -23,7 +23,7 @@ require_relative 'flux_csv_parser'
 require 'json'
 
 module InfluxDB2
-  # The client of the InfluxDB 2.0 that implement Query HTTP API endpoint.
+  # The client of the InfluxDB 2.x that implement Query HTTP API endpoint.
   #
   class QueryApi < DefaultApi
     DEFAULT_DIALECT = InfluxDB2::Dialect.new(header: true, delimiter: ',', comment_prefix: '#',
