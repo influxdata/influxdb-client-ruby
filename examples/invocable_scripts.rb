@@ -41,7 +41,7 @@ puts created_script.inspect
 # Update Invocable Script
 #
 puts "------- Update -------\n"
-update_request = InfluxDB2::ScriptCreateRequest.new(description: 'my updated description')
+update_request = InfluxDB2::ScriptUpdateRequest.new(description: 'my updated description')
 created_script = scripts_api.update_script(created_script.id, update_request)
 puts created_script.inspect
 
