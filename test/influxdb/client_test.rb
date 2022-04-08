@@ -95,7 +95,7 @@ class ClientTest < Minitest::Test
 
     ping = client.ping
     assert_equal 'ready for queries and writes', ping.message
-    assert_equal 'OSS, oss2', ping.build
+    assert_match 'OSS', ping.build
     assert_equal 'ok', ping.status
     refute_empty ping.version
   end
