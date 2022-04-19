@@ -64,13 +64,13 @@ The client can be installed manually or with bundler.
 To install the client gem manually:
 
 ```
-gem install influxdb-client -v 2.3.0
+gem install influxdb-client -v 2.4.0
 ```
 
 For management API:
 
 ```
-gem install influxdb-client-apis -v 2.3.0
+gem install influxdb-client-apis -v 2.4.0
 ```
 
 ## Usage
