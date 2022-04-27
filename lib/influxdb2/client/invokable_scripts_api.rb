@@ -25,7 +25,7 @@ module InfluxDB2
   #
   # API invokable scripts let you assign scripts to API endpoints and then execute them as standard REST operations
   # in InfluxDB Cloud.
-  class InvocableScriptsApi < DefaultApi
+  class InvokableScriptsApi < DefaultApi
     # @param [Hash] options The options to be used by the client.
     def initialize(options:)
       super(options: options)

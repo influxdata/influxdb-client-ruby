@@ -53,7 +53,9 @@ module InfluxDB2
       }
 
       if attributes.key?(:'params')
-        self.params = attributes[:'params']
+        if (value = attributes[:'params']).is_a?(Hash)
+          self.params = value
+        end
       end
     end
 

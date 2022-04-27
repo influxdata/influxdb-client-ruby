@@ -1,7 +1,7 @@
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 require 'influxdb-client'
 
-# warning: Invocable Scripts are supported only in InfluxDB Cloud, currently there is no support in InfluxDB OSS.
+# warning: Invokable Scripts are supported only in InfluxDB Cloud, currently there is no support in InfluxDB OSS.
 
 url = 'https://us-west-2-1.aws.cloud2.influxdata.com'
 token = '...'
@@ -22,10 +22,10 @@ point2 = InfluxDB2::Point.new(name: 'my_measurement')
                          .add_field('temperature', 24.3)
 client.create_write_api.write(data: [point1, point2])
 
-scripts_api = client.create_invocable_scripts_api
+scripts_api = client.create_invokable_scripts_api
 
 #
-# Create Invocable Script
+# Create Invokable Script
 #
 puts "------- Create -------\n"
 script_query = 'from(bucket: params.bucket_name) |> range(start: -30d) |> limit(n:2)'
@@ -38,7 +38,7 @@ created_script = scripts_api.create_script(create_request)
 puts created_script.inspect
 
 #
-# Update Invocable Script
+# Update Invokable Script
 #
 puts "------- Update -------\n"
 update_request = InfluxDB2::ScriptUpdateRequest.new(description: 'my updated description')

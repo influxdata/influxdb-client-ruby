@@ -46,7 +46,7 @@ module InfluxDB2
   class FluxResponseMode
     # full information about types, default values and groups
     FULL = 'full'.freeze
-    # useful for Invocable scripts
+    # useful for Invokable scripts
     ONLY_NAMES = 'only_names'.freeze
   end
 
