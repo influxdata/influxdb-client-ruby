@@ -1,5 +1,8 @@
 ## 2.5.0 [unreleased]
 
+### Breaking Changes
+1. [#103](https://github.com/influxdata/influxdb-client-ruby/pull/103): Rename `InvocableScripts` to `InvokableScripts`
+
 ## 2.4.0 [2022-04-19]
 
 ### Features
