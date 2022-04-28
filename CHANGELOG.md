@@ -1,9 +1,12 @@
 ## 2.5.0 [unreleased]
 
+### Breaking Changes
+1. [#103](https://github.com/influxdata/influxdb-client-ruby/pull/103): Rename `InvocableScripts` to `InvokableScripts`
+
 ## 2.4.0 [2022-04-19]
 
 ### Features
-1. [#101](https://github.com/influxdata/influxdb-client-ruby/pull/101): Add `InvocableScriptsApi` to create, update, list, delete and invoke scripts by seamless way
+1. [#101](https://github.com/influxdata/influxdb-client-ruby/pull/101): Add `InvokableScriptsApi` to create, update, list, delete and invoke scripts by seamless way
 
 ## 2.3.0 [2022-03-18]
 

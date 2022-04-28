@@ -20,7 +20,7 @@
 
 require 'test_helper'
 
-class InvocableScriptsApiTest < MiniTest::Test
+class InvokableScriptsApiTest < MiniTest::Test
   def setup
     WebMock.disable_net_connect!
     @client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
@@ -35,7 +35,7 @@ class InvocableScriptsApiTest < MiniTest::Test
   end
 
   def test_create_instance
-    invocable_scripts_api = @client.create_invocable_scripts_api
-    refute_nil invocable_scripts_api
+    invokable_scripts_api = @client.create_invokable_scripts_api
+    refute_nil invokable_scripts_api
   end
 end
