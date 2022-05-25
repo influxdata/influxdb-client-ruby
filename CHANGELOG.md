@@ -1,5 +1,8 @@
 ## 2.6.0 [unreleased]
 
+### Bug Fixes
+1. [#105](https://github.com/influxdata/influxdb-client-ruby/pull/105): Add missing require for `PatchBucketRequest` model
+
 ## 2.5.0 [2022-05-20]
 
 ### Breaking Changes
