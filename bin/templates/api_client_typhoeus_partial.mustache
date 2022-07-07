@@ -4,10 +4,18 @@
     #   the data deserialized from response body (could be nil), response status code and response headers.
     def call_api(http_method, path, opts = {})
       request = build_request(http_method, path, opts)
-      response = request.run
-
       if @config.debugging
-        @config.logger.debug "HTTP response body ~BEGIN~\n#{response.body}\n~END~\n"
+        @logging_helper.before_request(request.base_url, http_method, request.options[:headers], request.options[:body])
+      end
+
+      response = request.run
+      if @config.debugging
+        @logging_helper.after_request(
+          response.http_version,
+          response.options[:code],
+          response.options[:status_message],
+          response.options[:headers],
+          response.options[:body])
       end
 
       unless response.success?
@@ -76,9 +84,6 @@
       if [:post, :patch, :put, :delete].include?(http_method)
         req_body = build_request_body(header_params, form_params, opts[:body])
         req_opts.update :body => req_body
-        if @config.debugging
-          @config.logger.debug "HTTP request body param ~BEGIN~\n#{req_body}\n~END~\n"
-        end
       end
 
       request = Typhoeus::Request.new(url, req_opts)

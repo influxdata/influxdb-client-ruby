@@ -3,6 +3,7 @@
 =end
 
 require 'date'
+require 'influxdb-client'
 require 'json'
 require 'logger'
 require 'tempfile'
@@ -33,6 +34,7 @@ module {{moduleName}}::API
         'Content-Type' => 'application/json',
         'User-Agent' => @user_agent
       }
+      @logging_helper = InfluxDB2::LoggingHelper.new(@config.logger)
     end
 
     def self.default

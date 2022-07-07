@@ -137,8 +137,8 @@ module InfluxDB2::API
     attr_accessor :force_ending_format
 
     def initialize
-      @scheme = 'https'
-      @host = 'raw.githubusercontent.com'
+      @scheme = 'http'
+      @host = 'localhost'
       @base_path = '/api/v2'
       @server_index = 0
       @server_operation_index = {}
