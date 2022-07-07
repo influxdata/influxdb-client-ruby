@@ -32,25 +32,11 @@ module InfluxDB2
     def initialize(options:)
       @options = options
       @max_redirect_count = @options[:max_redirect_count] || DEFAULT_REDIRECT_COUNT
+      @logging_helper = LoggingHelper.new(@options[:logger])
     end
 
     def log(level, message)
-      return unless @options[:logger]
-
-      log_level = case level
-                  when :debug then
-                    Logger::DEBUG
-                  when :warn then
-                    Logger::WARN
-                  when :error then
-                    Logger::ERROR
-                  when :fatal then
-                    Logger::FATAL
-                  else
-                    Logger::INFO
-                  end
-
-      @options[:logger].add(log_level) { message }
+      @logging_helper.log(level, message)
     end
 
     def self.create_logger
@@ -90,9 +76,17 @@ module InfluxDB2
       headers.each { |k, v| request[k] = v }
 
       request.body = payload
+      @logging_helper.before_request(uri, request.method, request, payload) if @options[:debugging]
 
       begin
         response = http.request(request)
+        if @options[:debugging]
+          @logging_helper.after_request(response.http_version,
+                                        response.code,
+                                        response.message,
+                                        response,
+                                        response)
+        end
         case response
         when Net::HTTPSuccess then
           response

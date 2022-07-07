@@ -66,4 +66,22 @@ class ApisTest < Minitest::Test
     }
     assert_requested(:get, 'http://localhost:9086/api/v2/buckets', times: 1, headers: headers)
   end
+
+  def test_mng_redacted_auth_header
+
+    output = StringIO.new
+    logger = Logger.new output
+
+    @main_client.close!
+    @main_client = InfluxDB2::Client.new('http://localhost:9086', 'my-token', logger: logger, debugging: true)
+
+    stub_request(:get, 'http://localhost:9086/api/v2/buckets')
+      .to_return(body: '{}', headers: { 'Content-Type' => 'application/json' })
+
+    client = InfluxDB2::API::Client.new(@main_client)
+    bucket_api = client.create_buckets_api
+    bucket_api.get_buckets
+
+    assert_match 'Authorization: ***', output.string
+  end
 end

@@ -320,9 +320,6 @@ module InfluxDB2::API
     # @option opts [String] :id Only returns buckets with a specific ID.
     # @return [Array<(Buckets, Integer, Hash)>] Buckets data, response status code and response headers
     def get_buckets_with_http_info(opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: BucketsApi.get_buckets ...'
-      end
       if @api_client.config.client_side_validation && !opts[:'offset'].nil? && opts[:'offset'] < 0
         fail ArgumentError, 'invalid value for "opts[:"offset"]" when calling BucketsApi.get_buckets, must be greater than or equal to 0.'
       end
@@ -377,9 +374,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: BucketsApi#get_buckets\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 

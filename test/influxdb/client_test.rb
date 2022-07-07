@@ -116,4 +116,14 @@ class ClientTest < Minitest::Test
     uri = URI.parse(File.join('http://localhost:8099/', '/api/v2/write'))
     assert_equal 'http://localhost:8099/api/v2/write', uri.to_s
   end
+
+  def test_redacted_auth_header
+    output = StringIO.new
+    logger = Logger.new output
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token', use_ssl: false, logger: logger, debugging: true)
+
+    client.ping
+
+    assert_match 'authorization: ***', output.string
+  end
 end
