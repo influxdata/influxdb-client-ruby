@@ -74,12 +74,12 @@ class ApisTest < Minitest::Test
     @main_client.close!
     @main_client = InfluxDB2::Client.new('http://localhost:9086', 'my-token', logger: logger, debugging: true)
 
-    stub_request(:get, 'http://localhost:9086/api/v2/buckets')
+    stub_request(:get, 'http://localhost:9086/api/v2/orgs')
       .to_return(body: '{}', headers: { 'Content-Type' => 'application/json' })
 
     client = InfluxDB2::API::Client.new(@main_client)
-    bucket_api = client.create_buckets_api
-    bucket_api.get_buckets
+    organizations_api = client.create_organizations_api
+    organizations_api.get_orgs
 
     assert_match 'Authorization: ***', output.string
   end
