@@ -68,7 +68,6 @@ class ApisTest < Minitest::Test
   end
 
   def test_mng_redacted_auth_header
-
     output = StringIO.new
     logger = Logger.new output
 
