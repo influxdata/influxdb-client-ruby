@@ -18,4 +18,5 @@ docs
 bin/generated/
 bin/cloud.yml
 bin/oss.yml
+bin/invocable-scripts.yml
 bin/influxdb-clients-apigen/
