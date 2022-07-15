@@ -16,13 +16,13 @@ require 'time'
 module InfluxDB2
   # The delete predicate request.
   class DeletePredicateRequest
-    # RFC3339Nano
+    # A timestamp ([RFC3339 date/time format](https://docs.influxdata.com/flux/v0.x/data-types/basic/time/#time-syntax)).
     attr_accessor :start
 
-    # RFC3339Nano
+    # A timestamp ([RFC3339 date/time format](https://docs.influxdata.com/flux/v0.x/data-types/basic/time/#time-syntax)).
     attr_accessor :stop
 
-    # InfluxQL-like delete statement
+    # An expression in [delete predicate syntax](https://docs.influxdata.com/influxdb/v2.3/reference/syntax/delete-predicate/). 
     attr_accessor :predicate
 
     # Attribute mapping from ruby-style variable name to JSON key.

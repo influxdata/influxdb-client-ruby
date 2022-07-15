@@ -49,6 +49,7 @@ module InfluxDB2
     #   at beginning of SSL/TLS session. Could be one of `OpenSSL::SSL::VERIFY_NONE` or `OpenSSL::SSL::VERIFY_PEER`.
     #   For more info see - https://docs.ruby-lang.org/en/3.0.0/Net/HTTP.html#verify_mode.
     # @option options [Logger] :logger Logger used for logging. Disable logging by set to false.
+    # @option options [bool] :debugging Enable debugging for HTTP request/response.
     # @option options [Hash] :tags Default tags which will be added to each point written by api.
     #   the body line-protocol
     def initialize(url, token, options = nil)
@@ -57,6 +58,7 @@ module InfluxDB2
       @options[:url] = url if url.is_a? String
       @options[:token] = token if token.is_a? String
       @options[:logger] = @options[:logger].nil? ? DefaultApi.create_logger : @options[:logger]
+      @options[:debugging] = @options[:debugging].nil? ? false : @options[:debugging]
       @closed = false
 
       at_exit { close! }
@@ -102,7 +104,6 @@ module InfluxDB2
 
     # Checks the status of InfluxDB instance and version of InfluxDB.
     #
-    # @deprecated Use `ping` instead
     # @return [Ping]
     def ping
       PingApi.new(options: @options).ping

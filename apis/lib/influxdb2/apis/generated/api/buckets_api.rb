@@ -34,9 +34,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(nil, Integer, Hash)>] nil, response status code and response headers
     def delete_buckets_id_with_http_info(bucket_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: BucketsApi.delete_buckets_id ...'
-      end
       # verify the required parameter 'bucket_id' is set
       if @api_client.config.client_side_validation && bucket_id.nil?
         fail ArgumentError, "Missing the required parameter 'bucket_id' when calling BucketsApi.delete_buckets_id"
@@ -76,9 +73,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:DELETE, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: BucketsApi#delete_buckets_id\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -100,9 +94,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(nil, Integer, Hash)>] nil, response status code and response headers
     def delete_buckets_id_labels_id_with_http_info(bucket_id, label_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: BucketsApi.delete_buckets_id_labels_id ...'
-      end
       # verify the required parameter 'bucket_id' is set
       if @api_client.config.client_side_validation && bucket_id.nil?
         fail ArgumentError, "Missing the required parameter 'bucket_id' when calling BucketsApi.delete_buckets_id_labels_id"
@@ -146,9 +137,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:DELETE, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: BucketsApi#delete_buckets_id_labels_id\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -170,9 +158,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(nil, Integer, Hash)>] nil, response status code and response headers
     def delete_buckets_id_members_id_with_http_info(user_id, bucket_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: BucketsApi.delete_buckets_id_members_id ...'
-      end
       # verify the required parameter 'user_id' is set
       if @api_client.config.client_side_validation && user_id.nil?
         fail ArgumentError, "Missing the required parameter 'user_id' when calling BucketsApi.delete_buckets_id_members_id"
@@ -216,9 +201,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:DELETE, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: BucketsApi#delete_buckets_id_members_id\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -240,9 +222,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(nil, Integer, Hash)>] nil, response status code and response headers
     def delete_buckets_id_owners_id_with_http_info(user_id, bucket_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: BucketsApi.delete_buckets_id_owners_id ...'
-      end
       # verify the required parameter 'user_id' is set
       if @api_client.config.client_side_validation && user_id.nil?
         fail ArgumentError, "Missing the required parameter 'user_id' when calling BucketsApi.delete_buckets_id_owners_id"
@@ -286,9 +265,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:DELETE, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: BucketsApi#delete_buckets_id_owners_id\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -320,9 +296,6 @@ module InfluxDB2::API
     # @option opts [String] :id Only returns buckets with a specific ID.
     # @return [Array<(Buckets, Integer, Hash)>] Buckets data, response status code and response headers
     def get_buckets_with_http_info(opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: BucketsApi.get_buckets ...'
-      end
       if @api_client.config.client_side_validation && !opts[:'offset'].nil? && opts[:'offset'] < 0
         fail ArgumentError, 'invalid value for "opts[:"offset"]" when calling BucketsApi.get_buckets, must be greater than or equal to 0.'
       end
@@ -377,9 +350,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: BucketsApi#get_buckets\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -399,9 +369,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(Bucket, Integer, Hash)>] Bucket data, response status code and response headers
     def get_buckets_id_with_http_info(bucket_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: BucketsApi.get_buckets_id ...'
-      end
       # verify the required parameter 'bucket_id' is set
       if @api_client.config.client_side_validation && bucket_id.nil?
         fail ArgumentError, "Missing the required parameter 'bucket_id' when calling BucketsApi.get_buckets_id"
@@ -441,9 +408,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: BucketsApi#get_buckets_id\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -463,9 +427,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(LabelsResponse, Integer, Hash)>] LabelsResponse data, response status code and response headers
     def get_buckets_id_labels_with_http_info(bucket_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: BucketsApi.get_buckets_id_labels ...'
-      end
       # verify the required parameter 'bucket_id' is set
       if @api_client.config.client_side_validation && bucket_id.nil?
         fail ArgumentError, "Missing the required parameter 'bucket_id' when calling BucketsApi.get_buckets_id_labels"
@@ -505,9 +466,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: BucketsApi#get_buckets_id_labels\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -527,9 +485,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(ResourceMembers, Integer, Hash)>] ResourceMembers data, response status code and response headers
     def get_buckets_id_members_with_http_info(bucket_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: BucketsApi.get_buckets_id_members ...'
-      end
       # verify the required parameter 'bucket_id' is set
       if @api_client.config.client_side_validation && bucket_id.nil?
         fail ArgumentError, "Missing the required parameter 'bucket_id' when calling BucketsApi.get_buckets_id_members"
@@ -569,9 +524,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: BucketsApi#get_buckets_id_members\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -591,9 +543,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(ResourceOwners, Integer, Hash)>] ResourceOwners data, response status code and response headers
     def get_buckets_id_owners_with_http_info(bucket_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: BucketsApi.get_buckets_id_owners ...'
-      end
       # verify the required parameter 'bucket_id' is set
       if @api_client.config.client_side_validation && bucket_id.nil?
         fail ArgumentError, "Missing the required parameter 'bucket_id' when calling BucketsApi.get_buckets_id_owners"
@@ -633,9 +582,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: BucketsApi#get_buckets_id_owners\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -657,9 +603,6 @@ module InfluxDB2::API
     # @option opts [String] :org The name of the organization.
     # @return [Array<(Buckets, Integer, Hash)>] Buckets data, response status code and response headers
     def get_sources_id_buckets_with_http_info(source_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: BucketsApi.get_sources_id_buckets ...'
-      end
       # verify the required parameter 'source_id' is set
       if @api_client.config.client_side_validation && source_id.nil?
         fail ArgumentError, "Missing the required parameter 'source_id' when calling BucketsApi.get_sources_id_buckets"
@@ -700,9 +643,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: BucketsApi#get_sources_id_buckets\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -724,9 +664,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(Bucket, Integer, Hash)>] Bucket data, response status code and response headers
     def patch_buckets_id_with_http_info(bucket_id, patch_bucket_request, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: BucketsApi.patch_buckets_id ...'
-      end
       # verify the required parameter 'bucket_id' is set
       if @api_client.config.client_side_validation && bucket_id.nil?
         fail ArgumentError, "Missing the required parameter 'bucket_id' when calling BucketsApi.patch_buckets_id"
@@ -772,9 +709,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:PATCH, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: BucketsApi#patch_buckets_id\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -794,9 +728,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(Bucket, Integer, Hash)>] Bucket data, response status code and response headers
     def post_buckets_with_http_info(post_bucket_request, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: BucketsApi.post_buckets ...'
-      end
       # verify the required parameter 'post_bucket_request' is set
       if @api_client.config.client_side_validation && post_bucket_request.nil?
         fail ArgumentError, "Missing the required parameter 'post_bucket_request' when calling BucketsApi.post_buckets"
@@ -838,9 +769,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: BucketsApi#post_buckets\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -862,9 +790,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(LabelResponse, Integer, Hash)>] LabelResponse data, response status code and response headers
     def post_buckets_id_labels_with_http_info(bucket_id, label_mapping, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: BucketsApi.post_buckets_id_labels ...'
-      end
       # verify the required parameter 'bucket_id' is set
       if @api_client.config.client_side_validation && bucket_id.nil?
         fail ArgumentError, "Missing the required parameter 'bucket_id' when calling BucketsApi.post_buckets_id_labels"
@@ -910,9 +835,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: BucketsApi#post_buckets_id_labels\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -934,9 +856,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(ResourceMember, Integer, Hash)>] ResourceMember data, response status code and response headers
     def post_buckets_id_members_with_http_info(bucket_id, add_resource_member_request_body, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: BucketsApi.post_buckets_id_members ...'
-      end
       # verify the required parameter 'bucket_id' is set
       if @api_client.config.client_side_validation && bucket_id.nil?
         fail ArgumentError, "Missing the required parameter 'bucket_id' when calling BucketsApi.post_buckets_id_members"
@@ -982,9 +901,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: BucketsApi#post_buckets_id_members\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -1006,9 +922,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(ResourceOwner, Integer, Hash)>] ResourceOwner data, response status code and response headers
     def post_buckets_id_owners_with_http_info(bucket_id, add_resource_member_request_body, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: BucketsApi.post_buckets_id_owners ...'
-      end
       # verify the required parameter 'bucket_id' is set
       if @api_client.config.client_side_validation && bucket_id.nil?
         fail ArgumentError, "Missing the required parameter 'bucket_id' when calling BucketsApi.post_buckets_id_owners"
@@ -1054,9 +967,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: BucketsApi#post_buckets_id_owners\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
   end

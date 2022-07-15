@@ -34,9 +34,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(nil, Integer, Hash)>] nil, response status code and response headers
     def delete_orgs_id_with_http_info(org_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: OrganizationsApi.delete_orgs_id ...'
-      end
       # verify the required parameter 'org_id' is set
       if @api_client.config.client_side_validation && org_id.nil?
         fail ArgumentError, "Missing the required parameter 'org_id' when calling OrganizationsApi.delete_orgs_id"
@@ -76,9 +73,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:DELETE, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: OrganizationsApi#delete_orgs_id\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -100,9 +94,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(nil, Integer, Hash)>] nil, response status code and response headers
     def delete_orgs_id_members_id_with_http_info(user_id, org_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: OrganizationsApi.delete_orgs_id_members_id ...'
-      end
       # verify the required parameter 'user_id' is set
       if @api_client.config.client_side_validation && user_id.nil?
         fail ArgumentError, "Missing the required parameter 'user_id' when calling OrganizationsApi.delete_orgs_id_members_id"
@@ -146,9 +137,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:DELETE, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: OrganizationsApi#delete_orgs_id_members_id\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -170,9 +158,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(nil, Integer, Hash)>] nil, response status code and response headers
     def delete_orgs_id_owners_id_with_http_info(user_id, org_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: OrganizationsApi.delete_orgs_id_owners_id ...'
-      end
       # verify the required parameter 'user_id' is set
       if @api_client.config.client_side_validation && user_id.nil?
         fail ArgumentError, "Missing the required parameter 'user_id' when calling OrganizationsApi.delete_orgs_id_owners_id"
@@ -216,9 +201,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:DELETE, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: OrganizationsApi#delete_orgs_id_owners_id\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -248,9 +230,6 @@ module InfluxDB2::API
     # @option opts [String] :user_id Filter organizations to a specific user ID.
     # @return [Array<(Organizations, Integer, Hash)>] Organizations data, response status code and response headers
     def get_orgs_with_http_info(opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: OrganizationsApi.get_orgs ...'
-      end
       if @api_client.config.client_side_validation && !opts[:'offset'].nil? && opts[:'offset'] < 0
         fail ArgumentError, 'invalid value for "opts[:"offset"]" when calling OrganizationsApi.get_orgs, must be greater than or equal to 0.'
       end
@@ -304,9 +283,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: OrganizationsApi#get_orgs\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -326,9 +302,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(Organization, Integer, Hash)>] Organization data, response status code and response headers
     def get_orgs_id_with_http_info(org_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: OrganizationsApi.get_orgs_id ...'
-      end
       # verify the required parameter 'org_id' is set
       if @api_client.config.client_side_validation && org_id.nil?
         fail ArgumentError, "Missing the required parameter 'org_id' when calling OrganizationsApi.get_orgs_id"
@@ -368,9 +341,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: OrganizationsApi#get_orgs_id\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -390,9 +360,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(ResourceMembers, Integer, Hash)>] ResourceMembers data, response status code and response headers
     def get_orgs_id_members_with_http_info(org_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: OrganizationsApi.get_orgs_id_members ...'
-      end
       # verify the required parameter 'org_id' is set
       if @api_client.config.client_side_validation && org_id.nil?
         fail ArgumentError, "Missing the required parameter 'org_id' when calling OrganizationsApi.get_orgs_id_members"
@@ -432,9 +399,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: OrganizationsApi#get_orgs_id_members\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -454,9 +418,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(ResourceOwners, Integer, Hash)>] ResourceOwners data, response status code and response headers
     def get_orgs_id_owners_with_http_info(org_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: OrganizationsApi.get_orgs_id_owners ...'
-      end
       # verify the required parameter 'org_id' is set
       if @api_client.config.client_side_validation && org_id.nil?
         fail ArgumentError, "Missing the required parameter 'org_id' when calling OrganizationsApi.get_orgs_id_owners"
@@ -496,9 +457,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: OrganizationsApi#get_orgs_id_owners\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -520,9 +478,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(Organization, Integer, Hash)>] Organization data, response status code and response headers
     def patch_orgs_id_with_http_info(org_id, patch_organization_request, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: OrganizationsApi.patch_orgs_id ...'
-      end
       # verify the required parameter 'org_id' is set
       if @api_client.config.client_side_validation && org_id.nil?
         fail ArgumentError, "Missing the required parameter 'org_id' when calling OrganizationsApi.patch_orgs_id"
@@ -568,9 +523,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:PATCH, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: OrganizationsApi#patch_orgs_id\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -590,9 +542,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(Organization, Integer, Hash)>] Organization data, response status code and response headers
     def post_orgs_with_http_info(post_organization_request, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: OrganizationsApi.post_orgs ...'
-      end
       # verify the required parameter 'post_organization_request' is set
       if @api_client.config.client_side_validation && post_organization_request.nil?
         fail ArgumentError, "Missing the required parameter 'post_organization_request' when calling OrganizationsApi.post_orgs"
@@ -634,9 +583,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: OrganizationsApi#post_orgs\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -658,9 +604,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(ResourceMember, Integer, Hash)>] ResourceMember data, response status code and response headers
     def post_orgs_id_members_with_http_info(org_id, add_resource_member_request_body, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: OrganizationsApi.post_orgs_id_members ...'
-      end
       # verify the required parameter 'org_id' is set
       if @api_client.config.client_side_validation && org_id.nil?
         fail ArgumentError, "Missing the required parameter 'org_id' when calling OrganizationsApi.post_orgs_id_members"
@@ -706,9 +649,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: OrganizationsApi#post_orgs_id_members\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -730,9 +670,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(ResourceOwner, Integer, Hash)>] ResourceOwner data, response status code and response headers
     def post_orgs_id_owners_with_http_info(org_id, add_resource_member_request_body, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: OrganizationsApi.post_orgs_id_owners ...'
-      end
       # verify the required parameter 'org_id' is set
       if @api_client.config.client_side_validation && org_id.nil?
         fail ArgumentError, "Missing the required parameter 'org_id' when calling OrganizationsApi.post_orgs_id_owners"
@@ -778,9 +715,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: OrganizationsApi#post_orgs_id_owners\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
   end

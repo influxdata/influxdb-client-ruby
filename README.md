@@ -85,18 +85,20 @@ client = InfluxDB2::Client.new('https://localhost:8086', 'my-token')
 
 #### Client Options
 
-| Option | Description | Type | Default |
-|---|---|---|---|
-| bucket | Default destination bucket for writes | String | none |
-| org | Default organization bucket for writes | String | none |
-| precision | Default precision for the unix timestamps within the body line-protocol | String | none |
-| open_timeout | Number of seconds to wait for the connection to open | Integer | 10 |
-| write_timeout | Number of seconds to wait for one block of data to be written | Integer | 10 |
-| read_timeout | Number of seconds to wait for one block of data to be read | Integer | 10 |
-| max_redirect_count | Maximal number of followed HTTP redirects | Integer | 10 |
-| redirect_forward_authorization | Pass Authorization header to different domain during HTTP redirect. | bool | false |
-| use_ssl | Turn on/off SSL for HTTP communication | bool | true |
-| verify_mode | Sets the flags for the certification verification at beginning of SSL/TLS session. | `OpenSSL::SSL::VERIFY_NONE` or `OpenSSL::SSL::VERIFY_PEER` | none |
+| Option                         | Description                                                                        | Type                                                       | Default  |
+|--------------------------------|------------------------------------------------------------------------------------|------------------------------------------------------------|----------|
+| bucket                         | Default destination bucket for writes                                              | String                                                     | none     |
+| org                            | Default organization bucket for writes                                             | String                                                     | none     |
+| precision                      | Default precision for the unix timestamps within the body line-protocol            | String                                                     | none     |
+| open_timeout                   | Number of seconds to wait for the connection to open                               | Integer                                                    | 10       |
+| write_timeout                  | Number of seconds to wait for one block of data to be written                      | Integer                                                    | 10       |
+| read_timeout                   | Number of seconds to wait for one block of data to be read                         | Integer                                                    | 10       |
+| max_redirect_count             | Maximal number of followed HTTP redirects                                          | Integer                                                    | 10       |
+| redirect_forward_authorization | Pass Authorization header to different domain during HTTP redirect.                | bool                                                       | false    |
+| use_ssl                        | Turn on/off SSL for HTTP communication                                             | bool                                                       | true     |
+| verify_mode                    | Sets the flags for the certification verification at beginning of SSL/TLS session. | `OpenSSL::SSL::VERIFY_NONE` or `OpenSSL::SSL::VERIFY_PEER` | none     |
+| logger                         | Logger used for logging. Disable logging by set to false.                          | Logger                                                     | `STDOUT` |
+| debugging                      | Enable debugging for HTTP request/response.                                        | bool                                                       | false    |
 
 ```ruby
 client = InfluxDB2::Client.new('https://localhost:8086', 'my-token',
@@ -195,17 +197,17 @@ write_api.write(data: 'h2o,location=west value=33i 15')
 #### Batching
 The writes are processed in batches which are configurable by `WriteOptions`:
 
-| Property | Description | Default Value |
-| --- | --- | --- |
-| batchSize | the number of data point to collect in batch | 1_000 |
-| flush_interval | the number of milliseconds before the batch is written | 1_000 |
-| retry_interval | the number of milliseconds to retry unsuccessful write. The retry interval is used when the InfluxDB server does not specify "Retry-After" header. | 5_000 |
-| jitter_interval | the number of milliseconds to increase the batch flush interval by a random amount | 0 |
-| max_retries | the number of max retries when write fails | 5 |
-| max_retry_delay | maximum delay when retrying write in milliseconds | 125_000 |
-| max_retry_time | maximum total retry timeout in milliseconds | 180_000 |
-| exponential_base | the base for the exponential retry delay, the next delay is computed using random exponential backoff as a random value within the interval  ``retry_interval * exponential_base^(attempts-1)`` and ``retry_interval * exponential_base^(attempts)``. Example for ``retry_interval=5000, exponential_base=2, max_retry_delay=125000, total=5`` Retry delays are random distributed values within the ranges of ``[5000-10000, 10000-20000, 20000-40000, 40000-80000, 80000-125000]`` | 2 |
-| batch_abort_on_exception | the batching worker will be aborted after failed retry strategy | false |
+| Property                 | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | Default Value |
+|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
+| batchSize                | the number of data point to collect in batch                                                                                                                                                                                                                                                                                                                                                                                                                                         | 1_000         |
+| flush_interval           | the number of milliseconds before the batch is written                                                                                                                                                                                                                                                                                                                                                                                                                               | 1_000         |
+| retry_interval           | the number of milliseconds to retry unsuccessful write. The retry interval is used when the InfluxDB server does not specify "Retry-After" header.                                                                                                                                                                                                                                                                                                                                   | 5_000         |
+| jitter_interval          | the number of milliseconds to increase the batch flush interval by a random amount                                                                                                                                                                                                                                                                                                                                                                                                   | 0             |
+| max_retries              | the number of max retries when write fails                                                                                                                                                                                                                                                                                                                                                                                                                                           | 5             |
+| max_retry_delay          | maximum delay when retrying write in milliseconds                                                                                                                                                                                                                                                                                                                                                                                                                                    | 125_000       |
+| max_retry_time           | maximum total retry timeout in milliseconds                                                                                                                                                                                                                                                                                                                                                                                                                                          | 180_000       |
+| exponential_base         | the base for the exponential retry delay, the next delay is computed using random exponential backoff as a random value within the interval  ``retry_interval * exponential_base^(attempts-1)`` and ``retry_interval * exponential_base^(attempts)``. Example for ``retry_interval=5000, exponential_base=2, max_retry_delay=125000, total=5`` Retry delays are random distributed values within the ranges of ``[5000-10000, 10000-20000, 20000-40000, 40000-80000, 80000-125000]`` | 2             |
+| batch_abort_on_exception | the batching worker will be aborted after failed retry strategy                                                                                                                                                                                                                                                                                                                                                                                                                      | false         |
 ```ruby
 write_options = InfluxDB2::WriteOptions.new(write_type: InfluxDB2::WriteType::BATCHING,
                                             batch_size: 10, flush_interval: 5_000, 
@@ -347,13 +349,13 @@ The time range could be specified as:
 
 The client supports following management API:
 
-|  | API docs                                                            |
-| --- |---------------------------------------------------------------------|
-| [**AuthorizationsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/AuthorizationsApi.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Authorizations |
-| [**BucketsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/BucketsApi.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Buckets          |
-| [**LabelsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/LabelsApi.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Labels           |
-| [**OrganizationsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/OrganizationsApi.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Organizations    |
-| [**UsersApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/UsersApi.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Users            |
+|                                                                                                                 | API docs                                                              |
+|-----------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------|
+| [**AuthorizationsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/AuthorizationsApi.html) | https://docs.influxdata.com/influxdb/latest/api/#tag/Authorizations   |
+| [**BucketsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/BucketsApi.html)               | https://docs.influxdata.com/influxdb/latest/api/#tag/Buckets          |
+| [**LabelsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/LabelsApi.html)                 | https://docs.influxdata.com/influxdb/latest/api/#tag/Labels           |
+| [**OrganizationsApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/OrganizationsApi.html)   | https://docs.influxdata.com/influxdb/latest/api/#tag/Organizations    |
+| [**UsersApi**](https://influxdata.github.io/influxdb-client-ruby/InfluxDB2/API/UsersApi.html)                   | https://docs.influxdata.com/influxdb/latest/api/#tag/Users            |
 
 
 The following example demonstrates how to use a InfluxDB 2.x Management API to create new bucket. For further information see docs and [examples](/examples).
@@ -449,11 +451,11 @@ To overcome this limitation you have to set the client property `redirect_forwar
 
 The following forward compatible APIs are available:
 
-| API | Endpoint | Description                                                                                                                                                                                                                                                    |
-|:----------|:----------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [query_api.rb](lib/influxdb2/client/query_api.rb) | [/api/v2/query](https://docs.influxdata.com/influxdb/latest/tools/api/#api-v2-query-http-endpoint) | Query data in InfluxDB 1.8.0+ using the InfluxDB 2.x API and [Flux](https://docs.influxdata.com/flux/latest/) _(endpoint should be enabled by [`flux-enabled` option](https://docs.influxdata.com/influxdb/latest/administration/config/#flux-enabled-false))_ |
-| [write_api.rb](lib/influxdb2/client/write_api.rb) | [/api/v2/write](https://docs.influxdata.com/influxdb/latest/tools/api/#api-v2-write-http-endpoint) | Write data to InfluxDB 1.8.0+ using the InfluxDB 2.x API                                                                                                                                                                                                       |
-| [health_api.rb](lib/influxdb2/client/health_api.rb) | [/health](https://docs.influxdata.com/influxdb/latest/tools/api/#health-http-endpoint) | Check the health of your InfluxDB instance                                                                                                                                                                                                                     |    
+| API                                                 | Endpoint                                                                                           | Description                                                                                                                                                                                                                                                    |
+|:----------------------------------------------------|:---------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [query_api.rb](lib/influxdb2/client/query_api.rb)   | [/api/v2/query](https://docs.influxdata.com/influxdb/latest/tools/api/#api-v2-query-http-endpoint) | Query data in InfluxDB 1.8.0+ using the InfluxDB 2.x API and [Flux](https://docs.influxdata.com/flux/latest/) _(endpoint should be enabled by [`flux-enabled` option](https://docs.influxdata.com/influxdb/latest/administration/config/#flux-enabled-false))_ |
+| [write_api.rb](lib/influxdb2/client/write_api.rb)   | [/api/v2/write](https://docs.influxdata.com/influxdb/latest/tools/api/#api-v2-write-http-endpoint) | Write data to InfluxDB 1.8.0+ using the InfluxDB 2.x API                                                                                                                                                                                                       |
+| [health_api.rb](lib/influxdb2/client/health_api.rb) | [/health](https://docs.influxdata.com/influxdb/latest/tools/api/#health-http-endpoint)             | Check the health of your InfluxDB instance                                                                                                                                                                                                                     |    
 
 For detail info see [InfluxDB 1.8 example](examples/influxdb_18_example.rb).
 

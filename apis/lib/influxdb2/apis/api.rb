@@ -43,6 +43,9 @@ module InfluxDB2
         # Token
         configuration.api_key_prefix['api_key'] = 'Token'
         configuration.api_key['api_key'] = client.options[:token]
+        # Debugging
+        configuration.debugging = client.options[:debugging]
+        configuration.logger = client.options[:logger]
 
         @api_client = ApiClient.new(configuration)
         # User Agent

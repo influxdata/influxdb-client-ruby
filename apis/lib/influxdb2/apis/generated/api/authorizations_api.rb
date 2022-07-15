@@ -34,9 +34,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(nil, Integer, Hash)>] nil, response status code and response headers
     def delete_authorizations_id_with_http_info(auth_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: AuthorizationsApi.delete_authorizations_id ...'
-      end
       # verify the required parameter 'auth_id' is set
       if @api_client.config.client_side_validation && auth_id.nil?
         fail ArgumentError, "Missing the required parameter 'auth_id' when calling AuthorizationsApi.delete_authorizations_id"
@@ -76,9 +73,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:DELETE, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: AuthorizationsApi#delete_authorizations_id\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -104,9 +98,6 @@ module InfluxDB2::API
     # @option opts [String] :org Only show authorizations that belong to a organization name.
     # @return [Array<(Authorizations, Integer, Hash)>] Authorizations data, response status code and response headers
     def get_authorizations_with_http_info(opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: AuthorizationsApi.get_authorizations ...'
-      end
       # resource path
       local_var_path = '/authorizations'
 
@@ -146,9 +137,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: AuthorizationsApi#get_authorizations\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -168,9 +156,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(Authorization, Integer, Hash)>] Authorization data, response status code and response headers
     def get_authorizations_id_with_http_info(auth_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: AuthorizationsApi.get_authorizations_id ...'
-      end
       # verify the required parameter 'auth_id' is set
       if @api_client.config.client_side_validation && auth_id.nil?
         fail ArgumentError, "Missing the required parameter 'auth_id' when calling AuthorizationsApi.get_authorizations_id"
@@ -210,9 +195,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: AuthorizationsApi#get_authorizations_id\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -234,9 +216,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(Authorization, Integer, Hash)>] Authorization data, response status code and response headers
     def patch_authorizations_id_with_http_info(auth_id, authorization_update_request, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: AuthorizationsApi.patch_authorizations_id ...'
-      end
       # verify the required parameter 'auth_id' is set
       if @api_client.config.client_side_validation && auth_id.nil?
         fail ArgumentError, "Missing the required parameter 'auth_id' when calling AuthorizationsApi.patch_authorizations_id"
@@ -282,9 +261,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:PATCH, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: AuthorizationsApi#patch_authorizations_id\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -304,9 +280,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(Authorization, Integer, Hash)>] Authorization data, response status code and response headers
     def post_authorizations_with_http_info(authorization_post_request, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: AuthorizationsApi.post_authorizations ...'
-      end
       # verify the required parameter 'authorization_post_request' is set
       if @api_client.config.client_side_validation && authorization_post_request.nil?
         fail ArgumentError, "Missing the required parameter 'authorization_post_request' when calling AuthorizationsApi.post_authorizations"
@@ -348,9 +321,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: AuthorizationsApi#post_authorizations\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
   end

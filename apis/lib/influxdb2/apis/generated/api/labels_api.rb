@@ -34,9 +34,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(nil, Integer, Hash)>] nil, response status code and response headers
     def delete_labels_id_with_http_info(label_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: LabelsApi.delete_labels_id ...'
-      end
       # verify the required parameter 'label_id' is set
       if @api_client.config.client_side_validation && label_id.nil?
         fail ArgumentError, "Missing the required parameter 'label_id' when calling LabelsApi.delete_labels_id"
@@ -76,9 +73,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:DELETE, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: LabelsApi#delete_labels_id\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -98,9 +92,6 @@ module InfluxDB2::API
     # @option opts [String] :org_id The organization ID.
     # @return [Array<(LabelsResponse, Integer, Hash)>] LabelsResponse data, response status code and response headers
     def get_labels_with_http_info(opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: LabelsApi.get_labels ...'
-      end
       # resource path
       local_var_path = '/labels'
 
@@ -137,9 +128,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: LabelsApi#get_labels\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -159,9 +147,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(LabelResponse, Integer, Hash)>] LabelResponse data, response status code and response headers
     def get_labels_id_with_http_info(label_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: LabelsApi.get_labels_id ...'
-      end
       # verify the required parameter 'label_id' is set
       if @api_client.config.client_side_validation && label_id.nil?
         fail ArgumentError, "Missing the required parameter 'label_id' when calling LabelsApi.get_labels_id"
@@ -201,15 +186,12 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: LabelsApi#get_labels_id\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
     # Update a label
     # @param label_id [String] The ID of the label to update.
-    # @param label_update [LabelUpdate] Label update
+    # @param label_update [LabelUpdate] A label update.
     # @param [Hash] opts the optional parameters
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [LabelResponse]
@@ -220,14 +202,11 @@ module InfluxDB2::API
 
     # Update a label
     # @param label_id [String] The ID of the label to update.
-    # @param label_update [LabelUpdate] Label update
+    # @param label_update [LabelUpdate] A label update.
     # @param [Hash] opts the optional parameters
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(LabelResponse, Integer, Hash)>] LabelResponse data, response status code and response headers
     def patch_labels_id_with_http_info(label_id, label_update, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: LabelsApi.patch_labels_id ...'
-      end
       # verify the required parameter 'label_id' is set
       if @api_client.config.client_side_validation && label_id.nil?
         fail ArgumentError, "Missing the required parameter 'label_id' when calling LabelsApi.patch_labels_id"
@@ -273,14 +252,11 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:PATCH, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: LabelsApi#patch_labels_id\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
     # Create a label
-    # @param label_create_request [LabelCreateRequest] Label to create
+    # @param label_create_request [LabelCreateRequest] The label to create.
     # @param [Hash] opts the optional parameters
     # @return [LabelResponse]
     def post_labels(label_create_request, opts = {})
@@ -289,13 +265,10 @@ module InfluxDB2::API
     end
 
     # Create a label
-    # @param label_create_request [LabelCreateRequest] Label to create
+    # @param label_create_request [LabelCreateRequest] The label to create.
     # @param [Hash] opts the optional parameters
     # @return [Array<(LabelResponse, Integer, Hash)>] LabelResponse data, response status code and response headers
     def post_labels_with_http_info(label_create_request, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: LabelsApi.post_labels ...'
-      end
       # verify the required parameter 'label_create_request' is set
       if @api_client.config.client_side_validation && label_create_request.nil?
         fail ArgumentError, "Missing the required parameter 'label_create_request' when calling LabelsApi.post_labels"
@@ -336,9 +309,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: LabelsApi#post_labels\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
   end

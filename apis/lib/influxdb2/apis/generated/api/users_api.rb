@@ -34,9 +34,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(nil, Integer, Hash)>] nil, response status code and response headers
     def delete_users_id_with_http_info(user_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: UsersApi.delete_users_id ...'
-      end
       # verify the required parameter 'user_id' is set
       if @api_client.config.client_side_validation && user_id.nil?
         fail ArgumentError, "Missing the required parameter 'user_id' when calling UsersApi.delete_users_id"
@@ -76,9 +73,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:DELETE, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: UsersApi#delete_users_id\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -96,9 +90,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(Hash<String, Object>, Integer, Hash)>] Hash<String, Object> data, response status code and response headers
     def get_flags_with_http_info(opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: UsersApi.get_flags ...'
-      end
       # resource path
       local_var_path = '/flags'
 
@@ -134,9 +125,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: UsersApi#get_flags\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -154,9 +142,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(UserResponse, Integer, Hash)>] UserResponse data, response status code and response headers
     def get_me_with_http_info(opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: UsersApi.get_me ...'
-      end
       # resource path
       local_var_path = '/me'
 
@@ -192,9 +177,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: UsersApi#get_me\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -222,9 +204,6 @@ module InfluxDB2::API
     # @option opts [String] :id 
     # @return [Array<(Users, Integer, Hash)>] Users data, response status code and response headers
     def get_users_with_http_info(opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: UsersApi.get_users ...'
-      end
       if @api_client.config.client_side_validation && !opts[:'offset'].nil? && opts[:'offset'] < 0
         fail ArgumentError, 'invalid value for "opts[:"offset"]" when calling UsersApi.get_users, must be greater than or equal to 0.'
       end
@@ -277,9 +256,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: UsersApi#get_users\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -299,9 +275,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(UserResponse, Integer, Hash)>] UserResponse data, response status code and response headers
     def get_users_id_with_http_info(user_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: UsersApi.get_users_id ...'
-      end
       # verify the required parameter 'user_id' is set
       if @api_client.config.client_side_validation && user_id.nil?
         fail ArgumentError, "Missing the required parameter 'user_id' when calling UsersApi.get_users_id"
@@ -341,9 +314,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: UsersApi#get_users_id\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -365,9 +335,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(UserResponse, Integer, Hash)>] UserResponse data, response status code and response headers
     def patch_users_id_with_http_info(user_id, user, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: UsersApi.patch_users_id ...'
-      end
       # verify the required parameter 'user_id' is set
       if @api_client.config.client_side_validation && user_id.nil?
         fail ArgumentError, "Missing the required parameter 'user_id' when calling UsersApi.patch_users_id"
@@ -413,9 +380,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:PATCH, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: UsersApi#patch_users_id\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -435,9 +399,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(UserResponse, Integer, Hash)>] UserResponse data, response status code and response headers
     def post_users_with_http_info(user, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: UsersApi.post_users ...'
-      end
       # verify the required parameter 'user' is set
       if @api_client.config.client_side_validation && user.nil?
         fail ArgumentError, "Missing the required parameter 'user' when calling UsersApi.post_users"
@@ -479,9 +440,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: UsersApi#post_users\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
@@ -503,9 +461,6 @@ module InfluxDB2::API
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(nil, Integer, Hash)>] nil, response status code and response headers
     def post_users_id_password_with_http_info(user_id, password_reset_body, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: UsersApi.post_users_id_password ...'
-      end
       # verify the required parameter 'user_id' is set
       if @api_client.config.client_side_validation && user_id.nil?
         fail ArgumentError, "Missing the required parameter 'user_id' when calling UsersApi.post_users_id_password"
@@ -551,14 +506,11 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: UsersApi#post_users_id_password\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
 
     # Update a password
-    # @param password_reset_body [PasswordResetBody] New password
+    # @param password_reset_body [PasswordResetBody] The new password.
     # @param [Hash] opts the optional parameters
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [nil]
@@ -568,14 +520,11 @@ module InfluxDB2::API
     end
 
     # Update a password
-    # @param password_reset_body [PasswordResetBody] New password
+    # @param password_reset_body [PasswordResetBody] The new password.
     # @param [Hash] opts the optional parameters
     # @option opts [String] :zap_trace_span OpenTracing span context
     # @return [Array<(nil, Integer, Hash)>] nil, response status code and response headers
     def put_me_password_with_http_info(password_reset_body, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: UsersApi.put_me_password ...'
-      end
       # verify the required parameter 'password_reset_body' is set
       if @api_client.config.client_side_validation && password_reset_body.nil?
         fail ArgumentError, "Missing the required parameter 'password_reset_body' when calling UsersApi.put_me_password"
@@ -617,9 +566,6 @@ module InfluxDB2::API
       )
 
       data, status_code, headers = @api_client.call_api(:PUT, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: UsersApi#put_me_password\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
       return data, status_code, headers
     end
   end
