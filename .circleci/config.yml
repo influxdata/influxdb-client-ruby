@@ -190,6 +190,16 @@ workflows:
   build:
     jobs:
       - tests-ruby:
+          name: client-r3.1
+          ruby-image: "cimg/ruby:3.1"
+      - tests-ruby:
+          name: APIs-r3.1
+          ruby-image: "cimg/ruby:3.1"
+          gemspec-file: influxdb-client-apis.gemspec
+          path: ./apis
+          requires:
+            - client-r3.1
+      - tests-ruby:
           name: client-r3.0
           ruby-image: "cimg/ruby:3.0"
       - tests-ruby:
@@ -259,6 +269,7 @@ workflows:
             - client-jruby
       - deploy-all:
           requires:
+            - APIs-r3.1
             - APIs-r3.0
             - APIs-r2.7
             - APIs-r2.6
