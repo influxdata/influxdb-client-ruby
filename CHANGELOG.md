@@ -6,6 +6,9 @@
 ### Others
 1. [#108](https://github.com/influxdata/influxdb-client-ruby/pull/108): Use local repository for `influxdb-client-apis` development
 
+### CI
+1. [#109](https://github.com/influxdata/influxdb-client-ruby/pull/109): Add Ruby 3.1 into CI
+
 ## 2.6.0 [2022-06-24]
 
 ### Bug Fixes
