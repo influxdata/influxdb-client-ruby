@@ -21,6 +21,8 @@
 source 'https://rubygems.org'
 
 # Specify your gem's dependencies in influxdb-client-apis.gemspec
-gem 'influxdb-client', path: '..'
+
+# Use local repository instead hardcore path
+gem 'influxdb-client', github: 'influxdata/influxdb-client-ruby'
 
 gemspec

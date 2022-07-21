@@ -3,6 +3,9 @@
 ### Features
 1. [#106](https://github.com/influxdata/influxdb-client-ruby/pull/106): Add logging for HTTP requests
 
+### Others
+1. [#108](https://github.com/influxdata/influxdb-client-ruby/pull/108): Use local repository for `influxdb-client-apis` development
+
 ## 2.6.0 [2022-06-24]
 
 ### Bug Fixes

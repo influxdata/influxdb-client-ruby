@@ -21,11 +21,12 @@
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 version_rb = File.read(File.expand_path('../lib/influxdb2/client/version.rb', __dir__)).strip[/'(.*)'/, 1]
+version_client = ENV['CIRCLE_BUILD_NUM'] ? "#{version_rb}-#{ENV['CIRCLE_BUILD_NUM']}" : version_rb
 
 # noinspection DuplicatedCode
 Gem::Specification.new do |spec|
   spec.name          = 'influxdb-client-apis'
-  spec.version       = ENV['CIRCLE_BUILD_NUM'] ? "#{version_rb}-#{ENV['CIRCLE_BUILD_NUM']}" : version_rb
+  spec.version       = version_client
   spec.authors       = ['Jakub Bednar']
   spec.email         = ['jakub.bednar@gmail.com']
 
@@ -44,7 +45,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
   spec.required_ruby_version = '>= 2.2.0'
 
-  spec.add_runtime_dependency 'influxdb-client', spec.version
+  spec.add_runtime_dependency 'influxdb-client', version_client
   spec.add_runtime_dependency 'typhoeus', '~> 1.0', '>= 1.0.1'
 
   spec.add_development_dependency 'bundler', '~> 2.0'
