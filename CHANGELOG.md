@@ -1,4 +1,4 @@
-## 2.7.0 [unreleased]
+## 2.7.0 [2022-07-29]
 
 ### Features
 1. [#106](https://github.com/influxdata/influxdb-client-ruby/pull/106): Add logging for HTTP requests
