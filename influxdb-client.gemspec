@@ -51,4 +51,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop', '~> 0.66.0'
   spec.add_development_dependency 'simplecov-cobertura', '~> 1.4.2'
   spec.add_development_dependency 'webmock', '~> 3.7'
+  spec.add_development_dependency 'typhoeus', '~> 1.0', '>= 1.0.1'
 end
