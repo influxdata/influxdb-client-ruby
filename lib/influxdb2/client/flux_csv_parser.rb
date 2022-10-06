@@ -188,12 +188,10 @@ module InfluxDB2
         i += 1
       end
 
-      duplicates = table.columns.group_by { |e| e.label }.select { |k, v| v.size > 1 }
+      duplicates = table.columns.group_by { :label }.select { |_k, v| v.size > 1 }
 
-      if duplicates.length > 0
-        puts "The response contains columns with duplicated names: #{duplicates.keys.join(", ")}\n"
-        puts "You should use the 'FluxRecord.row to access your data instead of 'FluxRecord.values' hash."
-      end
+      puts "The response contains columns with duplicated names: #{duplicates.keys.join(', ')}\nYou should use the 'FluxRecord.row to access your data instead of 'FluxRecord.values' hash." if !duplicates.empty?
+
     end
 
     def _parse_values(csv)

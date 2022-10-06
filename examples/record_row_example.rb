@@ -14,9 +14,9 @@ client = InfluxDB2::Client.new(url,
 
 # Prepare Data
 write_api = client.create_write_api
-(1..5).each { |i|
+(1..5).each do |i|
   write_api.write(data: "point,table=my-table result=#{i}", bucket: bucket, org: org)
-}
+end
 
 # Query data with pivot
 query_api = client.create_query_api
@@ -25,14 +25,14 @@ query = "from(bucket: \"#{bucket}\") |> range(start: -1m) |> filter(fn: (r) => (
 result = query_api.query(query: query)
 
 # Write data to output
-puts "----------------------------------------------- FluxRecord.values ----------------------------------------------"
+puts '----------------------------------------------- FluxRecord.values ----------------------------------------------'
 result[0].records.each do |record|
   puts record.values
 end
 
-puts "------------------------------------------------- FluxRecord.row -----------------------------------------------"
+puts '------------------------------------------------- FluxRecord.row -----------------------------------------------'
 result[0].records.each do |record|
-  puts record.row.join(",")
+  puts record.row.join(',')
 end
 
 client.close!
