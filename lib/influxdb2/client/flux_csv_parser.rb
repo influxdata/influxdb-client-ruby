@@ -192,7 +192,7 @@ module InfluxDB2
 
       warning = "The response contains columns with duplicated names: #{duplicates.keys.join(', ')}\nYou should use the
  'FluxRecord.row to access your data instead of 'FluxRecord.values' hash."
-      put warning unless duplicates.empty?
+      puts warning unless duplicates.empty?
     end
 
     def _parse_values(csv)
