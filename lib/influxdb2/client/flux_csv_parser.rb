@@ -125,8 +125,8 @@ module InfluxDB2
       token = csv[0]
 
       # start new table
-      if ((ANNOTATIONS.include? token) && !@start_new_table) ||
-        (@response_mode == InfluxDB2::FluxResponseMode::ONLY_NAMES && @table.nil?)
+      if ((ANNOTATIONS.include? token) && !@start_new_table) || (@response_mode ==
+        InfluxDB2::FluxResponseMode::ONLY_NAMES && @table.nil?)
 
         # Return already parsed DataFrame
         @start_new_table = true
