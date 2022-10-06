@@ -126,7 +126,7 @@ module InfluxDB2
 
       # start new table
       if ((ANNOTATIONS.include? token) && !@start_new_table) ||
-         (@response_mode == InfluxDB2::FluxResponseMode::ONLY_NAMES && @table.nil?)
+        (@response_mode == InfluxDB2::FluxResponseMode::ONLY_NAMES && @table.nil?)
 
         # Return already parsed DataFrame
         @start_new_table = true
@@ -187,6 +187,13 @@ module InfluxDB2
         column.label = csv[i]
         i += 1
       end
+
+      duplicates = table.columns.group_by { |e| e.label }.select { |k, v| v.size > 1 }
+
+      if duplicates.length > 0
+        puts "The response contains columns with duplicated names: #{duplicates.keys.join(", ")}\n"
+        puts "You should use the 'FluxRecord.row to access your data instead of 'FluxRecord.values' hash."
+      end
     end
 
     def _parse_values(csv)
@@ -234,7 +241,9 @@ module InfluxDB2
       table.columns.each do |flux_column|
         column_name = flux_column.label
         str_val = csv[flux_column.index + 1]
-        record.values[column_name] = _to_value(str_val, flux_column)
+        value = _to_value(str_val, flux_column)
+        record.values[column_name] = value
+        record.row.push(value)
       end
 
       record

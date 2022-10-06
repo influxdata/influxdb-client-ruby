@@ -26,6 +26,7 @@ module InfluxDB2
       @columns = []
       @records = []
     end
+
     attr_reader :columns, :records
 
     # A table's group key is subset of the entire columns dataset that assigned to the table.
@@ -46,11 +47,14 @@ module InfluxDB2
   class FluxRecord
     # @param [Integer] table the index of table which contains the record
     # @param [Hash] values tuple of values
-    def initialize(table, values: nil)
+    # @param [Array] row record columns
+    def initialize(table, values: nil, row: nil)
       @table = table
       @values = values || {}
+      @row = row || []
     end
-    attr_reader :table, :values
+
+    attr_reader :table, :values, :row
     attr_writer :table
 
     # @return [Time] the inclusive lower time bound of all records
@@ -93,6 +97,7 @@ module InfluxDB2
       @group = group
       @default_value = default_value
     end
+
     attr_reader :index, :label, :data_type, :group, :default_value
     attr_writer :index, :label, :data_type, :group, :default_value
   end
