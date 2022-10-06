@@ -24,15 +24,15 @@ require 'influxdb2/client/version'
 
 # noinspection DuplicatedCode
 Gem::Specification.new do |spec|
-  spec.name = 'influxdb-client'
-  spec.version = ENV['CIRCLE_BUILD_NUM'] ? "#{InfluxDB2::VERSION}-#{ENV['CIRCLE_BUILD_NUM']}" : InfluxDB2::VERSION
-  spec.authors = ['Jakub Bednar']
-  spec.email = ['jakub.bednar@gmail.com']
+  spec.name          = 'influxdb-client'
+  spec.version       = ENV['CIRCLE_BUILD_NUM'] ? "#{InfluxDB2::VERSION}-#{ENV['CIRCLE_BUILD_NUM']}" : InfluxDB2::VERSION
+  spec.authors       = ['Jakub Bednar']
+  spec.email         = ['jakub.bednar@gmail.com']
 
-  spec.summary = 'Ruby library for InfluxDB 2.'
-  spec.description = 'This is the official Ruby library for InfluxDB 2.'
-  spec.homepage = 'https://github.com/influxdata/influxdb-client-ruby'
-  spec.license = 'MIT'
+  spec.summary       = 'Ruby library for InfluxDB 2.'
+  spec.description   = 'This is the official Ruby library for InfluxDB 2.'
+  spec.homepage      = 'https://github.com/influxdata/influxdb-client-ruby'
+  spec.license       = 'MIT'
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/influxdata/influxdb-client-ruby'
@@ -50,6 +50,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rubocop', '~> 0.66.0'
   spec.add_development_dependency 'simplecov-cobertura', '~> 1.4.2'
-  spec.add_development_dependency 'typhoeus', '~> 1.0', '>= 1.0.1'
   spec.add_development_dependency 'webmock', '~> 3.7'
 end
