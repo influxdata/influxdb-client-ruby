@@ -190,8 +190,8 @@ module InfluxDB2
 
       duplicates = table.columns.group_by { :label }.select { |_k, v| v.size > 1 }
 
-      warning = "The response contains columns with duplicated names: #{duplicates.keys.join(', ')}\nYou should use the
- 'FluxRecord.row to access your data instead of 'FluxRecord.values' hash."
+      warning = "The response contains columns with duplicated names: #{duplicates.keys.join(', ')}
+You should use the 'FluxRecord.row to access your data instead of 'FluxRecord.values' hash."
       puts warning unless duplicates.empty?
     end
 
