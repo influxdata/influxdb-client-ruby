@@ -12,3 +12,5 @@
 
 ## Others
 - [invokable_scripts.rb](invokable_scripts.rb) - How to use Invokable scripts Cloud API to create custom endpoints that query data
+- [record_row_example.rb](record_row_example.rb) - How to use `FluxRecord.row` (Array) instead of `FluxRecord.values` (Hash),
+  in case of duplicity column names
