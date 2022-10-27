@@ -79,7 +79,7 @@ class DeleteApiIntegrationTest < MiniTest::Test
       @client.create_delete_api.delete(nil, nil)
     end
 
-    assert error.message.include?('invalid request'),
+    assert error.message.include?('please format your time with RFC3339Nano'),
            "Error message: '#{error.message}' doesn't contains 'invalid request'"
   end
 
