@@ -1,4 +1,4 @@
-## 2.8.0 [unreleased]
+## 2.8.0 [2022-10-27]
 
 ### Features
 1. [#118](https://github.com/influxdata/influxdb-client-ruby/pull/118): Add `FluxRecord.row` which stores response data in a array
