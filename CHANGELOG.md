@@ -1,5 +1,8 @@
 ## 2.9.0 [unreleased]
 
+### Bug Fixes
+1. [#123](https://github.com/influxdata/influxdb-client-ruby/pull/123): Duplicate columns warning shows in improper situations
+
 ## 2.8.0 [2022-10-27]
 
 ### Features
