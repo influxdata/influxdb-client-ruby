@@ -2,6 +2,7 @@
 
 ### Bug Fixes
 1. [#123](https://github.com/influxdata/influxdb-client-ruby/pull/123): Duplicate columns warning shows in improper situations
+1. [#124](https://github.com/influxdata/influxdb-client-ruby/pull/124): Query return type is `Array` instead of `Hash`
 
 ## 2.8.0 [2022-10-27]
 
