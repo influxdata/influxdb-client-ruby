@@ -188,7 +188,7 @@ module InfluxDB2
         i += 1
       end
 
-      duplicates = table.columns.group_by { :label }.select { |_k, v| v.size > 1 }
+      duplicates = table.columns.group_by(&:label).select { |_k, v| v.size > 1 }
 
       warning = "The response contains columns with duplicated names: #{duplicates.keys.join(', ')}
 You should use the 'FluxRecord.row to access your data instead of 'FluxRecord.values' hash."

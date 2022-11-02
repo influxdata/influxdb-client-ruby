@@ -51,7 +51,6 @@ module InfluxDB2
     # @option options [Logger] :logger Logger used for logging. Disable logging by set to false.
     # @option options [bool] :debugging Enable debugging for HTTP request/response.
     # @option options [Hash] :tags Default tags which will be added to each point written by api.
-    #   the body line-protocol
     def initialize(url, token, options = nil)
       @auto_closeable = []
       @options = options ? options.dup : {}

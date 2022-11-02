@@ -516,14 +516,44 @@ class FluxCsvParserErrorTest < MiniTest::Test
 ,,0,2022-09-13T06:14:40.469404272Z,2022-09-13T06:24:40.469404272Z,2022-09-13T06:24:39.299Z,my_measurement,Prague,25.3
 ,,0,2022-09-13T06:14:40.469404272Z,2022-09-13T06:24:40.469404272Z,2022-09-13T06:24:40.454Z,my_measurement,Prague,25.3'
 
-    tables = InfluxDB2::FluxCsvParser.new(data, stream: false, response_mode: InfluxDB2::FluxResponseMode::ONLY_NAMES)
-                                     .parse
-                                     .tables
-    assert_equal 1, tables.size
-    assert_equal 8, tables[0].columns.size
-    assert_equal 3, tables[0].records.size
-    assert_equal 7, tables[0].records[0].values.size
-    assert_equal 8, tables[0].records[0].row.size
-    assert_equal 25.3, tables[0].records[0].row[7]
+    out, = capture_io do
+      tables = InfluxDB2::FluxCsvParser.new(data, stream: false, response_mode: InfluxDB2::FluxResponseMode::ONLY_NAMES)
+                                       .parse
+                                       .tables
+
+      assert_equal 1, tables.size
+      assert_equal 8, tables[0].columns.size
+      assert_equal 3, tables[0].records.size
+      assert_equal 7, tables[0].records[0].values.size
+      assert_equal 8, tables[0].records[0].row.size
+      assert_equal 25.3, tables[0].records[0].row[7]
+    end
+
+    assert_match 'The response contains columns with duplicated names: result', out
+  end
+
+  def test_parse_without_duplicates
+    data = '#datatype,string,long,dateTime:RFC3339,dateTime:RFC3339,dateTime:RFC3339,string,string,double
+#group,false,false,true,true,false,true,true,false
+#default,_result,,,,,,,
+ ,result,table,_start,_stop,_time,_measurement,location,result2
+,,0,2022-09-13T06:14:40.469404272Z,2022-09-13T06:24:40.469404272Z,2022-09-13T06:24:33.746Z,my_measurement,Prague,25.3
+,,0,2022-09-13T06:14:40.469404272Z,2022-09-13T06:24:40.469404272Z,2022-09-13T06:24:39.299Z,my_measurement,Prague,25.3
+,,0,2022-09-13T06:14:40.469404272Z,2022-09-13T06:24:40.469404272Z,2022-09-13T06:24:40.454Z,my_measurement,Prague,25.3'
+
+    out, = capture_io do
+      tables = InfluxDB2::FluxCsvParser.new(data, stream: false, response_mode: InfluxDB2::FluxResponseMode::ONLY_NAMES)
+                                       .parse
+                                       .tables
+
+      assert_equal 1, tables.size
+      assert_equal 8, tables[0].columns.size
+      assert_equal 3, tables[0].records.size
+      assert_equal 8, tables[0].records[0].values.size
+      assert_equal 8, tables[0].records[0].row.size
+      assert_equal 25.3, tables[0].records[0].row[7]
+    end
+
+    assert_equal '', out
   end
 end
