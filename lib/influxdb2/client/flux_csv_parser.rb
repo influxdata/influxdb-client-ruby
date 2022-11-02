@@ -60,7 +60,7 @@ module InfluxDB2
     def initialize(response, stream: false, response_mode: InfluxDB2::FluxResponseMode::FULL)
       @response = response
       @stream = stream
-      @tables = {}
+      @tables = []
 
       @table_index = 0
       @table_id = -1

@@ -144,4 +144,22 @@ class QueryApiTest < MiniTest::Test
     assert_requested(:post, 'http://localhost:8086/api/v2/query?org=my-org',
                      times: 1, headers: headers)
   end
+
+  def test_query_result_type
+    stub_request(:post, 'http://localhost:8086/api/v2/query?org=my-org')
+      .to_return(body: SUCCESS_DATA)
+
+    client = InfluxDB2::Client.new('http://localhost:8086', 'my-token',
+                                   bucket: 'my-bucket',
+                                   org: 'my-org',
+                                   use_ssl: false)
+
+    bucket = 'my-bucket'
+    result = client.create_query_api
+                   .query(query: "from(bucket:\"#{bucket}\") |> range(start: 1970-01-01T00:00:00.000000001Z) |> last()")
+
+    assert_equal 1, result.length
+    assert_equal 4, result[0].records.length
+    assert_equal Array, result.class
+  end
 end
