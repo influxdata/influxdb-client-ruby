@@ -34,6 +34,6 @@ require 'influxdb-client'
 
 require 'minitest/autorun'
 require 'minitest/reporters'
-Minitest::Reporters.use!
+Minitest::Reporters.use! unless ENV['RM_INFO']
 
 require 'webmock/minitest'
