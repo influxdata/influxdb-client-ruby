@@ -86,6 +86,13 @@ module InfluxDB2
       def create_users_api
         InfluxDB2::API::UsersApi.new(@api_client)
       end
+
+      # Create a new instance of TasksApi.
+      #
+      # @return [InfluxDB2::API::TasksApi] New instance of TasksApi.
+      def create_tasks_api
+        InfluxDB2::API::TasksApi.new(@api_client)
+      end
     end
   end
 end
