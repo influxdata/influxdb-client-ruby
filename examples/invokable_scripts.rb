@@ -90,5 +90,4 @@ InfluxDB2::Client.use(url,
   puts "------- Delete -------\n"
   scripts_api.delete_script(created_script.id)
   puts " Successfully deleted script: '#{created_script.name}'"
-
 end

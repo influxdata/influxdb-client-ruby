@@ -25,12 +25,12 @@ InfluxDB2::Client.new(url,
   result = query_api.query(query: query)
 
   # Write data to output
-  puts '----------------------------------------------- FluxRecord.values ----------------------------------------------'
+  puts '---------------------------------------------- FluxRecord.values ---------------------------------------------'
   result[0].records.each do |record|
     puts record.values
   end
 
-  puts '------------------------------------------------- FluxRecord.row -----------------------------------------------'
+  puts '------------------------------------------------ FluxRecord.row ----------------------------------------------'
   result[0].records.each do |record|
     puts record.row.join(',')
   end

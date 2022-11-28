@@ -30,5 +30,4 @@ InfluxDB2::Client.new(url,
   params = { 'bucketParam' => 'my-bucket', 'startParam' => '-1h' }
   result = query_api.query(query: query, params: params)
   result[0].records.each { |record| puts "#{record.time} #{record.measurement}: #{record.field} #{record.value}" }
-
 end

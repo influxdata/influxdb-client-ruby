@@ -49,8 +49,10 @@ InfluxDB2::Client.use(url,
   authorization = InfluxDB2::API::Authorization.new(description: "Authorization to read/write bucket: #{bucket.name}",
                                                     org_id: organization.id,
                                                     permissions: [
-                                                      InfluxDB2::API::Permission.new(action: 'read', resource: resource),
-                                                      InfluxDB2::API::Permission.new(action: 'write', resource: resource)
+                                                      InfluxDB2::API::Permission.new(action: 'read',
+                                                                                     resource: resource),
+                                                      InfluxDB2::API::Permission.new(action: 'write',
+                                                                                     resource: resource)
                                                     ])
   result = api.create_authorizations_api
               .post_authorizations(authorization)
