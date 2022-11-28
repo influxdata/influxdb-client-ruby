@@ -63,6 +63,23 @@ module InfluxDB2
       at_exit { close! }
     end
 
+    # Instantiate a new InfluxDB client with code block. The client will be passed as an argument
+    # and will be automatically closed when the block terminates.
+    #
+    # It takes same args as {InfluxDB2::Client#initialize}.
+    #
+    # @example Instantiate a client.
+    #   InfluxDBClient::Client.use(url: 'https://localhost:8086', token: 'my-token') do |client|
+    #     ping = client.ping
+    #     puts ping.version
+    #   end
+    def self.use(*args)
+      client = Client.new(*args)
+      yield client
+    ensure
+      client.close!
+    end
+
     # Write time series data into InfluxDB thought WriteApi.
     #
     # @return [WriteApi] New instance of WriteApi.

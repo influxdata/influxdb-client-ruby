@@ -1,7 +1,14 @@
 ## 2.9.0 [unreleased]
 
+:warning: The client can be used as a resource:
+
+    InfluxDB2::Client.use('https://localhost:8086', 'my-token') do |client|
+        client.do_something
+    end
+
 ### Features
 1. [#126](https://github.com/influxdata/influxdb-client-ruby/pull/126): Add `Task` API
+1. [#127](https://github.com/influxdata/influxdb-client-ruby/pull/127): Client can be used as a resource
 
 ### Bug Fixes
 1. [#123](https://github.com/influxdata/influxdb-client-ruby/pull/123): Duplicate columns warning shows in improper situations
