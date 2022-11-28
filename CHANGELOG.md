@@ -1,11 +1,10 @@
 ## 2.9.0 [unreleased]
 
 :warning: The client can be used as a resource:
-    ```ruby
+
     InfluxDB2::Client.use('https://localhost:8086', 'my-token') do |client|
         client.do_something
     end
-    ```
 
 ### Features
 1. [#126](https://github.com/influxdata/influxdb-client-ruby/pull/126): Add `Task` API
