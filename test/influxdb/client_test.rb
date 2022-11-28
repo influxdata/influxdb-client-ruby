@@ -126,4 +126,32 @@ class ClientTest < Minitest::Test
 
     assert_match 'authorization: ***', output.string
   end
+
+  def test_resource
+    InfluxDB2::Client.use('http://localhost:8086', 'my-token', use_ssl: false) do |client|
+      ping = client.ping
+      assert_equal 'ok', ping.status
+    end
+  end
+
+  def test_resource_closed
+    client = nil
+    InfluxDB2::Client.use('http://localhost:8086', 'my-token', use_ssl: false) do |resource|
+      client = resource
+    end
+    assert_equal true, client.instance_variable_get(:@closed)
+  end
+
+  def test_resource_closed_error
+    client = nil
+    begin
+      InfluxDB2::Client.use('http://localhost:8086', 'my-token', use_ssl: false) do |resource|
+        client = resource
+        raise 'Just for testing.'
+      end
+    rescue StandardError => e
+      puts e
+    end
+    assert_equal true, client.instance_variable_get(:@closed)
+  end
 end
