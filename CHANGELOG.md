@@ -1,4 +1,4 @@
-## 2.9.0 [unreleased]
+## 2.9.0 [2022-01-12]
 
 :warning: The client can be used as a resource:
 
