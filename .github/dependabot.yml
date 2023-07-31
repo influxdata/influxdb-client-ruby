@@ -3,10 +3,10 @@ updates:
   - package-ecosystem: "bundler"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "monthly"
     open-pull-requests-limit: 10
   - package-ecosystem: "bundler"
     directory: "apis"
     schedule:
-      interval: "daily"
+      interval: "monthly"
     open-pull-requests-limit: 10
