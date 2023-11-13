@@ -64,6 +64,7 @@ class PointTest < MiniTest::Test
   end
 
   def test_field_types
+    time = Time.utc(2023, 11, 1)
     point = InfluxDB2::Point.new(name: 'h2o')
                             .add_tag('tag_b', 'b')
                             .add_tag('tag_a', 'a')
@@ -73,8 +74,10 @@ class PointTest < MiniTest::Test
                             .add_field('n4', 5.5)
                             .add_field('bool', true)
                             .add_field('string', 'string value')
+                            .add_field('started', time)
 
-    expected = 'h2o,tag_a=a,tag_b=b bool=true,n1=-2i,n2=10i,n3=1265437718438866624512i,n4=5.5,string="string value"'
+    expected = 'h2o,tag_a=a,tag_b=b bool=true,n1=-2i,n2=10i,n3=1265437718438866624512i,n4=5.5,'\
+               'started=1698796800000000000i,string="string value"'
     assert_equal expected, point.to_line_protocol
   end
 
