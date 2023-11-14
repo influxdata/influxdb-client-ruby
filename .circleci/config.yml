@@ -41,6 +41,9 @@ commands:
         type: string
       path:
         type: string
+      bundle-version:
+        type: string
+        default: ''
     steps:
       - restore_cache:
           name: Restoring Gem Cache
@@ -52,7 +55,7 @@ commands:
           name: Install dependencies
           command: |
             cd << parameters.path >>
-            gem install bundler
+            gem install bundler << parameters.bundle-version >>
             bundle config set path 'vendor/bundle'
             bundle install --jobs=4 --retry=3
       - run:
@@ -128,6 +131,9 @@ jobs:
       path:
         type: string
         default: .
+      bundle-version:
+        type: string
+        default: ''
     docker:
       - image: << parameters.ruby-image >>
       - image: &influx-image << parameters.influxdb-image >>
@@ -139,6 +145,7 @@ jobs:
           ruby-image: << parameters.ruby-image >>
           gemspec-file: << parameters.gemspec-file >>
           path: << parameters.path >>
+          bundle-version: << parameters.bundle-version >>
 
   check-generate-sources:
     docker:
@@ -253,11 +260,13 @@ workflows:
       - tests-ruby:
           name: client-r2.4
           ruby-image: "cimg/ruby:2.4"
+          bundle-version: "-v 2.3.27"
       - tests-ruby:
           name: APIs-r2.4
           ruby-image: "cimg/ruby:2.4"
           gemspec-file: influxdb-client-apis.gemspec
           path: ./apis
+          bundle-version: "-v 2.3.27"
           requires:
             - client-r2.4
       - tests-ruby:
