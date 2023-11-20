@@ -1,4 +1,7 @@
-## 2.10.0 [unreleased]
+## 3.0.0 [unreleased]
+
+### Bug Fixes
+1. [#131](https://github.com/influxdata/influxdb-client-ruby/pull/131): Convert time objects present in fields to integer. Prior to this change the timestamps were converted to strings
 
 ## 2.9.0 [2022-12-01]
 

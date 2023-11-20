@@ -127,7 +127,7 @@ module InfluxDB2
       return nil if fields.empty?
 
       line_protocol << " #{fields}" if fields
-      timestamp = _escape_time
+      timestamp = _escape_time(@time)
       line_protocol << " #{timestamp}" if timestamp
 
       line_protocol
@@ -185,6 +185,8 @@ module InfluxDB2
         '"'.freeze + result + '"'.freeze
       elsif value.is_a?(Integer)
         "#{value}i"
+      elsif value.is_a?(Time)
+        "#{_escape_time(value)}i"
       elsif [Float::INFINITY, -Float::INFINITY].include?(value)
         ''
       else
@@ -192,16 +194,16 @@ module InfluxDB2
       end
     end
 
-    def _escape_time
-      if @time.nil?
+    def _escape_time(value)
+      if value.nil?
         nil
-      elsif @time.is_a?(Integer)
-        @time.to_s
-      elsif @time.is_a?(Float)
-        @time.round.to_s
-      elsif @time.is_a?(Time)
-        nano_seconds = @time.to_i * 1e9
-        nano_seconds += @time.tv_nsec
+      elsif value.is_a?(Integer)
+        value.to_s
+      elsif value.is_a?(Float)
+        value.round.to_s
+      elsif value.is_a?(Time)
+        nano_seconds = value.to_i * 1e9
+        nano_seconds += value.tv_nsec
         case @precision || DEFAULT_WRITE_PRECISION
         when InfluxDB2::WritePrecision::MILLISECOND then
           (nano_seconds / 1e6).round
@@ -213,7 +215,7 @@ module InfluxDB2
           nano_seconds.round
         end
       else
-        @time.to_s
+        value.to_s
       end
     end
   end
