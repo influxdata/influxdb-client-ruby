@@ -1,5 +1,8 @@
 ## 3.1.0 [unreleased]
 
+### Bug Fixes
+1. [#134](https://github.com/influxdata/influxdb-client-ruby/pull/134): Support influxdb v1.8 HTTP error response message. Prior to this change, in case of an HTTP error response (influxDB v1.8) the InfluxError had empty message.
+
 ## 3.0.0 [2023-12-05]
 
 ### Bug Fixes
