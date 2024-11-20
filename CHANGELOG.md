@@ -1,5 +1,8 @@
 ## 3.2.0 [unreleased]
 
+### Others
+1. [#137](https://github.com/influxdata/influxdb-client-ruby/pull/137): Add the csv gem to the gemspec dependencies.
+
 ## 3.1.0 [2024-03-01]
 
 ### Bug Fixes
