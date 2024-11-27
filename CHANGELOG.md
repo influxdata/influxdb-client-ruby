@@ -1,4 +1,4 @@
-## 3.2.0 [unreleased]
+## 3.2.0 [2024-11-27]
 
 ### Others
 1. [#137](https://github.com/influxdata/influxdb-client-ruby/pull/137): Add the csv gem to the gemspec dependencies.
@@ -32,7 +32,7 @@
 ## 2.8.0 [2022-10-27]
 
 ### Features
-1. [#118](https://github.com/influxdata/influxdb-client-ruby/pull/118): Add `FluxRecord.row` which stores response data in a array
+1. [#118](https://github.com/influxdata/influxdb-client-ruby/pull/118): Add `FluxRecord.row` which stores response data in an array
 
 ## 2.7.0 [2022-07-29]
 
