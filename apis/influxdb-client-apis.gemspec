@@ -49,7 +49,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'typhoeus', '~> 1.0', '>= 1.0.1'
 
   spec.add_development_dependency 'bundler', '~> 2.0'
-  spec.add_development_dependency 'minitest', '5.15.0'
+  spec.add_development_dependency 'minitest', '5.25.2'
   spec.add_development_dependency 'minitest-reporters', '~> 1.4'
   spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rubocop', '~> 0.66.0'
