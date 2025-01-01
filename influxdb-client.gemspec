@@ -46,7 +46,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'csv'
   spec.add_development_dependency 'bundler', '~> 2.0'
-  spec.add_development_dependency 'minitest', '5.15.0'
+  spec.add_development_dependency 'minitest', '5.24.1'
   spec.add_development_dependency 'minitest-reporters', '~> 1.4'
   spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rubocop', '~> 0.66.0'
