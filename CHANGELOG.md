@@ -1,5 +1,7 @@
 ## 3.3.0 [unreleased]
 
+1. [#149](https://github.com/influxdata/influxdb-client-ruby/pull/149): Fix FrozenError in Point#to_line_protocol when frozen string literals are enabled
+
 ## 3.2.0 [2024-11-27]
 
 ### Others
@@ -242,4 +244,3 @@ To overcome this limitation you have to set the client property `redirect_forwar
 
 ### Features
 1. [#4](https://github.com/influxdata/influxdb-client-ruby/pull/4): Added WriteApi that will be used for Fluentd plugin
- 
