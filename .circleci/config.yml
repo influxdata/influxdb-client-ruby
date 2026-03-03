@@ -64,10 +64,14 @@ commands:
             cd << parameters.path >>
             bundle exec rake rubocop
       - run:
+          name: Create test result directory
+          command: |
+            mkdir -p << parameters.path >>/test/reports
+      - run:
           name: Run tests
           command: |
             cd << parameters.path >>
-            export MINITEST_REPORTER=JUnitReporter
+            export TESTOPTS="--ci-dir=<< parameters.path >>/test/reports"
             bundle exec rake test
       - run:
           name: Collecting coverage reports
@@ -86,8 +90,10 @@ commands:
           paths:
             - << parameters.path >>/vendor/bundle
           when: always
-      - storing-test-results:
-          path: << parameters.path >>
+      - store_test_results:
+          path: << parameters.path >>/test/reports
+      - store_artifacts:
+          path: << parameters.path >>/test/reports
   deploy-preview:
     parameters:
       gemspec-file:
@@ -115,7 +121,6 @@ commands:
     steps:
       - store_test_results:
           path: << parameters.path >>/test/reports
-
 jobs:
   tests-ruby:
     parameters:
