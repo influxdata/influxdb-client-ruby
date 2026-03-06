@@ -40,3 +40,5 @@ Metrics/PerceivedComplexity:
   Max: 15
 Metrics/ParameterLists:
   Max: 10
+Style/EmptyLiteral:
+  Enabled: false
