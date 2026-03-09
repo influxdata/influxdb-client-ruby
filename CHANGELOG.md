@@ -1,5 +1,10 @@
 ## 3.3.0 [unreleased]
 
+### CI
+1. [152](https://github.com/influxdata/influxdb-client-ruby/pull/152):
+- Switches the JRuby jobs from jruby:9.3.1.0-jdk11 to jruby:9.4-dev-jdk11.
+- Adds a monkeypatch for REXML::Document#initialize to tolerate malformed XML emitted during Cobertura report formatting.
+
 1. [#149](https://github.com/influxdata/influxdb-client-ruby/pull/149): Fix FrozenError in Point#to_line_protocol when frozen string literals are enabled
 
 ## 3.2.0 [2024-11-27]
